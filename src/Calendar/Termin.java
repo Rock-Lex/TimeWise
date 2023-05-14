@@ -3,12 +3,11 @@ package Calendar;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import IDgen.IDGenerator;
-
 /**
  * Bei dieser Klasse handelt es sich um einen Termin.
- *
+ * *
  * Autor: Philipp Voß
- * Version: 1.0
+ * Version: 1.0.1
  * Erstellt am: 14.05.2023
  * Letzte Änderung: 14.05.2023
  */
@@ -32,7 +31,7 @@ public class Termin {
      * @param endTime Endzeit des Termins
      */
     public Termin(String title, String type, boolean multiDay, String startDate, String endDate, String startTime, String endTime){
-        if(multiDay == true){
+        if(multiDay){
             this.title = title;
             this.type = type;
             this.start = dateTimeFormatter(startDate, startTime);
@@ -57,9 +56,8 @@ public class Termin {
     private LocalDateTime dateTimeFormatter(String date, String time){
         String dateTimeString = date + "T" + time;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        LocalDateTime dateTime = LocalDateTime.parse(dateTimeString, formatter);
 
-        return dateTime;
+        return LocalDateTime.parse(dateTimeString, formatter);
     }
 
 
