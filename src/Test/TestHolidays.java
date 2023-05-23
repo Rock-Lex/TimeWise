@@ -38,8 +38,8 @@ public class TestHolidays {
 		Holidays f7 = new Holidays("Sylvester", 12, 31);
 		f7.display();
 		
-		Osterfeiertage f8 = new Osterfeiertage("Ostersonntag", Osterfeiertage);
-		f8.display();		
+//		Osterfeiertage f8 = new Osterfeiertage("Ostersonntag", Osterfeiertage);
+//		f8.display();
 		
 		
 		
@@ -74,8 +74,8 @@ public class TestHolidays {
 		System.out.println("das sind alle gesetzlichen unveränderlichen Feiertage in Berlin");
 		
 		System.out.println();
-		System.out.println("Ostersonntag: " + Ostersonntag);
-		f8.print();
+//		System.out.println("Ostersonntag: " + Ostersonntag);
+//		f8.print();
 	}
 
 }
