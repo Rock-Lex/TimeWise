@@ -145,6 +145,10 @@ public class Database {
         System.out.println(termin.getId());
         System.out.println(termin.getTitle());
     }
+
+    public int compareTo(Database other) {
+        return this.databaseName.compareTo(other.databaseName);
+    }
 }
 
 

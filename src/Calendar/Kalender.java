@@ -65,6 +65,6 @@ public class Kalender implements Comparable<Kalender>{
 
     @Override
     public int compareTo(Kalender other) {
-        return 0;
+        return this.database.compareTo(other.database);
     }
 }
