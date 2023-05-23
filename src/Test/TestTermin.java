@@ -1,17 +1,18 @@
+package Test;
+
 import Calendar.Termin;
 import IOManager.Database;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Test {
-    public static void main(String[] args) {
-        //testTerminClass();
-        testDatenbankClass();
+public class TestTermin {
+
+    public TestTermin() {
+
     }
 
-    public static void testTerminClass() {
+    private static void testTerminClass() {
         System.out.println("TEST CASES");
 
         System.out.println("TEST 1");
@@ -55,13 +56,10 @@ public class Test {
         System.out.println(mehrtaegigerTermin.getType());
         System.out.println(mehrtaegigerTermin.isMultiDay());
     }
-    public static void testDatenbankClass() {
-        Database db = new Database();
-        List<Termin> arr = db.getTerminArray();
 
-        for (Termin termin : arr) {
-            System.out.println(termin.getStart());
-            db.deleteTermin(termin);
-        }
+    public void test() {
+        System.out.println("Test started");
+        testTerminClass();
+        System.out.println("Test ended");
     }
 }
