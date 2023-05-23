@@ -43,4 +43,16 @@ public class Teilnehmer {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Override
+    public String toString() {
+        return "Teilnehmer{" +
+                "name=" + this.name + '\'' +
+                ", email='" + this.email + '\'' +
+                '}';
+    }
+
+    public int compareTo(Teilnehmer teilnehmer) {
+        return this.name.compareTo(teilnehmer.name);
+    }
 }

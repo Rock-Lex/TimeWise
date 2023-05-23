@@ -60,4 +60,18 @@ public class Erinnerung {
     public void setActivated(Boolean isActivated) {
         this.isActivated = isActivated;
     }
+
+    @Override
+    public String toString() {
+        return "Erinnerung{" +
+                "id=" + this.id + '\'' +
+                ", time='" + this.time + '\'' +
+                ", message='" + this.message + '\'' +
+                ", isActivated='" + this.isActivated + '\'' +
+                '}';
+    }
+
+    public boolean compareTo(Erinnerung erinnerung) {
+        return this.time.isBefore(erinnerung.time);
+    }
 }
