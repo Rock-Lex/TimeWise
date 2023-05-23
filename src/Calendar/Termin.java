@@ -11,9 +11,10 @@ import IDgen.IDGenerator;
  * Erstellt am: 14.05.2023
  * Letzte Änderung: 14.05.2023
  */
-public class Termin {
+public class Termin implements Comparable<Termin>{
     private String id;
     private String title;
+    private String description;
     private boolean multiDay = false;
     private LocalDateTime start;
     private LocalDateTime end;
@@ -61,6 +62,7 @@ public class Termin {
     }
 
 
+
     // Getter und Setter
     public String getId() {
         return id;
@@ -104,5 +106,31 @@ public class Termin {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "Termin{" +
+                "id='" + id + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", multiDay=" + multiDay +
+                ", start=" + start +
+                ", end=" + end +
+                ", type='" + type + '\'' +
+                '}';
+    }
+    @Override
+    public int compareTo(Termin other) {
+        if (this.start.isBefore(other.start) && this.end.isBefore(other.start)) {
+            // Der aktuelle Termin this liegt vor dem anderen Termin other
+            return -1;
+        } else if (this.start.isAfter(other.end) && this.end.isAfter(other.end)) {
+            // Der aktuelle Termin this liegt nach dem anderen Termin other
+            return 1;
+        } else {
+            // Die Termine this und other überlappen sich oder haben den gleichen Zeitraum
+            return 0;
+        }
     }
 }
