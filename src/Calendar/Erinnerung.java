@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
  * Erstellt am: 23.05.2023
  * Letzte Änderung: 23.05.2023
  */
-public class Erinnerung {
+public class Erinnerung implements Comparable<Erinnerung> {
 
     private int id;
     private LocalDateTime time;
@@ -71,7 +71,15 @@ public class Erinnerung {
                 '}';
     }
 
-    public boolean compareTo(Erinnerung erinnerung) {
-        return this.time.isBefore(erinnerung.time);
+    @Override
+    public int compareTo(Erinnerung erinnerung) {
+
+        Boolean isBefore = this.time.isBefore(erinnerung.time);
+        int compareTo = 0;
+
+        if (isBefore) {
+            compareTo = 1;
+        }
+        return compareTo;
     }
 }

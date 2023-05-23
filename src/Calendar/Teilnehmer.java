@@ -9,7 +9,7 @@ package Calendar;
  * Letzte Änderung: 23.05.2023
  */
 
-public class Teilnehmer {
+public class Teilnehmer implements Comparable<Teilnehmer>{
     private String name;
     private String email;
 
@@ -51,7 +51,7 @@ public class Teilnehmer {
                 ", email='" + this.email + '\'' +
                 '}';
     }
-
+    @Override
     public int compareTo(Teilnehmer teilnehmer) {
         return this.name.compareTo(teilnehmer.name);
     }
