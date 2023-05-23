@@ -9,7 +9,7 @@ import java.util.List;
 public class TestTermin {
 
     /**
-     * Bei dieser Klasse handelt es sich um einen Test fur Termin.
+     * Bei dieser Klasse handelt es sich um einen Test fur Termin .
      * *
      * Autor: Oleksandr Kamenskyi
      * Version: 1.0.0
@@ -22,7 +22,7 @@ public class TestTermin {
     }
 
     private static void testTerminClass() {
-        System.out.println("TEST CASES");
+        System.out.println("TEST CASES FOR TERMIN CLASS");
 
         System.out.println("TEST 1");
         Termin eintaegigerTermin = new Termin("Ein Tag","MT",true,"2022-12-21", "2022-12-21", "12:00","13:00");
