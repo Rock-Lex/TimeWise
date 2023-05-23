@@ -7,6 +7,15 @@ import java.util.List;
 
 public class TestDatenbank {
 
+    /**
+     * Bei dieser Klasse handelt es sich um einen Test fur Database.
+     * *
+     * Autor: Oleksandr Kamenskyi
+     * Version: 1.0.0
+     * Erstellt am: 23.05.2023
+     * Letzte Änderung: 23.05.2023
+     */
+
     TestDatenbank() {
 
     }

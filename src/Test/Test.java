@@ -1,7 +1,14 @@
 package Test;
 
 public class Test {
-
+    /**
+     * Bei dieser Klasse handelt es sich um einen Test.
+     * *
+     * Autor: Oleksandr Kamenskyi
+     * Version: 1.0.0
+     * Erstellt am: 23.05.2023
+     * Letzte Änderung: 23.05.2023
+     */
 
     public static void main(String[] args) {
         TestCalendar testCalendar = new TestCalendar();

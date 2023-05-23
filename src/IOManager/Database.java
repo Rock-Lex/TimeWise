@@ -14,7 +14,7 @@ import java.util.List;
  * Autor: Oleksandr Kamenskyi
  * Version: 1.0.0
  * Erstellt am: 14.05.2023
- * Letzte Änderung: 22.05.2023
+ * Letzte Änderung: 23.05.2023
  */
 
 // Notes
