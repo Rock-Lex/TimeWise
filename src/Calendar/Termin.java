@@ -12,12 +12,12 @@ import IDgen.IDGenerator;
  * Letzte Änderung: 14.05.2023
  */
 public class Termin {
-    String id;
-    public String title;
-    boolean multiDay = false;
-    public LocalDateTime start;
-    public LocalDateTime end;
-    public String type;
+    private String id;
+    private String title;
+    private boolean multiDay = false;
+    private LocalDateTime start;
+    private LocalDateTime end;
+    private String type;
 
     /**
      * Konstruktor für die Erstellung eines Termins.
@@ -99,7 +99,7 @@ public class Termin {
     }
 
     public String getType() {
-        return type;
+        return this.type;
     }
 
     public void setType(String type) {
