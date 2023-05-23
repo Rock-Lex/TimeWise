@@ -1,6 +1,11 @@
 package IOManager;
 
+import Calendar.Termin;
+
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -24,29 +29,29 @@ public class Database {
      * Konstruktor für die Erstellung eines Database Connections.
      */
     public Database() {
-        try {
-            Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        this.projectPath = System.getProperty("user.dir");
-        this.databaseName = "/TimeWise.db";
-
-        try {
-            String dbPath = "jdbc:sqlite:" +  this.projectPath + this.databaseName;
-            System.out.println(dbPath);
-            Connection connection = DriverManager.getConnection(dbPath);
-            if (connection != null) {
-                DatabaseMetaData meta = connection.getMetaData();
-                System.out.println("The driver name is " + meta.getDriverName());
-                connection.close();
-            }
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
-        }
-        System.out.println("Opened database successfully");
+//        try {
+//            Class.forName("org.sqlite.JDBC");
+//        } catch (ClassNotFoundException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        this.projectPath = System.getProperty("user.dir");
+//        this.databaseName = "/TimeWise.db";
+//
+//        try {
+//            String dbPath = "jdbc:sqlite:" +  this.projectPath + this.databaseName;
+//            System.out.println(dbPath);
+//            Connection connection = DriverManager.getConnection(dbPath);
+//            if (connection != null) {
+//                DatabaseMetaData meta = connection.getMetaData();
+//                System.out.println("The driver name is " + meta.getDriverName());
+//                connection.close();
+//            }
+//        } catch (Exception e) {
+//            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+//            System.exit(0);
+//        }
+//        System.out.println("Opened database successfully");
     }
 
     /**
@@ -58,27 +63,26 @@ public class Database {
     public Database(String projectPath, String databaseName) {
         this.projectPath = projectPath;
         this.databaseName = databaseName;
-
-        try {
-            Class.forName("org.sqlite.JDBC");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-
-        try {
-            String dbPath = "jdbc:sqlite:" +  this.projectPath + this.databaseName;
-            System.out.println(dbPath);
-            Connection connection = DriverManager.getConnection(dbPath);
-            if (connection != null) {
-                DatabaseMetaData meta = connection.getMetaData();
-                System.out.println("The driver name is " + meta.getDriverName());
-                connection.close();
-            }
-        } catch (Exception e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-            System.exit(0);
-        }
-        System.out.println("Opened database successfully");
+//        try {
+//            Class.forName("org.sqlite.JDBC");
+//        } catch (ClassNotFoundException e) {
+//            throw new RuntimeException(e);
+//        }
+//
+//        try {
+//            String dbPath = "jdbc:sqlite:" +  this.projectPath + this.databaseName;
+//            System.out.println(dbPath);
+//            Connection connection = DriverManager.getConnection(dbPath);
+//            if (connection != null) {
+//                DatabaseMetaData meta = connection.getMetaData();
+//                System.out.println("The driver name is " + meta.getDriverName());
+//                connection.close();
+//            }
+//        } catch (Exception e) {
+//            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+//            System.exit(0);
+//        }
+//        System.out.println("Opened database successfully");
     }
 
     public void createTables() {
@@ -127,6 +131,19 @@ public class Database {
 
     public void setDatabaseName(String databaseName) {
         this.databaseName = databaseName;
+    }
+
+    public List<Termin> getTerminArray() {
+        Termin termin = new Termin("Ein Tag","MT",true,"2022-12-21", "2022-12-21", "12:00","13:00");
+        List<Termin> ter = Arrays.asList(termin, termin, termin);
+
+        return ter;
+    }
+
+    public void deleteTermin(Termin termin) {
+        System.out.println("Termin is deleted");
+        System.out.println(termin.getId());
+        System.out.println(termin.getTitle());
     }
 }
 

@@ -3,14 +3,15 @@ import IOManager.Database;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Test {
     public static void main(String[] args) {
-        testDates();
-        //testDB();
+        //testTerminClass();
+        testDatenbankClass();
     }
 
-    public static void testDates() {
+    public static void testTerminClass() {
         System.out.println("TEST CASES");
 
         System.out.println("TEST 1");
@@ -54,8 +55,13 @@ public class Test {
         System.out.println(mehrtaegigerTermin.getType());
         System.out.println(mehrtaegigerTermin.isMultiDay());
     }
-    public static void testDB() {
+    public static void testDatenbankClass() {
         Database db = new Database();
+        List<Termin> arr = db.getTerminArray();
 
+        for (Termin termin : arr) {
+            System.out.println(termin.getStart());
+            db.deleteTermin(termin);
+        }
     }
 }
