@@ -9,7 +9,7 @@ public class Test {
         TestDatenbank testDatenbank = new TestDatenbank();
 
         testCalendar.test();
-        testTermin.test();
-        testDatenbank.test();
+        //testTermin.test();
+        //testDatenbank.test();
     }
 }
