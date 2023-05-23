@@ -15,11 +15,13 @@ public class Test {
         TestTermin testTermin = new TestTermin();
         TestDatenbank testDatenbank = new TestDatenbank();
         TestErinnerung testErinnerung = new TestErinnerung();
+        TestTeilnehmer testTeilnehmer = new TestTeilnehmer();
 
 
         //testCalendar.test();
         //testTermin.test();
         //testDatenbank.test();
         testErinnerung.test();
+        testTeilnehmer.test();
     }
 }

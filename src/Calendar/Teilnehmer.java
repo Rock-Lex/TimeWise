@@ -19,7 +19,7 @@ public class Teilnehmer {
      * @param name Name des Teilnehmers
      * @param email Email des Termins
      */
-    Teilnehmer(String name, String email) {
+    public Teilnehmer(String name, String email) {
         this.name = name;
         this.email = email;
     }
