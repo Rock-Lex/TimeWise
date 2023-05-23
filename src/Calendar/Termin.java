@@ -107,6 +107,10 @@ public class Termin implements Comparable<Termin>{
         this.type = type;
     }
 
+    /**
+     *
+     * @return String mit allen Daten zu einem Termin.
+     */
     @Override
     public String toString() {
         return "Termin{" +
@@ -119,6 +123,12 @@ public class Termin implements Comparable<Termin>{
                 ", type='" + type + '\'' +
                 '}';
     }
+
+    /**
+     *
+     * @param other the object to be compared.
+     * @return Integer, welcher den Zustand widerspiegelt.
+     */
     @Override
     public int compareTo(Termin other) {
         if (this.start.isBefore(other.start) && this.end.isBefore(other.start)) {
