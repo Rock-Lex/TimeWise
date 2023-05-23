@@ -21,7 +21,7 @@ public class Main {
     }
     public void main(String[] args) {
         GUI gui = new GUI();
-        Kalender kalender = new Kalender();
+        //Kalender kalender = new Kalender();
 
     }
 }
