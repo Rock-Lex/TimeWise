@@ -17,14 +17,24 @@ public class Kalender {
 
         this.termine = this.database.getTerminArray();
 
+
     }
 
+
+
     public void addTermin(Termin termin) {
-        termine.add(termin);
+        this.termine.add(termin);
     }
 
     public void removeTermin(Termin termin) {
-        termine.remove(termin);
+        this.termine.remove(termin);
     }
 
+    /**
+     *  Getters und Setters
+     */
+
+    public List<Termin> getTermine() {
+        return this.termine;
+    }
 }
