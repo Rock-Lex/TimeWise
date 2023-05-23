@@ -14,9 +14,14 @@ public class Test {
         TestCalendar testCalendar = new TestCalendar();
         TestTermin testTermin = new TestTermin();
         TestDatenbank testDatenbank = new TestDatenbank();
+        TestErinnerung testErinnerung = new TestErinnerung();
+        TestTeilnehmer testTeilnehmer = new TestTeilnehmer();
 
-        testCalendar.test();
+
+        //testCalendar.test();
         //testTermin.test();
         //testDatenbank.test();
+        testErinnerung.test();
+        testTeilnehmer.test();
     }
 }

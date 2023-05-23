@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
  */
 public class Erinnerung implements Comparable<Erinnerung> {
 
-    private int id;
+    private String id;
     private LocalDateTime time;
     private String message;
     private Boolean isActivated;
@@ -31,6 +31,7 @@ public class Erinnerung implements Comparable<Erinnerung> {
         this.time = time;
         this.message = message;
         this.isActivated = isActivated;
+        this.id = IDGenerator.generateID("ER");
     }
 
     /**
@@ -59,6 +60,10 @@ public class Erinnerung implements Comparable<Erinnerung> {
 
     public void setActivated(Boolean isActivated) {
         this.isActivated = isActivated;
+    }
+
+    public void setId(int id) {
+        this.id = IDGenerator.generateID("ER");
     }
 
     @Override
