@@ -20,8 +20,14 @@ public class Main {
         }
     }
     public void main(String[] args) {
-        GUI gui = new GUI();
-        //Kalender kalender = new Kalender();
 
+        // Get configs from JSON
+
+        // Get OS Info
+
+        // Get Screen Resolution
+
+        // Create GUI with all the parameters
+        GUI gui = new GUI();
     }
 }
