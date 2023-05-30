@@ -27,17 +27,10 @@ kann: Termin Eigenschaften (individuelle Zeitr%C3%A4ume, Wiederholungstermin), T
 
 ```mermaid
 graph TB
-    subgraph Projektphasen
-        A[Projekt: Entwicklung eines Terminplaners]
-        B[Analysephase]
-        C[Planungsphase]
-        D[Entwicklung]
-        E[Testphase]
-        F[Dokumentation]
-        G[Abschluss und Qualitätssicherung]
-    end
-
-    subgraph Analysephase
+    
+    A[Projekt: Entwicklung eines Terminplaners]
+    
+    subgraph B[Analysephase]
         direction LR
         B1[Anforderungsanalyse]
         B2[Marktanalyse]
@@ -45,7 +38,7 @@ graph TB
         B4[Risikoanalyse]
     end
 
-    subgraph Planungsphase
+    subgraph C[Planungsphase]
         direction LR
         C1[Zeitplan erstellen]
         C2[Aufgabenplan erstellen]
@@ -53,7 +46,7 @@ graph TB
         C4[GUI Planen]
     end
 
-    subgraph Entwicklung
+    subgraph D[Entwicklung]
         direction LR
         D1[Backend-Entwicklung]
         D1_1[Entwicklung der Klassen]
@@ -66,20 +59,20 @@ graph TB
         D2_3[Funktionalität zu Views hinzufügen]
     end
 
-    subgraph Testphase
+    subgraph E[Testphase]
         direction LR
         E1[Unit-Tests erstellen]
         E2[Integrationstests erstellen]
         E3[Benutzertests erstellen]
     end
 
-    subgraph Dokumentation
+    subgraph F[Dokumentation]
         direction LR
         F1[Benutzerhandbuch]
         F2[Technische Dokumentation]
     end
 
-    subgraph Abschluss
+    subgraph G[Abschluss und Qualitätssicherung]
         direction LR
         G1[Überprüfung der Projektergebnisse]
         G2[Fehlerbehebung und Optimierung]
