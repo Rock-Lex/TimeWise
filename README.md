@@ -80,7 +80,7 @@ graph TB
         G3[Projektabschlussbericht schreiben]
     end
 
-    %% Anordnung der Subgraphen von links nach rechts
+    
     style Analysephase, Planungsphase, Entwicklung, Testphase, Dokumentation, Abschluss, Projektphasen direction=LR;
 
     A --> B
