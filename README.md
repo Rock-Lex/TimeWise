@@ -31,4 +31,4 @@ A[Projekt: Entwicklung eines Terminplaners] --> B[Analysephase]
 B --> C[Anforderungsanalyse]
 B --> D[Marktanalyse]
 B --> E[Zielgruppenanalyse]
-end
+```
