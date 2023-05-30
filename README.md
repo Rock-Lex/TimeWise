@@ -26,7 +26,7 @@ kann: Termin Eigenschaften (individuelle Zeitr%C3%A4ume, Wiederholungstermin), T
 
 
 ```mermaid
-graph LR
+graph TB
     subgraph Projektphasen
         A[Projekt: Entwicklung eines Terminplaners]
         B[Analysephase]
@@ -80,6 +80,9 @@ graph LR
         G3[Projektabschlussbericht schreiben]
     end
 
+    %% Anordnung der Subgraphen von links nach rechts
+    style Analysephase, Planungsphase, Entwicklung, Testphase, Dokumentation, Abschluss, Projektphasen direction=LR;
+
     A --> B
     B --> B1
     B --> B2
@@ -111,5 +114,6 @@ graph LR
     G --> G1
     G --> G2
     G --> G3
+
 
 ```
