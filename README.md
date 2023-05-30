@@ -26,7 +26,7 @@ kann: Termin Eigenschaften (individuelle Zeitr%C3%A4ume, Wiederholungstermin), T
 
 
 ```mermaid
-graph TB
+graph LR
     subgraph Projektphasen
         A[Projekt: Entwicklung eines Terminplaners]
         B[Analysephase]
