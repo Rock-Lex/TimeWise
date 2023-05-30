@@ -25,3 +25,10 @@ kann: Termin Eigenschaften (individuelle Zeitr%C3%A4ume, Wiederholungstermin), T
 ####  24.05.2023 </br> Berlin, Germany 
 
 
+```mermaid
+graph TD
+A[Projekt: Entwicklung eines Terminplaners] --> B[Analysephase]
+B --> C[Anforderungsanalyse]
+B --> D[Marktanalyse]
+B --> E[Zielgruppenanalyse]
+end
