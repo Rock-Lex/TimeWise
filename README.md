@@ -28,7 +28,14 @@ kann: Termin Eigenschaften (individuelle Zeitr%C3%A4ume, Wiederholungstermin), T
 ```mermaid
 graph TD
 A[Projekt: Entwicklung eines Terminplaners] --> B[Analysephase]
-B --> C[Anforderungsanalyse]
-B --> D[Marktanalyse]
-B --> E[Zielgruppenanalyse]
+B --> B1[Anforderungsanalyse]
+B --> B2[Marktanalyse]
+B --> B3[Zielgruppenanalyse]
+B --> B4[Risikoanalyse]
+A --> C[Planungsphase]
+C --> C1[Zeitplan erstellen]
+C --> C2[Aufgabenplan erstellen]
+A --> D[Entwicklung]
+F --> G[Backend-Entwicklung]
+G --> H[Entwicklung der Klassen]
 ```
