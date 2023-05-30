@@ -38,6 +38,7 @@ graph TB
     end
 
     subgraph Analysephase
+        direction LR
         B1[Anforderungsanalyse]
         B2[Marktanalyse]
         B3[Zielgruppenanalyse]
@@ -81,7 +82,7 @@ graph TB
     end
 
     
-    style Analysephase, Planungsphase, Entwicklung, Testphase, Dokumentation, Abschluss, Projektphasen direction=LR;
+
 
     A --> B
     B --> B1
