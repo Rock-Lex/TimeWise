@@ -3,6 +3,8 @@ package Test;
 import Calendar.Termin;
 import IOManager.Database;
 
+import javax.xml.crypto.Data;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class TestDatenbank {
@@ -35,5 +37,11 @@ public class TestDatenbank {
         testDatenbankClass();
 
         System.out.println("Test ended");
+    }
+
+    public static void main(String[] args) {
+        Database database = new Database();
+        LocalDateTime lt = LocalDateTime.now();
+        database.addTermin("Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
     }
 }

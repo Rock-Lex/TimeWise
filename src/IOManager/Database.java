@@ -3,6 +3,8 @@ package IOManager;
 import Calendar.Termin;
 
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,7 +16,7 @@ import java.util.List;
  * Autor: Oleksandr Kamenskyi
  * Version: 1.0.0
  * Erstellt am: 14.05.2023
- * Letzte Änderung: 23.05.2023
+ * Letzte Änderung: 24.05.2023
  */
 
 // Notes
@@ -29,29 +31,29 @@ public class Database {
      * Konstruktor für die Erstellung eines Database Connections.
      */
     public Database() {
-//        try {
-//            Class.forName("org.sqlite.JDBC");
-//        } catch (ClassNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        this.projectPath = System.getProperty("user.dir");
-//        this.databaseName = "/TimeWise.db";
-//
-//        try {
-//            String dbPath = "jdbc:sqlite:" +  this.projectPath + this.databaseName;
-//            System.out.println(dbPath);
-//            Connection connection = DriverManager.getConnection(dbPath);
-//            if (connection != null) {
-//                DatabaseMetaData meta = connection.getMetaData();
-//                System.out.println("The driver name is " + meta.getDriverName());
-//                connection.close();
-//            }
-//        } catch (Exception e) {
-//            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-//            System.exit(0);
-//        }
-//        System.out.println("Opened database successfully");
+        try {
+            Class.forName("org.sqlite.JDBC");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        this.projectPath = System.getProperty("user.dir");
+        this.databaseName = "/TimeWise.db";
+
+        try {
+            String dbPath = "jdbc:sqlite:" +  this.projectPath + this.databaseName;
+            Connection connection = DriverManager.getConnection(dbPath);
+            if (connection != null) {
+                DatabaseMetaData meta = connection.getMetaData();
+                System.out.println("The driver name is " + meta.getDriverName());
+                createTables(connection);
+                connection.close();
+            }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        System.out.println("Opened database successfully");
     }
 
     /**
@@ -63,54 +65,102 @@ public class Database {
     public Database(String projectPath, String databaseName) {
         this.projectPath = projectPath;
         this.databaseName = databaseName;
-//        try {
-//            Class.forName("org.sqlite.JDBC");
-//        } catch (ClassNotFoundException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//        try {
-//            String dbPath = "jdbc:sqlite:" +  this.projectPath + this.databaseName;
-//            System.out.println(dbPath);
-//            Connection connection = DriverManager.getConnection(dbPath);
-//            if (connection != null) {
-//                DatabaseMetaData meta = connection.getMetaData();
-//                System.out.println("The driver name is " + meta.getDriverName());
-//                connection.close();
-//            }
-//        } catch (Exception e) {
-//            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-//            System.exit(0);
-//        }
-//        System.out.println("Opened database successfully");
-    }
-
-    public void createTables() {
-        Connection connection = null;
-        Statement statement = null;
-
         try {
             Class.forName("org.sqlite.JDBC");
-            connection = DriverManager.getConnection("jdbc:sqlite:" + this.projectPath + this.databaseName);
-            System.out.println("Opened database successfully");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
 
+        try {
+            String dbPath = "jdbc:sqlite:" +  this.projectPath + this.databaseName;
+            Connection connection = DriverManager.getConnection(dbPath);
+            if (connection != null) {
+                DatabaseMetaData meta = connection.getMetaData();
+                System.out.println("The driver name is " + meta.getDriverName());
+                createTables(connection);
+                connection.close();
+            }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        System.out.println("Opened database successfully");
+    }
+
+    private void createTables(Connection connection) {
+        Statement statement =  null;
+
+        try {
+            // Create Statement
             statement = connection.createStatement();
 
-            // Template
-            String sql = "CREATE TABLE COMPANY " +
-                    "(ID INT PRIMARY KEY     NOT NULL," +
-                    " NAME           TEXT    NOT NULL, " +
-                    " AGE            INT     NOT NULL, " +
-                    " ADDRESS        CHAR(50), " +
-                    " SALARY         REAL)";
-            statement.executeUpdate(sql);
+            // Create Tables
+            statement.executeUpdate(getTableTermine());
+            System.out.println("Updated");
+
+            // Close Statement
             statement.close();
-            connection.close();
         } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             System.exit(0);
         }
-        System.out.println("Table created successfully");
+        System.out.println("Table Termine successfully");
+    }
+
+    private String getTableTermine()
+    {
+        String sql = "CREATE TABLE IF NOT EXISTS Termine" +
+                "(ID INTEGER PRIMARY KEY     NOT NULL," +
+                " Titel          TEXT    NOT NULL, " +
+                " Start          TEXT," +
+                " End            TEXT," +
+                " TerminTyp      TEXT, " +
+                " Participants   TEXT)";
+        return sql;
+    }
+
+    private void executeSQL(String sql) {
+
+        try {
+            String dbPath = "jdbc:sqlite:" +  this.projectPath + this.databaseName;
+            Connection connection = DriverManager.getConnection(dbPath);
+            if (connection != null) {
+                // Create Statement
+                Statement statement = connection.createStatement();
+
+                // Create Tables
+                statement.executeUpdate(sql);
+
+                statement.close();
+                connection.commit();
+                connection.close();
+            }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+    }
+
+    /**
+     *  DB Interface
+     */
+
+    public void addTermin(String title, LocalDateTime startDate, LocalDateTime endDate, String terminTyp, String participants) {
+        String start = convertToSQLiteDateTime(startDate);
+        String end = convertToSQLiteDateTime(endDate);
+        String sql = String.format("INSERT INTO Termine (Titel, Start, End, TerminTyp, Participants) VALUES ('%s', '%s', '%s', '%s', '%s')", title, start, end,  terminTyp, participants);
+        System.out.println(sql);
+        executeSQL(sql);
+    }
+
+    public static String convertToSQLiteDateTime(LocalDateTime dateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return dateTime.format(formatter);
+    }
+
+    public static LocalDateTime convertToJavaDateTime(String sqliteDateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return LocalDateTime.parse(sqliteDateTime, formatter);
     }
 
     /**
