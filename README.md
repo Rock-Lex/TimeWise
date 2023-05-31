@@ -23,7 +23,56 @@ kann: Termin Eigenschaften (individuelle Zeitr%C3%A4ume, Wiederholungstermin), T
     - Aufgabenbereich: Programmierer, Dokumentation
 
 ####  24.05.2023 </br> Berlin, Germany 
+```mermaid
+---
+title: Terminkalender
+---
+classDiagram
+	class Kalender {
+        + ArrayList<Termin> termine
+        + ArrayList<Termin> getTermineAmTag(LocalDate datum)
+        + boolean istTerminUeberschneidung(Termin termin)
+        + void addTermin(Termin termin)
+        + void removeTermin(Termin termin)
+				+ FindeFreienTermin (Zeitraum)
+    }
+	class Termin{
+        +int id
+        +String titel
+        +LocalDateTime start
+        +LocalDateTime ende
+        +TerminTyp typ
+        +List<Teilnehmer> teilnehmer
+        +List<Erinnerung> erinnerungen
+        +void addErinnerung(Erinnerung erinnerung)
+        +void removeErinnerung(Erinnerung erinnerung)
+				+void importICS(Pfad)
+				+void exportICS(Pfad)
+				+void wiederholung(Typ, intervall, enddatum)
+    }
 
+	class Erinnerung{
+        +int id
+        +LocalDateTime zeitpunkt
+        +String nachricht
+        +boolean aktiviert
+        +void aktivieren()
+        +void deaktivieren()
+    }
+	class Teilnehmer{
+        +String name
+        +String email
+    }
+	class Datenbank{
+        steht noch nicht fest
+    }
+	
+
+Kalender --> Termin
+Kalender <--> Datenbank
+Termin --> Erinnerung
+Termin --> Teilnehmer
+```
 
 ```mermaid
 
