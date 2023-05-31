@@ -26,12 +26,12 @@ kann: Termin Eigenschaften (individuelle Zeitr%C3%A4ume, Wiederholungstermin), T
 
 
 ```mermaid
+
 graph TB
     
     A[Projekt: Entwicklung eines Terminplaners]
     
     subgraph B[Analysephase]
-        direction LR
         B1[Anforderungsanalyse]
         B2[Marktanalyse]
         B3[Zielgruppenanalyse]
@@ -39,7 +39,6 @@ graph TB
     end
 
     subgraph C[Planungsphase]
-        direction LR
         C1[Zeitplan erstellen]
         C2[Aufgabenplan erstellen]
         C3[Programmaufbau planen]
@@ -49,15 +48,23 @@ graph TB
     subgraph D[Entwicklung]
         direction LR
         D1[Backend-Entwicklung]
+        D2[Frontend-Entwicklung]
+    end
+
+    subgraph D1[Backend]
         D1_1[Entwicklung der Klassen]
         D1_2[Klassen miteinander Verbinden]
         D1_3[Datenbank implementieren und integrieren]
         D1_4[Exceptions Implementieren]
-        D2[Frontend-Entwicklung]
+    end
+
+    subgraph D2[Frontend]
         D2_1[Views Designen]
         D2_2[Views Implementieren]
         D2_3[Funktionalität zu Views hinzufügen]
     end
+
+
 
     subgraph E[Testphase]
         direction LR
@@ -113,6 +120,7 @@ graph TB
     G --> G1
     G --> G2
     G --> G3
+
 
 
 ```
