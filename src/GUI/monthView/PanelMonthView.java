@@ -1,8 +1,11 @@
 package GUI.monthView;
 
 import javax.swing.*;
+import java.awt.*;
+import java.util.Calendar;
 
-public class PanelMonthView {
+
+public class PanelMonthView extends JPanel {
     private JButton button1;
     private JButton button2;
     private JButton button3;
@@ -45,4 +48,20 @@ public class PanelMonthView {
     private JButton button40;
     private JButton button41;
     private JButton button42;
+
+    private JButton[] dayButtons;
+
+    public PanelMonthView() {
+        setLayout(new GridLayout(6, 7)); // Festlegen des Layouts auf 6 Zeilen und 7 Spalten (für die 42 Tage im Kalendermonat)
+
+        dayButtons = new JButton[42]; // Array für die Buttons der Tage erstellen
+
+        // Schleife zum Erstellen der Buttons für die Tage
+        for (int i = 0; i < 42; i++) {
+            dayButtons[i] = new JButton();
+            dayButtons[i].setBorderPainted(false); // Entfernen des Button-Rahmens
+            dayButtons[i].setContentAreaFilled(false); // Entfernen der Hintergrundfüllung
+            add(dayButtons[i]); // Button zum Panel hinzufügen
+        }
+    }
 }
