@@ -2,6 +2,7 @@
 
 ## Description
 https://docs.google.com/document/d/1uNtRR81TT59xqEhV6PYmT0JE1Okxd2mY76Au3XIcCRc/edit#
+https://docs.google.com/presentation/d/1o14nj9JoCEzDtRwy_EUMDBEOhWsHK5kt2VxeRyTwGns/edit#slide=id.p
 #### Zielbestimmung: 
 Das Ziel ist es, ein Programm zu entwickeln, welches einen digitalen Kalender abbildet. Dieser Kalender kann auf Monat-, Wochen- und Tagesebene betrachtet werden. Es lassen sich Termin minutengenau eintragen und ändern. Zu den Terminen können Datum, Startzeit, Endzeit, Titel, Beschreibung, Ort und Personen eingetragen werden. Des Weiteren sind Feiertage vorgemerkt. Im Kalender ist der aktuelle Tag markiert und es lässt sich zum aktuellen Tag navigieren. Außerdem können Serientermine eingestellt werden.
 Wir entscheiden uns für eine agile Durchführung des Projektes. Um sicherzustellen, dass ausreichend Zeit für die Durchführung uns zur Verfügung steht, haben wir uns für eine vorzeitige Deadline für die Projektarbeit bis zum Projektende eingeplant. Somit haben wir einen zeitlichen Puffer, der uns flexibles Handeln ermöglicht.
