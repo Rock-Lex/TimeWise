@@ -25,35 +25,15 @@ public class PanelMain extends JPanel{
         tabbedPane = new JTabbedPane();
         tabbedPane.addTab("Monatsansicht", monthView);
 
+        add(panelChange, BorderLayout.NORTH);
+        add(tabbedPane, BorderLayout.CENTER);
 
-        mainFrame.add(panelChange, BorderLayout.CENTER);
-        mainFrame.add(tabbedPane, BorderLayout.SOUTH);
-        mainFrame.setSize(800, 800);
+        mainFrame.add(this, BorderLayout.CENTER);
+        mainFrame.setSize(800, 600);
         mainFrame.setVisible(true);
 
     }
     public static void main(String[] args){
         PanelMain panelMain = new PanelMain();
-
-//        JFrame panelMain = new JFrame();
-//        panelMain.setLayout(new OverlayLayout(panelMain.getContentPane()));
-//        MonthView monthView = new MonthView();
-//        JPanel panelChange = new PanelChange();
-//
-//
-//
-//        JTabbedPane tabbedPane = new JTabbedPane();
-//
-//        tabbedPane.addTab("Monatsansicht", monthView);
-//
-//        JPanel contentPane = new JPanel();
-//        contentPane.setLayout(new BoxLayout(contentPane, BoxLayout.Y_AXIS));
-//
-//        panelMain.getContentPane().add(tabbedPane);
-//        contentPane.add(panelChange);
-//        panelMain.add(tabbedPane);
-//        panelMain.setContentPane(contentPane);
-//        panelMain.setSize(800, 600);
-//        panelMain.setVisible(true);
     }
 }
