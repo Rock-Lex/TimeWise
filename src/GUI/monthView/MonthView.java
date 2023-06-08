@@ -14,6 +14,14 @@ import java.time.DayOfWeek;
 import java.util.Locale;
 import javax.swing.border.LineBorder;
 
+/**
+ * Diese Klasse repräsentiert die Monatsansicht.
+ *
+ * Autor: Philipp Voß
+ * Version: 1.0
+ * Erstellt am: 03.06.2023
+ * Letzte Änderung: 08.06.2023
+ */
 public class MonthView extends JPanel {
     private JPanel calendarPanel;
     private JButton[] dayButtons;
@@ -30,12 +38,17 @@ public class MonthView extends JPanel {
         add(monthYearPanel, BorderLayout.NORTH);
 
         calendarPanel = new JPanel();
-        calendarPanel.setLayout(new GridLayout(0, 7)); // 7 columns for weekdays
+        calendarPanel.setLayout(new GridLayout(0, 7));
         add(calendarPanel, BorderLayout.CENTER);
-        dayButtons = new JButton[31]; // Assuming maximum of 31 days in a month
+        dayButtons = new JButton[31];
         renderMonth(YearMonth.now());
     }
 
+    /**
+     * Rendert die Monatsansicht für den angegebenen YearMonth.
+     *
+     * @param yearMonth der YearMonth für den die Monatsansicht gerendert werden soll
+     */
     public void renderMonth(YearMonth yearMonth) {
         int year = yearMonth.getYear();
         int month = yearMonth.getMonthValue();
@@ -112,6 +125,12 @@ public class MonthView extends JPanel {
         calendarPanel.setPreferredSize(new Dimension(calendarPanel.getWidth(), rowHeight * 7));
     }
 
+    /**
+     * Erstellt einen JButton für einen bestimmten Tag im Kalender.
+     *
+     * @param dayText der Text, der auf dem Button angezeigt werden soll
+     * @return der erstellte JButton
+     */
     private JButton createDayButton(String dayText) {
         JButton dayButton = new JButton(dayText);
         dayButton.setFocusPainted(false);
@@ -125,4 +144,3 @@ public class MonthView extends JPanel {
         return dayButton;
     }
 }
-

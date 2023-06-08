@@ -2,7 +2,15 @@ package GUI;
 
 import javax.swing.*;
 import java.awt.*;
-
+/**
+ * Diese Klasse repräsentiert das Panel für die Änderung von Ansichten und
+ * weiter- bzw. zurückblättern im Kalender.
+ *
+ * Autor: Philipp Voß
+ * Version: 1.1
+ * Erstellt am: 03.06.2023
+ * Letzte Änderung: 08.06.2023
+ */
 public class PanelChange extends JPanel {
     private JPanel panelChange;
     private JButton prevButton;
