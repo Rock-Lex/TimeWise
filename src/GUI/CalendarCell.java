@@ -1,4 +1,4 @@
-package GUI.monthView;
+package GUI;
 
 import java.awt.Color;
 import java.time.LocalDate;

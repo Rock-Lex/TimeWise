@@ -1,5 +1,6 @@
 package GUI.monthView;
 
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -31,7 +32,6 @@ public class MonthView extends JPanel {
         calendarPanel = new JPanel();
         calendarPanel.setLayout(new GridLayout(0, 7)); // 7 columns for weekdays
         add(calendarPanel, BorderLayout.CENTER);
-
         dayButtons = new JButton[31]; // Assuming maximum of 31 days in a month
         renderMonth(YearMonth.now());
     }
