@@ -6,11 +6,24 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+/**
+ * Eine benutzerdefinierte Swing-Komponente zur Darstellung von Kalenderzellen.
+ *
+ * Autor: Philipp Voß
+ * Version: 1.1
+ * Erstellt am: 08.06.2023
+ * Letzte Änderung: 15.06.2023
+ */
 public class CalendarCell extends JPanel {
     private JLabel label;
     private Color defaultBackground;
     private JTextArea textArea;
 
+    /**
+     * Erstellt eine neue Kalenderzelle mit dem angegebenen Text.
+     *
+     * @param text Der Text, der in der Zelle angezeigt werden soll.
+     */
     public CalendarCell(String text) {
         setLayout(new BorderLayout());
         label = new JLabel(text);
@@ -50,6 +63,11 @@ public class CalendarCell extends JPanel {
         add(textArea, BorderLayout.CENTER);
     }
 
+    /**
+     * Legt fest, ob die Zelle das heutige Datum darstellt.
+     *
+     * @param isToday true, wenn die Zelle das heutige Datum darstellt; andernfalls false.
+     */
     public void setToday(boolean isToday) {
         if (isToday) {
             label.setBackground(Color.YELLOW);
@@ -58,10 +76,20 @@ public class CalendarCell extends JPanel {
         }
     }
 
+    /**
+     * Fügt einen Termin zur Zelle hinzu.
+     *
+     * @param appointment Der Termin, der hinzugefügt werden soll.
+     */
     public void addAppointment(String appointment) {
         textArea.append(appointment + "\n");
     }
 
+    /**
+     * Ein Beispielprogramm zum Testen der Kalenderzelle.
+     *
+     * @param args Die Befehlszeilenargumente (nicht verwendet).
+     */
     public static void main(String[] args) {
         JFrame frame = new JFrame("Calendar Cell Example");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
