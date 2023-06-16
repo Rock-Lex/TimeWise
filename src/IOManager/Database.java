@@ -96,7 +96,6 @@ public class Database {
 
             // Create Tables
             statement.executeUpdate(getTableTermine());
-            System.out.println("Updated");
 
             // Close Statement
             statement.close();
@@ -109,7 +108,7 @@ public class Database {
 
     private String getTableTermine()
     {
-        String sql = "CREATE TABLE IF NOT EXISTS Termine" +
+        String sql = "CREATE TABLE IF NOT EXISTS termine" +
                 "(ID INTEGER PRIMARY KEY     NOT NULL," +
                 " Titel          TEXT    NOT NULL, " +
                 " Start          TEXT," +
@@ -119,7 +118,7 @@ public class Database {
         return sql;
     }
 
-    private void executeSQL(String sql) {
+    private void executeUpdateSQL(String sql) {
 
         try {
             String dbPath = "jdbc:sqlite:" +  this.projectPath + this.databaseName;
@@ -132,13 +131,73 @@ public class Database {
                 statement.executeUpdate(sql);
 
                 statement.close();
-                connection.commit();
+                // connection.commit();  // Delete when DB in auto-commit mode
                 connection.close();
             }
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
         }
+    }
+
+    private ResultSet executeQuerySQL(String sql) {
+        ResultSet resultSet = null;
+        try {
+            String dbPath = "jdbc:sqlite:" +  this.projectPath + this.databaseName;
+            Connection connection = DriverManager.getConnection(dbPath);
+            if (connection != null) {
+                // Create Statement
+                Statement statement = connection.createStatement();
+                // Create Tables
+                resultSet = statement.executeQuery(sql);
+//                while (resultSet.next())
+//                {
+//                    System.out.println(resultSet.getString("Titel"));
+//                }
+                statement.close();
+                // connection.commit();  // Dselete when DB in auto-commit mode
+                connection.close();
+                return resultSet;
+            }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return null;
+    }
+
+    private List<Termin> executeQueryTermine(String sql) {
+        ResultSet resultSet = null;
+        List<Termin> termins = new ArrayList<>();
+        try {
+            String dbPath = "jdbc:sqlite:" +  this.projectPath + this.databaseName;
+            Connection connection = DriverManager.getConnection(dbPath);
+            if (connection != null) {
+                // Create Statement
+                Statement statement = connection.createStatement();
+                // Create Tables
+                resultSet = statement.executeQuery(sql);
+                while (resultSet.next())
+                {
+                    String titel = resultSet.getString("Titel");
+                    String start = resultSet.getString("Start");
+                    String end = resultSet.getString("End");
+                    String terminTyp = resultSet.getString("TerminTyp");
+                    String participants = resultSet.getString("Participants");
+
+                    Termin termin = new Termin(titel, terminTyp, false, start, end, start, end);
+                    termins.add(termin);
+                }
+                statement.close();
+                // connection.commit();  // Dselete when DB in auto-commit mode
+                connection.close();
+                return termins;
+            }
+        } catch (Exception e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            System.exit(0);
+        }
+        return null;
     }
 
     /**
@@ -149,8 +208,21 @@ public class Database {
         String start = convertToSQLiteDateTime(startDate);
         String end = convertToSQLiteDateTime(endDate);
         String sql = String.format("INSERT INTO Termine (Titel, Start, End, TerminTyp, Participants) VALUES ('%s', '%s', '%s', '%s', '%s')", title, start, end,  terminTyp, participants);
+        executeUpdateSQL(sql);
+    }
+
+    public void deleteTermin(Integer id) {
+
+        String sql = String.format("DELETE FROM termine WHERE id=%d;", id);
         System.out.println(sql);
-        executeSQL(sql);
+        executeUpdateSQL(sql);
+    }
+
+    public List<Termin> getTermine() {
+        String sql = "SELECT * FROM termine;";
+        List<Termin> termins = executeQueryTermine(sql);
+
+        return termins;
     }
 
     public static String convertToSQLiteDateTime(LocalDateTime dateTime) {

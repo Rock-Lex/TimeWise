@@ -40,8 +40,8 @@ public class Termin implements Comparable<Termin>{
         } else {
             this.title = title;
             this.type = type;
-            this.start = dateTimeFormatter(startDate, startTime);
-            this.end = dateTimeFormatter(startDate, endTime);
+//            this.start = dateTimeFormatter(startDate, startTime);
+//            this.end = dateTimeFormatter(startDate, endTime);
         }
 
         this.id = IDGenerator.generateID(type);
