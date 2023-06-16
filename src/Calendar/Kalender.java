@@ -26,7 +26,7 @@ public class Kalender implements Comparable<Kalender>{
 
         this.database = new Database();
 
-        this.termine = this.database.getTerminArray();
+//        this.termine = this.database.getTerminArray();
 
     }
 

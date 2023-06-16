@@ -1,6 +1,7 @@
 package IOManager;
 
 import Calendar.Termin;
+import IDgen.IDGenerator;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -109,7 +110,7 @@ public class Database {
     private String getTableTermine()
     {
         String sql = "CREATE TABLE IF NOT EXISTS termine" +
-                "(ID INTEGER PRIMARY KEY     NOT NULL," +
+                "(ID TEXT PRIMARY KEY     NOT NULL," +
                 " Titel          TEXT    NOT NULL, " +
                 " Start          TEXT," +
                 " End            TEXT," +
@@ -204,16 +205,22 @@ public class Database {
      *  DB Interface
      */
 
-    public void addTermin(String title, LocalDateTime startDate, LocalDateTime endDate, String terminTyp, String participants) {
+    public void addTermin(String id, String title, LocalDateTime startDate, LocalDateTime endDate, String terminTyp, String participants) {
         String start = convertToSQLiteDateTime(startDate);
         String end = convertToSQLiteDateTime(endDate);
-        String sql = String.format("INSERT INTO Termine (Titel, Start, End, TerminTyp, Participants) VALUES ('%s', '%s', '%s', '%s', '%s')", title, start, end,  terminTyp, participants);
+
+        if (id == "")
+        {
+            id = IDGenerator.generateID(50);
+        }
+
+        String sql = String.format("INSERT INTO Termine (ID, Titel, Start, End, TerminTyp, Participants) VALUES ('%s','%s', '%s', '%s', '%s', '%s')", id, title, start, end,  terminTyp, participants);
         executeUpdateSQL(sql);
     }
 
-    public void deleteTermin(Integer id) {
+    public void deleteTermin(String id) {
 
-        String sql = String.format("DELETE FROM termine WHERE id=%d;", id);
+        String sql = String.format("DELETE FROM termine WHERE id='%s';", id);
         System.out.println(sql);
         executeUpdateSQL(sql);
     }
@@ -253,19 +260,6 @@ public class Database {
 
     public void setDatabaseName(String databaseName) {
         this.databaseName = databaseName;
-    }
-
-    public List<Termin> getTerminArray() {
-        Termin termin = new Termin("Ein Tag","MT",true,"2022-12-21", "2022-12-21", "12:00","13:00");
-        List<Termin> ter = Arrays.asList(termin, termin, termin);
-
-        return ter;
-    }
-
-    public void deleteTermin(Termin termin) {
-        System.out.println("Termin is deleted");
-        System.out.println(termin.getId());
-        System.out.println(termin.getTitle());
     }
 
     public int compareTo(Database other) {

@@ -21,20 +21,10 @@ public class TestDatenbank {
     TestDatenbank() {
 
     }
-    public static void testDatenbankClass() {
-        Database db = new Database();
-        List<Termin> arr = db.getTerminArray();
-
-        for (Termin termin : arr) {
-            System.out.println(termin.getStart());
-            db.deleteTermin(termin);
-        }
-    }
 
     public void test() {
         System.out.println("Test started");
 
-        testDatenbankClass();
 
         System.out.println("Test ended");
     }
@@ -42,11 +32,11 @@ public class TestDatenbank {
     public static void main(String[] args) {
         Database database = new Database();
         LocalDateTime lt = LocalDateTime.now();
+        database.addTermin("fuitw6oZUv4YpsQhAl6WABNMxdevTmF7tqRqi1vCYgfbra0LhP", "Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
 //        database.addTermin("Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
 //        database.addTermin("Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
 //        database.addTermin("Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
-//        database.addTermin("Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
-        database.deleteTermin(1);
+//        database.deleteTermin("fuitw6oZUv4YpsQhAl6WABNMxdevTmF7tqRqi1vCYgfbra0LhP");
 //        List<Termin> termine = database.getTermine();
 //
 //        if (termine != null) {
