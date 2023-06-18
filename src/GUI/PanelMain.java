@@ -1,22 +1,23 @@
 package GUI;
 
+import GUI.PanelChange;
+import GUI.monthView.MonthView;
+
 import javax.swing.*;
-
-import GUI.monthView.*;
-
 import java.awt.*;
+import javax.swing.JPanel;
 /**
  * Diese Klasse repräsentiert das Hauptpanel der Anwendung.
  *
  * Autor: Philipp Voß
- * Version: 1.1
+ * Version: 1.2
  * Erstellt am: 02.06.2023
- * Letzte Änderung: 08.06.2023
+ * Letzte Änderung: 18.06.2023
  */
 public class PanelMain extends JPanel{
     private JPanel panelMain;
     private JTabbedPane tabbedPane;
-    private JPanel panelChange;
+    private PanelChange panelChange;
     private JFrame mainFrame;
 
     public PanelMain(){
@@ -24,7 +25,7 @@ public class PanelMain extends JPanel{
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setOpaque(false);
         setLayout(new BorderLayout());
-        MonthView monthView = new MonthView();
+        MonthView monthView = new MonthView(2023, 6);
         panelChange = new PanelChange();
 
         tabbedPane = new JTabbedPane();
@@ -33,7 +34,7 @@ public class PanelMain extends JPanel{
         add(panelChange, BorderLayout.NORTH);
         add(tabbedPane, BorderLayout.CENTER);
 
-        mainFrame.add(this, BorderLayout.CENTER);
+        mainFrame.getContentPane().add(this);
         mainFrame.setSize(800, 600);
         mainFrame.setVisible(true);
 

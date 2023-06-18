@@ -1,146 +1,101 @@
 package GUI.monthView;
 
 
+import GUI.CalendarCell;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.time.YearMonth;
-import java.time.LocalDate;
-import java.time.format.TextStyle;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.TextStyle;
 import java.util.Locale;
-import javax.swing.border.LineBorder;
 
 /**
- * Diese Klasse repräsentiert die Monatsansicht.
+ * Eine benutzerdefinierte Swing-Komponente zur Darstellung einer Monatsansicht im Kalender.
  *
  * Autor: Philipp Voß
- * Version: 1.0
- * Erstellt am: 03.06.2023
- * Letzte Änderung: 08.06.2023
+ * Version: 1.3
+ * Erstellt am: 18.06.2023
  */
 public class MonthView extends JPanel {
-    private JPanel calendarPanel;
-    private JButton[] dayButtons;
+    private YearMonth yearMonth;
+    private CalendarCell[] calendarCells;
+    private JLabel[] daysLabels;
 
-    public MonthView() {
-        setLayout(new BorderLayout());
+    /**
+     * Erstellt eine neue Monatsansicht mit dem angegebenen Jahr und Monat.
+     *
+     * @param year Der aktuelle Jahr als int.
+     * @param month Der aktuelle Monat als int.
+     */
+    public MonthView(int year, int month) {
+        yearMonth = YearMonth.of(year, month);
+        int numberOfDays = yearMonth.lengthOfMonth();
+        calendarCells = new CalendarCell[numberOfDays];
+        daysLabels = new JLabel[7];
 
-        JPanel monthYearPanel = new JPanel();
-        monthYearPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        setLayout(new GridLayout(0, 7));
 
-        JLabel monthYearLabel = new JLabel("", SwingConstants.CENTER);
-        monthYearPanel.add(monthYearLabel);
+        // Add days of the week
+        for (int i = 0; i < 7; i++) {
+            DayOfWeek dayOfWeek = DayOfWeek.of((i) % 7 + 1);  // Start with Monday
+            String dayName = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.GERMAN);
+            JLabel dayLabel = new JLabel(dayName, SwingConstants.CENTER);
+            daysLabels[i] = dayLabel;
+            add(dayLabel);
+        }
 
-        add(monthYearPanel, BorderLayout.NORTH);
+        int offset = (LocalDate.of(year, month, 1).getDayOfWeek().getValue() + 6) % 7;  // Day of the week of the first day of the month
+        for (int i = 0; i < offset; i++) {  // Add empty cells for days before the start of the month
+            add(new JLabel());
+        }
 
-        calendarPanel = new JPanel();
-        calendarPanel.setLayout(new GridLayout(0, 7));
-        add(calendarPanel, BorderLayout.CENTER);
-        dayButtons = new JButton[31];
-        renderMonth(YearMonth.now());
+        for (int i = 1; i <= numberOfDays; i++) {
+            CalendarCell cell = new CalendarCell(Integer.toString(i));
+            calendarCells[i - 1] = cell;
+            add(cell);
+        }
     }
 
     /**
-     * Rendert die Monatsansicht für den angegebenen YearMonth.
+     * Setzt den aktuellen Tag im Kalender.
      *
-     * @param yearMonth der YearMonth für den die Monatsansicht gerendert werden soll
+     * @param day Der aktuelle Tag als int.
      */
-    public void renderMonth(YearMonth yearMonth) {
-        int year = yearMonth.getYear();
-        int month = yearMonth.getMonthValue();
-        YearMonth currentMonth = YearMonth.of(year, month);
-        int numDays = currentMonth.lengthOfMonth();
-        int firstDayOfWeek = currentMonth.atDay(1).getDayOfWeek().getValue();
-
-        JLabel monthYearLabel = (JLabel) ((JPanel) getComponent(0)).getComponent(0);
-        monthYearLabel.setText(currentMonth.getMonth().getDisplayName(TextStyle.FULL_STANDALONE, Locale.GERMAN) + " " + year);
-
-        calendarPanel.removeAll();
-        calendarPanel.revalidate();
-        calendarPanel.repaint();
-
-        TextStyle textStyle = TextStyle.SHORT_STANDALONE;
-        Locale locale = Locale.GERMAN;
-        for (DayOfWeek weekday : DayOfWeek.values()) {
-            String weekdayName = weekday.getDisplayName(textStyle, locale);
-            JLabel weekdayLabel = new JLabel(weekdayName, SwingConstants.LEFT); // Set left alignment
-            calendarPanel.add(weekdayLabel);
+    public void setToday(int day) {
+        for (CalendarCell cell : calendarCells) {
+            cell.setToday(false);
         }
-
-        LocalDate currentDate = LocalDate.now();
-        int currentYear = currentDate.getYear();
-        int currentMonthValue = currentDate.getMonthValue();
-        int currentDayOfMonth = currentDate.getDayOfMonth();
-
-        for (int i = 0; i < firstDayOfWeek - 1; i++) {
-            JPanel emptyPanel = new JPanel();
-            calendarPanel.add(emptyPanel);
-        }
-
-        for (int i = 0; i < numDays; i++) {
-            int day = i + 1;
-            JButton dayButton = createDayButton(String.valueOf(day));
-
-            if (year == currentYear && month == currentMonthValue && day == currentDayOfMonth) {
-                dayButton.setBackground(Color.CYAN); // Set background color to light blue
-                dayButton.setForeground(Color.RED); // Set text color to red
-            }
-
-            dayButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    // Implement your action here
-                    JButton clickedButton = (JButton) e.getSource();
-                    int clickedDay = Integer.parseInt(clickedButton.getText());
-                    System.out.println("Button " + clickedDay + " clicked!");
-                }
-            });
-
-            dayButton.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    dayButton.setBackground(Color.YELLOW); // Set background color to yellow when mouse enters
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    if (year == currentYear && month == currentMonthValue && day == currentDayOfMonth) {
-                        dayButton.setBackground(Color.CYAN); // Set background color to light blue for the current day
-                    } else {
-                        dayButton.setBackground(calendarPanel.getBackground()); // Reset background color for other days
-                    }
-                }
-            });
-
-
-            dayButtons[i] = dayButton;
-            calendarPanel.add(dayButton);
-        }
-
-        // Set the preferred height of each row in the calendar panel
-        int rowHeight = calendarPanel.getFontMetrics(calendarPanel.getFont()).getHeight();
-        calendarPanel.setPreferredSize(new Dimension(calendarPanel.getWidth(), rowHeight * 7));
+        calendarCells[day - 1].setToday(true);
     }
 
     /**
-     * Erstellt einen JButton für einen bestimmten Tag im Kalender.
+     * Fügt einen Termin zu einem bestimmten Tag im Kalender hinzu.
      *
-     * @param dayText der Text, der auf dem Button angezeigt werden soll
-     * @return der erstellte JButton
+     * @param day Der Tag als int.
+     * @param appointment Der Termin als String.
      */
-    private JButton createDayButton(String dayText) {
-        JButton dayButton = new JButton(dayText);
-        dayButton.setFocusPainted(false);
-        dayButton.setContentAreaFilled(false);
-        dayButton.setOpaque(true);
-        dayButton.setBackground(calendarPanel.getBackground());
-        dayButton.setHorizontalAlignment(SwingConstants.LEFT);
-        dayButton.setVerticalAlignment(SwingConstants.TOP);
-        dayButton.setBorder(new LineBorder(Color.BLACK)); // Set the border color and style
+    public void addAppointment(int day, String appointment) {
+        calendarCells[day - 1].addAppointment(appointment);
+    }
 
-        return dayButton;
+    /**
+     * Beispielanwendung zum Testen der Klasse.
+     *
+     * @param args Kommandozeilenargumente (werden ignoriert).
+     */
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Month View Example");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        MonthView monthView = new MonthView(2023, 6);
+        monthView.addAppointment(1, "10:00 - 11:30 Terminname 1");
+        monthView.addAppointment(1, "13:00 - 14:30 Terminname 2");
+        monthView.setToday(18);
+
+        frame.getContentPane().add(monthView);
+        frame.pack();
+        frame.setVisible(true);
     }
 }

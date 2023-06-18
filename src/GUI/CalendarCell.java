@@ -20,9 +20,9 @@ public class CalendarCell extends JPanel {
     private JTextArea textArea;
 
     /**
-     * Erstellt eine neue Kalenderzelle mit dem angegebenen Text.
+     * Erstellt eine neue Kalenderzelle mit dem angegebenen Tag.
      *
-     * @param text Der Text, der in der Zelle angezeigt werden soll.
+     * @param text Der Tag des Monats als String.
      */
     public CalendarCell(String text) {
         setLayout(new BorderLayout());
@@ -64,9 +64,11 @@ public class CalendarCell extends JPanel {
     }
 
     /**
-     * Legt fest, ob die Zelle das heutige Datum darstellt.
+     * Setzt die Hintergrundfarbe des Labels auf gelb,
+     * wenn der Tag der aktuelle Tag ist.
      *
-     * @param isToday true, wenn die Zelle das heutige Datum darstellt; andernfalls false.
+     * @param isToday true, wenn der Tag der aktuelle Tag ist,
+     *                false sonst.
      */
     public void setToday(boolean isToday) {
         if (isToday) {
@@ -77,18 +79,18 @@ public class CalendarCell extends JPanel {
     }
 
     /**
-     * Fügt einen Termin zur Zelle hinzu.
+     * Fügt einen Termin zum Textfeld hinzu.
      *
-     * @param appointment Der Termin, der hinzugefügt werden soll.
+     * @param appointment Der Termin als String.
      */
     public void addAppointment(String appointment) {
         textArea.append(appointment + "\n");
     }
 
     /**
-     * Ein Beispielprogramm zum Testen der Kalenderzelle.
+     * Beispielanwendung zum Testen der Klasse.
      *
-     * @param args Die Befehlszeilenargumente (nicht verwendet).
+     * @param args Kommandozeilenargumente (werden ignoriert).
      */
     public static void main(String[] args) {
         JFrame frame = new JFrame("Calendar Cell Example");

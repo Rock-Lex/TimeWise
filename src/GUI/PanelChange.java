@@ -13,16 +13,16 @@ import java.awt.*;
  */
 public class PanelChange extends JPanel {
     private JPanel panelChange;
-    private JButton prevButton;
-    private JButton nextButton;
-    private JButton monatButton;
-    private JButton wocheButton;
-    private JButton tagButton;
-    private JButton aktuellerTagButton;
-    private JButton springeNachButton;
     private JPanel buttonPanel;
+    private JButton wocheButton;
+    private JButton monatButton;
+    private JButton tagButton;
     private JPanel monthChangePanel;
     private JPanel jumpPanel;
+    private JButton springeNachButton;
+    private JButton aktuellerTagButton;
+    private JButton nextButton;
+    private JButton prevButton;
 
     public PanelChange(){
         setOpaque(false);
