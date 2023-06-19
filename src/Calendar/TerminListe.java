@@ -3,9 +3,7 @@ package Calendar;
 import IOManager.Database;
 
 import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Calendar;
 
 
 /**
@@ -17,12 +15,12 @@ import java.util.Calendar;
  *  Version: 1.0.1
  *
  */
-public class Kalender implements Comparable<Kalender>{
+public class TerminListe implements Comparable<TerminListe>{
 
     private Database database;
     private List<Termin> termine;
 
-    public Kalender(Database database, List<Termin> termine) {
+    public TerminListe(Database database, List<Termin> termine) {
 
         this.database = new Database();
 
@@ -99,7 +97,7 @@ public class Kalender implements Comparable<Kalender>{
      * @return
      */
     @Override
-    public int compareTo(Kalender other) {
-        return this.database.compareTo(other.database);
+    public int compareTo(TerminListe other) {
+        return 1;
     }
 }

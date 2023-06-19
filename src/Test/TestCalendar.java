@@ -1,6 +1,6 @@
 package Test;
 
-import Calendar.Kalender;
+import Calendar.TerminListe;
 import Calendar.Termin;
 import IOManager.Database;
 
@@ -29,7 +29,7 @@ public class TestCalendar {
         List<Termin> termine = new ArrayList<>();
 
         Database database = new Database("bla-keks", "Haha");
-        Kalender kalender = new Kalender(database, termine);
+        TerminListe kalender = new TerminListe(database, termine);
         System.out.println(kalender.getTermine().size());
 
         Termin termin1 = new Termin("Ein Tag","MT",true,"2022-12-21", "2022-12-21", "12:00","13:00");

@@ -32,25 +32,25 @@ public class TestDatenbank {
     public static void main(String[] args) {
         Database database = new Database();
         LocalDateTime lt = LocalDateTime.now();
-        database.addTermin("fuitw6oZUv4YpsQhAl6WABNMxdevTmF7tqRqi1vCYgfbra0LhP", "Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
+        database.addTermin("", "Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
 //        database.addTermin("Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
 //        database.addTermin("Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
 //        database.addTermin("Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
 //        database.deleteTermin("fuitw6oZUv4YpsQhAl6WABNMxdevTmF7tqRqi1vCYgfbra0LhP");
-//        List<Termin> termine = database.getTermine();
-//
-//        if (termine != null) {
-//            System.out.println("Termine size");
-//            System.out.println(termine.size());
-//
-//            for (Termin termin : termine)
-//            {
-//                System.out.println(termin.getTitle());
-//                System.out.println(termin.getType());
-//            }
-//        }
-//        else {
-//            System.out.println("List ist NULL");
-//        }
+        List<Termin> termine = database.getTermine();
+
+        if (termine != null) {
+            System.out.println("Termine size");
+            System.out.println(termine.size());
+
+            for (Termin termin : termine)
+            {
+                System.out.println(termin.getTitle());
+                System.out.println(termin.getType());
+            }
+        }
+        else {
+            System.out.println("List ist NULL");
+        }
     }
 }

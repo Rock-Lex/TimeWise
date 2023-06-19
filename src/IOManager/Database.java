@@ -261,10 +261,6 @@ public class Database {
     public void setDatabaseName(String databaseName) {
         this.databaseName = databaseName;
     }
-
-    public int compareTo(Database other) {
-        return this.databaseName.compareTo(other.databaseName);
-    }
 }
 
 
