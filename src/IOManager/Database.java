@@ -97,6 +97,55 @@ public class Database {
         System.out.println("Opened database successfully");
     }
 
+    /**
+     *  DB Interface
+     */
+
+    public void addTermin(String id, String title, LocalDateTime startDate, LocalDateTime endDate, String terminTyp, String participants) {
+        String start = convertToSQLiteDateTime(startDate);
+        String end = convertToSQLiteDateTime(endDate);
+
+        if (id == "") {
+            id = IDGenerator.generateID(50);
+        }
+
+        String sql = String.format("INSERT INTO Termine (ID, Titel, Start, End, TerminTyp, Participants) VALUES ('%s','%s', '%s', '%s', '%s', '%s')", id, title, start, end,  terminTyp, participants);
+
+        try {
+            executeUpdateSQL(sql);
+        } catch (SQLCommandException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+
+    }
+
+    public void deleteTermin(String id) {
+
+        String sql = String.format("DELETE FROM termine WHERE id='%s';", id);
+
+        try {
+            executeUpdateSQL(sql);
+        } catch (SQLCommandException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+
+    }
+
+    public List<Termin> getTermine() {
+        String sql = "SELECT * FROM termine;";
+        try {
+            List<Termin> termins = executeQueryTermine(sql);
+            return termins;
+        } catch (SQLCommandException | NullConnectionException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        return null;
+    }
+
+    /**
+     *  DB Utils
+     */
+
     private void createTables(Connection connection) throws SQLCommandException {
         Statement statement =  null;
 
@@ -206,51 +255,6 @@ public class Database {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             throw new SQLCommandException("Error while executing SQL Querry", e);
         }
-    }
-
-    /**
-     *  DB Interface
-     */
-
-    public void addTermin(String id, String title, LocalDateTime startDate, LocalDateTime endDate, String terminTyp, String participants) {
-        String start = convertToSQLiteDateTime(startDate);
-        String end = convertToSQLiteDateTime(endDate);
-
-        if (id == "") {
-            id = IDGenerator.generateID(50);
-        }
-
-        String sql = String.format("INSERT INTO Termine (ID, Titel, Start, End, TerminTyp, Participants) VALUES ('%s','%s', '%s', '%s', '%s', '%s')", id, title, start, end,  terminTyp, participants);
-
-        try {
-            executeUpdateSQL(sql);
-        } catch (SQLCommandException e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
-
-    }
-
-    public void deleteTermin(String id) {
-
-        String sql = String.format("DELETE FROM termine WHERE id='%s';", id);
-
-        try {
-            executeUpdateSQL(sql);
-        } catch (SQLCommandException e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
-
-    }
-
-    public List<Termin> getTermine() {
-        String sql = "SELECT * FROM termine;";
-        try {
-            List<Termin> termins = executeQueryTermine(sql);
-            return termins;
-        } catch (SQLCommandException | NullConnectionException e) {
-            System.err.println(e.getClass().getName() + ": " + e.getMessage());
-        }
-        return null;
     }
 
     /**
