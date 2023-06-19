@@ -161,33 +161,4 @@ public class TestDatenbank {
     public void printTestLine() {
         System.out.print("-------------------\n");
     }
-
-    public void main(String[] args) {
-
-        test();
-
-
-
-
-//        database.addTermin("", "Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
-////        database.addTermin("Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
-////        database.addTermin("Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
-////        database.addTermin("Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
-////        database.deleteTermin("fuitw6oZUv4YpsQhAl6WABNMxdevTmF7tqRqi1vCYgfbra0LhP");
-//        List<Termin> termine = database.getTermine();
-//
-//        if (termine != null) {
-//            System.out.println("Termine size");
-//            System.out.println(termine.size());
-//
-//            for (Termin termin : termine)
-//            {
-//                System.out.println(termin.getTitle());
-//                System.out.println(termin.getType());
-//            }
-//        }
-//        else {
-//            System.out.println("List ist NULL");
-//        }
-    }
 }
