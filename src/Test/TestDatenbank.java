@@ -2,6 +2,8 @@ package Test;
 
 import Calendar.Termin;
 import IOManager.Database;
+import IOManager.Exceptions.SQLPackageException;
+import IOManager.Exceptions.WrongPathException;
 
 import javax.xml.crypto.Data;
 import java.time.LocalDateTime;
@@ -30,7 +32,13 @@ public class TestDatenbank {
     }
 
     public static void main(String[] args) {
-        Database database = new Database();
+        Database database = null;
+        try {
+            database = new Database();
+        } catch (WrongPathException | SQLPackageException e) {
+            throw new RuntimeException(e);
+        }
+
         LocalDateTime lt = LocalDateTime.now();
         database.addTermin("", "Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
 //        database.addTermin("Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");

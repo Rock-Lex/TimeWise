@@ -3,6 +3,8 @@ package Test;
 import Calendar.TerminListe;
 import Calendar.Termin;
 import IOManager.Database;
+import IOManager.Exceptions.SQLPackageException;
+import IOManager.Exceptions.WrongPathException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,10 +27,15 @@ public class TestCalendar {
 
     public void test() {
         System.out.println("Test started");
-
         List<Termin> termine = new ArrayList<>();
+        Database database = null;
 
-        Database database = new Database("bla-keks", "Haha");
+        try {
+            database = new Database("bla-keks", "Haha");
+        } catch (SQLPackageException | WrongPathException e) {
+            throw new RuntimeException(e);
+        }
+
         TerminListe kalender = new TerminListe(database, termine);
         System.out.println(kalender.getTermine().size());
 

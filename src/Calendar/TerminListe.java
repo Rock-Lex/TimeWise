@@ -1,6 +1,8 @@
 package Calendar;
 
 import IOManager.Database;
+import IOManager.Exceptions.SQLPackageException;
+import IOManager.Exceptions.WrongPathException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +24,11 @@ public class TerminListe implements Comparable<TerminListe>{
 
     public TerminListe(Database database, List<Termin> termine) {
 
-        this.database = new Database();
+        try {
+            this.database = new Database();
+        } catch (WrongPathException | SQLPackageException e) {
+            throw new RuntimeException(e);
+        }
 
 //        this.termine = this.database.getTerminArray();
 
