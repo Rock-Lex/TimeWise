@@ -20,8 +20,8 @@ public class Test {
 
         //testCalendar.test();
         //testTermin.test();
-        //testDatenbank.test();
-        testErinnerung.test();
-        testTeilnehmer.test();
+        testDatenbank.test();
+//        testErinnerung.test();
+//        testTeilnehmer.test();
     }
 }

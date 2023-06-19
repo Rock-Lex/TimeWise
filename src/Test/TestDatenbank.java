@@ -12,12 +12,12 @@ import java.util.List;
 public class TestDatenbank {
 
     /**
-     * Bei dieser Klasse handelt es sich um einen Test fur Database.
+     * Bei dieser Klasse handelt es sich um einen Test Klasse fur Database.
      * *
      * Autor: Oleksandr Kamenskyi
-     * Version: 1.0.0
+     * Version: 1.2.3
      * Erstellt am: 23.05.2023
-     * Letzte Änderung: 23.05.2023
+     * Letzte Änderung: 19.06.2023
      */
 
     TestDatenbank() {
@@ -25,40 +25,169 @@ public class TestDatenbank {
     }
 
     public void test() {
-        System.out.println("Test started");
+        printTestStart("Database Class");
 
+        LocalDateTime lt = LocalDateTime.now();
 
-        System.out.println("Test ended");
+        printTestCase(1, "Default Database Constructor");
+        Database database = testCreateDatabase();
+        printTestCase(2, "Database Constructor with path and name");
+        Database database2 = testCreateDatabaseWithPath("/Users/okamenskyi/files/study/IT/javaTasks/TimeWise/", "TimeWise.db");
+        printTestCase(3,"Database Constructor with WRONG path and name");
+        Database database3 = testCreateDatabaseWithPath("/files/study/IT/javaTasks/TimeWise/", "TimeWise.db");
+
+        database = testAddTermine(database);
+        printTestLine();
+        database = testGetTermine(database);
+
+        database = testDeleteTermine(database);
+
+        printTestEnd("Database Class");
     }
 
-    public static void main(String[] args) {
+    private Database testDeleteTermine(Database database) {
+        printTestStart("Delete termins function");
+
+        printTestCase(1, "Delete existing Termin by ID");
+        database.deleteTermin("fuitw6oZUv4YpsQhAl6WABNMxdevTmF7tqRqi1vCYgfbra0LhP");
+
+        printTestCase(2, "Delete not existing Termin by ID");
+        database.deleteTermin("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+
+        printTestEnd("Delete termins function");
+
+        return database;
+    }
+
+    private Database testGetTermine(Database database) {
+        printTestStart("Get termins function");
+
+        printTestCase(1, "Get Termins");
+
+        List<Termin> termine = database.getTermine();
+
+        if (termine != null) {
+            System.out.println("List termine size: " + termine.size());
+            int counter = 0;
+            for (Termin termin : termine)
+            {
+                printTestLine();
+                System.out.println("Termin " + counter + ": ");
+                System.out.println(termin.getTitle());
+                System.out.println(termin.getType());
+                printTestLine();
+
+                counter++;
+            }
+        }
+        else {
+            System.out.println("List Termine ist NULL");
+        }
+
+        printTestEnd("Get termins function");
+
+        return database;
+    }
+
+    private Database testAddTermine(Database database) {
+        printTestStart("Add termins function");
+        LocalDateTime lt = LocalDateTime.now();
+
+        printTestCase(1, "Add Termin without ID");
+        database.addTermin("", "Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
+
+        printTestCase(2, "Add Termin with ID");
+        database.addTermin("fuitw6oZUv4YpsQhAl6WABNMxdevTmF7tqRqi1vCYgfbra0LhP", "Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
+
+        printTestCase(3, "Add Termin with existing ID");
+        database.addTermin("fuitw6oZUv4YpsQhAl6WABNMxdevTmF7tqRqi1vCYgfbra0LhP", "Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
+
+        printTestEnd("Add termins function");
+
+        return database;
+    }
+
+    private Database testCreateDatabase() {
+        printTestStart("Database creation/connection");
+
         Database database = null;
         try {
             database = new Database();
         } catch (WrongPathException | SQLPackageException e) {
             throw new RuntimeException(e);
         }
+        printTestEnd("Database creation/connection");
+        return database;
+    }
 
-        LocalDateTime lt = LocalDateTime.now();
-        database.addTermin("", "Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
-//        database.addTermin("Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
-//        database.addTermin("Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
-//        database.addTermin("Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
-//        database.deleteTermin("fuitw6oZUv4YpsQhAl6WABNMxdevTmF7tqRqi1vCYgfbra0LhP");
-        List<Termin> termine = database.getTermine();
+    private Database testCreateDatabaseWithPath(String projectPath, String databaseName) {
+        printTestStart("Database creation/connection");
 
-        if (termine != null) {
-            System.out.println("Termine size");
-            System.out.println(termine.size());
-
-            for (Termin termin : termine)
-            {
-                System.out.println(termin.getTitle());
-                System.out.println(termin.getType());
-            }
+        Database database = null;
+        try {
+            database = new Database(projectPath, databaseName);
+        } catch (WrongPathException | SQLPackageException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
-        else {
-            System.out.println("List ist NULL");
-        }
+        printTestEnd("Database creation/connection");
+        return database;
+    }
+
+    public void printTestStart(String msg) {
+        printTestLine();
+        printTestLine();
+        System.out.println("Test started: " + msg);
+        printTestLine();
+        printTestLine();
+        System.out.println("\n");
+    }
+
+    public void printTestEnd(String msg) {
+        printTestLine();
+        printTestLine();
+        System.out.println("Test ended: " + msg);
+        printTestLine();
+        printTestLine();
+        System.out.println("\n");
+    }
+
+    public void printTestCase(Integer num, String description) {
+        printTestLine();
+        System.out.println("Test case " + num + ": " + description);
+        printTestLine();
+        System.out.println("\n");
+    }
+
+    public void printTestLine() {
+        System.out.print("-------------------\n");
+    }
+
+    public void main(String[] args) {
+
+        test();
+
+
+
+
+//        database.addTermin("", "Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
+////        database.addTermin("Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
+////        database.addTermin("Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
+////        database.addTermin("Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
+////        database.deleteTermin("fuitw6oZUv4YpsQhAl6WABNMxdevTmF7tqRqi1vCYgfbra0LhP");
+//        List<Termin> termine = database.getTermine();
+//
+//        if (termine != null) {
+//            System.out.println("Termine size");
+//            System.out.println(termine.size());
+//
+//            for (Termin termin : termine)
+//            {
+//                System.out.println(termin.getTitle());
+//                System.out.println(termin.getType());
+//            }
+//        }
+//        else {
+//            System.out.println("List ist NULL");
+//        }
     }
 }
