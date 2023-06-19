@@ -1,6 +1,5 @@
 package Test;
 
-import Calendar.TerminListe;
 import Calendar.Termin;
 import IOManager.Database;
 import IOManager.Exceptions.SQLPackageException;
@@ -9,7 +8,7 @@ import IOManager.Exceptions.WrongPathException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestCalendar {
+public class TerminListe {
 
     /**
      * Bei dieser Klasse handelt es sich um einen Test fur Calendar.
@@ -20,7 +19,7 @@ public class TestCalendar {
      * Letzte Änderung: 23.05.2023
      */
 
-    public TestCalendar() {
+    public TerminListe() {
 
     }
 
@@ -36,7 +35,7 @@ public class TestCalendar {
             throw new RuntimeException(e);
         }
 
-        TerminListe kalender = new TerminListe(database, termine);
+        Calendar.TerminListe kalender = new Calendar.TerminListe(database, termine);
         System.out.println(kalender.getTermine().size());
 
         Termin termin1 = new Termin("Ein Tag","MT",true,"2022-12-21", "2022-12-21", "12:00","13:00");
