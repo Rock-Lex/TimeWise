@@ -101,16 +101,16 @@ public class Database {
      *  DB Interface
      */
 
-    public void addTermin(String id, String title, LocalDateTime startDate, LocalDateTime endDate, String terminTyp, String participants) {
-        String start = convertToSQLiteDateTime(startDate);
-        String end = convertToSQLiteDateTime(endDate);
+    public void addTermin(String id, String title, LocalDateTime start, LocalDateTime end, String type, Integer multiday, String participants) {
+        String startStr = convertToSQLiteDateTime(start);
+        String endStr = convertToSQLiteDateTime(end);
 
         if (id == "") {
             id = IDGenerator.generateID(50);
         }
 
-        String sql = String.format("INSERT INTO Termine (ID, Titel, Start, End, TerminTyp, Participants) VALUES ('%s','%s', '%s', '%s', '%s', '%s')", id, title, start, end,  terminTyp, participants);
-
+        String sql = String.format("INSERT INTO Termine (ID, Titel, Start, End, Type, MultiDay, Participants) VALUES ('%s','%s', '%s', '%s', '%s', '%d', '%s')", id, title, startStr, endStr,  type, multiday, participants);
+        System.out.println(sql);
         try {
             executeUpdateSQL(sql);
         } catch (SQLCommandException e) {
@@ -168,12 +168,13 @@ public class Database {
     private String getTableTermine()
     {
         String sql = "CREATE TABLE IF NOT EXISTS termine" +
-                "(ID TEXT PRIMARY KEY     NOT NULL," +
-                " Titel          TEXT    NOT NULL, " +
-                " Start          TEXT," +
-                " End            TEXT," +
-                " TerminTyp      TEXT, " +
-                " Participants   TEXT)";
+                "(ID TEXT PRIMARY   KEY     NOT NULL," +
+                " Titel             TEXT    NOT NULL, " +
+                " Start             TEXT," +
+                " End               TEXT," +
+                " Type              TEXT," +
+                " MultiDay          INTEGER," +                    // 0 or 1
+                " Participants      TEXT)";
         return sql;
     }
 
@@ -237,7 +238,8 @@ public class Database {
                     String titel = resultSet.getString("Titel");
                     String start = resultSet.getString("Start");
                     String end = resultSet.getString("End");
-                    String terminTyp = resultSet.getString("TerminTyp");
+                    String terminTyp = resultSet.getString("Type");
+                    Integer multiday = resultSet.getInt("Multiday");
                     String participants = resultSet.getString("Participants");
 
                     Termin termin = new Termin(titel, terminTyp, false, start, end, start, end);

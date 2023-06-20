@@ -94,13 +94,13 @@ public class TestDatenbank {
         LocalDateTime lt = LocalDateTime.now();
 
         printTestCase(1, "Add Termin without ID");
-        database.addTermin("", "Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
+        database.addTermin("", "Mehrere Tage", lt, lt,"AT", 1,"Oleksandr Kamenskyi");
 
         printTestCase(2, "Add Termin with ID");
-        database.addTermin("fuitw6oZUv4YpsQhAl6WABNMxdevTmF7tqRqi1vCYgfbra0LhP", "Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
+        database.addTermin("fuitw6oZUv4YpsQhAl6WABNMxdevTmF7tqRqi1vCYgfbra0LhP", "Mehrere Tage", lt, lt,"AT", 1,"Oleksandr Kamenskyi");
 
         printTestCase(3, "Add Termin with existing ID");
-        database.addTermin("fuitw6oZUv4YpsQhAl6WABNMxdevTmF7tqRqi1vCYgfbra0LhP", "Mehrere Tage", lt, lt,"AT", "Oleksandr Kamenskyi");
+        database.addTermin("fuitw6oZUv4YpsQhAl6WABNMxdevTmF7tqRqi1vCYgfbra0LhP", "Mehrere Tage", lt, lt,"AT", 1, "Oleksandr Kamenskyi");
 
         printTestEnd("Add termins function");
 
