@@ -1,5 +1,7 @@
 package Calendar;
 
+import Calendar.Exceptions.*;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import IDgen.IDGenerator;
@@ -7,9 +9,9 @@ import IDgen.IDGenerator;
  * Bei dieser Klasse handelt es sich um einen Termin.
  * *
  * Autor: Philipp Voß
- * Version: 1.0.1
+ * Version: 1.2
  * Erstellt am: 14.05.2023
- * Letzte Änderung: 14.05.2023
+ * Letzte Änderung: 21.06.2023
  */
 public class Termin implements Comparable<Termin>{
     private String id;
@@ -31,20 +33,22 @@ public class Termin implements Comparable<Termin>{
      * @param startTime Startzeit des Termins
      * @param endTime Endzeit des Termins
      */
-    public Termin(String title, String type, boolean multiDay, String startDate, String endDate, String startTime, String endTime){
-        if(multiDay){
-            this.title = title;
-            this.type = type;
-            this.start = dateTimeFormatter(startDate, startTime);
-            this.end = dateTimeFormatter(endDate, endTime);
-        } else {
-            this.title = title;
-            this.type = type;
-//            this.start = dateTimeFormatter(startDate, startTime);
-//            this.end = dateTimeFormatter(startDate, endTime);
+    public Termin(String title, String type, boolean multiDay, String startDate, String endDate, String startTime, String endTime) {
+        if(title == null || title.trim().isEmpty() || type == null || type.trim().isEmpty()){
+            throw new EmptyFieldException("Title und Typ dürfen nicht leer sein.");
         }
 
+        this.title = title;
+        this.type = type;
+        this.start = dateTimeFormatter(startDate, startTime);
+        this.end = dateTimeFormatter(endDate, endTime);
+        this.multiDay = !startDate.equals(endDate);
+
         this.id = IDGenerator.generateID(type);
+
+        if(this.start.isAfter(this.end)){
+            throw new InvalidDateException("Startdatum muss vor dem Enddatum liegen.");
+        }
     }
 
     /**
@@ -106,7 +110,13 @@ public class Termin implements Comparable<Termin>{
     public void setType(String type) {
         this.type = type;
     }
+    public String getDescription() {
+        return description;
+    }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
     /**
      *
      * @return String mit allen Daten zu einem Termin.
