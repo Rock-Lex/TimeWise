@@ -3,8 +3,11 @@ package GUI;
 import javax.swing.*;
 import javax.swing.text.DefaultHighlighter;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.util.HashMap;
+import java.util.Map;
+import Calendar.Termin;
 
 /**
  * Eine benutzerdefinierte Swing-Komponente zur Darstellung von Kalenderzellen.
@@ -18,6 +21,8 @@ public class CalendarCell extends JPanel {
     private JLabel label;
     private Color defaultBackground;
     private JTextArea textArea;
+    private Map<String, Termin> appointmentMap;  // Map to store appointments
+
 
     /**
      * Erstellt eine neue Kalenderzelle mit dem angegebenen Tag.
@@ -32,7 +37,9 @@ public class CalendarCell extends JPanel {
         defaultBackground = label.getBackground();
         textArea = new JTextArea();
         textArea.setEditable(false);
-        textArea.addMouseListener(new MouseListener() {
+        appointmentMap = new HashMap<>();  // Initialize the map
+
+        textArea.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 int pos = textArea.viewToModel(e.getPoint());
@@ -40,26 +47,18 @@ public class CalendarCell extends JPanel {
                     int rowStart = javax.swing.text.Utilities.getRowStart(textArea, pos);
                     int rowEnd = javax.swing.text.Utilities.getRowEnd(textArea, pos);
                     String selectedText = textArea.getText().substring(rowStart, rowEnd).trim();
-                    System.out.println(selectedText);
+                    Termin appointment = appointmentMap.get(selectedText);  // Get the appointment object
+                    if (appointment != null) {
+                        System.out.println(appointment.toString());  // Print appointment information
+                    }
                     textArea.getHighlighter().removeAllHighlights();
                     textArea.getHighlighter().addHighlight(rowStart, rowEnd, DefaultHighlighter.DefaultPainter);
                 } catch (Exception ex) {
                     // Do nothing
                 }
             }
-
-            @Override
-            public void mousePressed(MouseEvent e) {}
-
-            @Override
-            public void mouseReleased(MouseEvent e) {}
-
-            @Override
-            public void mouseEntered(MouseEvent e) {}
-
-            @Override
-            public void mouseExited(MouseEvent e) {}
         });
+
         add(textArea, BorderLayout.CENTER);
     }
 
@@ -83,8 +82,9 @@ public class CalendarCell extends JPanel {
      *
      * @param appointment Der Termin als String.
      */
-    public void addAppointment(String appointment) {
-        textArea.append(appointment + "\n");
+    public void addAppointment(String appointmentText, Termin appointment) {
+        textArea.append(appointmentText + "\n");
+        appointmentMap.put(appointmentText, appointment);  // Store the appointment in the map
     }
 
     /**
@@ -97,11 +97,14 @@ public class CalendarCell extends JPanel {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         CalendarCell cell = new CalendarCell("1");
-        cell.addAppointment("10:00 - 11:30 Terminname 1");
-        cell.addAppointment("13:00 - 14:30 Terminname 2");
+        Termin termin1 = new Termin("Terminname 1", "Typ 1", false, "2023-06-01", "2023-06-01", "10:00", "11:30");
+        Termin termin2 = new Termin("Terminname 2", "Typ 2", false, "2023-06-01", "2023-06-01", "13:00", "14:30");
+        cell.addAppointment("10:00 - 11:30 Terminname 1", termin1);
+        cell.addAppointment("13:00 - 14:30 Terminname 2", termin2);
 
         frame.getContentPane().add(cell);
         frame.pack();
         frame.setVisible(true);
     }
+
 }

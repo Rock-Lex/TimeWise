@@ -1,13 +1,16 @@
 package GUI.monthView;
 
 
+import Calendar.Termin;
 import GUI.CalendarCell;
-
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.Locale;
 
@@ -22,6 +25,7 @@ public class MonthView extends JPanel {
     private YearMonth yearMonth;
     private CalendarCell[] calendarCells;
     private JLabel[] daysLabels;
+
 
     /**
      * Erstellt eine neue Monatsansicht mit dem angegebenen Jahr und Monat.
@@ -76,9 +80,20 @@ public class MonthView extends JPanel {
      * @param day Der Tag als int.
      * @param appointment Der Termin als String.
      */
-    public void addAppointment(int day, String appointment) {
-        calendarCells[day - 1].addAppointment(appointment);
+
+
+
+    public void addAppointment(int day, Termin appointment) {
+        String formattedAppointment = appointment.getStart().format(DateTimeFormatter.ofPattern("HH:mm")) +
+                " - " +
+                appointment.getEnd().format(DateTimeFormatter.ofPattern("HH:mm")) +
+                " " +
+                appointment.getTitle();
+
+        CalendarCell cell = calendarCells[day - 1];
+        cell.addAppointment(formattedAppointment, appointment);  // Pass the appointment object to the method
     }
+
 
     /**
      * Beispielanwendung zum Testen der Klasse.
@@ -90,12 +105,16 @@ public class MonthView extends JPanel {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         MonthView monthView = new MonthView(2023, 6);
-        monthView.addAppointment(1, "10:00 - 11:30 Terminname 1");
-        monthView.addAppointment(1, "13:00 - 14:30 Terminname 2");
+        Termin termin1 = new Termin("Terminname 1", "Typ 1", false, "2023-06-01", "2023-06-01", "10:00", "11:30");
+        Termin termin2 = new Termin("Terminname 2", "Typ 2", false, "2023-06-01", "2023-06-01", "13:00", "14:30");
+        monthView.addAppointment(1, termin1);
+        monthView.addAppointment(1, termin2);
+
         monthView.setToday(18);
 
         frame.getContentPane().add(monthView);
         frame.pack();
         frame.setVisible(true);
     }
+
 }
