@@ -17,7 +17,7 @@ Wir entscheiden uns für eine agile Durchführung des Projektes. Um sicherzustel
 #### Muss
 Kalender, Termine erstellen und anzeigen (ganztägige Termine), Aktueller Tagesanzeiger, Tagesansicht, Wochenansicht, Monatsansicht
 #### Kann
-kann: Termin Eigenschaften (individuelle Zeitr%C3%A4ume, Wiederholungstermin), Termin Kategorisierung, Ressourcen-Buchung (Raum/Ort, Telefonspinne f. Hybrid, Beamer etc.), Teilnehmer, %C3%9Cbersicht zuk%C3%BCnftiger Termine, ICS Export, Termin per Mail versenden, Feiertage, Terminplaner/planungsassistent, Fahrzeit, Terminerinnerungen (Pop-Up Fenster), Eingabehilfe (bei Eingabe Termin-Titel Vorschlag mit Termin Eigenschaften bereits vorhandener Termine)
+kann: Termin Eigenschaften (individuelle Zeiträume, Wiederholungstermin), Termin Kategorisierung, Ressourcen-Buchung (Raum/Ort, Telefonspinne f. Hybrid, Beamer etc.), Teilnehmer, Übersicht zukünftiger Termine, ICS Export, Termin per Mail versenden, Feiertage, Terminplaner/planungsassistent, Fahrzeit, Terminerinnerungen (Pop-Up Fenster), Eingabehilfe (bei Eingabe Termin-Titel Vorschlag mit Termin Eigenschaften bereits vorhandener Termine)
 
 ## Contributors
 - #### Oleksandr Kamenskyi: </br> 
