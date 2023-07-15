@@ -94,7 +94,6 @@ public class MonthView extends JPanel {
         cell.addAppointment(formattedAppointment, appointment);  // Pass the appointment object to the method
     }
 
-
     /**
      * Beispielanwendung zum Testen der Klasse.
      *

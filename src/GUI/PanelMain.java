@@ -1,5 +1,6 @@
 package GUI;
 
+import Calendar.Termin;
 import GUI.PanelChange;
 import GUI.monthView.MonthView;
 
@@ -33,6 +34,12 @@ public class PanelMain extends JPanel{
 
         add(panelChange, BorderLayout.NORTH);
         add(tabbedPane, BorderLayout.CENTER);
+
+        Termin termin1 = new Termin("Terminname 1", "Typ 1", false, "2023-06-01", "2023-06-01", "10:00", "11:30");
+        Termin termin2 = new Termin("Terminname 2", "Typ 2", false, "2023-06-01", "2023-06-01", "13:00", "14:30");
+        monthView.addAppointment(1, termin1);
+        monthView.addAppointment(1, termin2);
+
 
         mainFrame.getContentPane().add(this);
         mainFrame.setSize(800, 600);
