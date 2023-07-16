@@ -14,7 +14,7 @@ import java.util.Random;
  * Diese Klasse repräsentiert das Hauptpanel der Anwendung.
  *
  * Autor: Philipp Voß
- * Version: 1.3
+ * Version: 1.4
  * Erstellt am: 02.06.2023
  * Letzte Änderung: 16.07.2023
  *
