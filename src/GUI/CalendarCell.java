@@ -5,23 +5,25 @@ import javax.swing.text.DefaultHighlighter;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalTime;
+import java.util.Comparator;
+import java.util.TreeMap;
+
 import Calendar.Termin;
 
 /**
  * Eine benutzerdefinierte Swing-Komponente zur Darstellung von Kalenderzellen.
  *
  * Autor: Philipp Voß
- * Version: 1.1
+ * Version: 1.2
  * Erstellt am: 08.06.2023
- * Letzte Änderung: 15.06.2023
+ * Letzte Änderung: 16.07.2023
  */
 public class CalendarCell extends JPanel {
     private JLabel label;
     private Color defaultBackground;
     private JTextArea textArea;
-    private Map<String, Termin> appointmentMap;
+    private TreeMap<String, Termin> appointmentMap;
 
 
     /**
@@ -37,7 +39,17 @@ public class CalendarCell extends JPanel {
         defaultBackground = label.getBackground();
         textArea = new JTextArea();
         textArea.setEditable(false);
-        appointmentMap = new HashMap<>();
+        appointmentMap = new TreeMap<>(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                // Extract the start times from the strings
+                LocalTime time1 = LocalTime.parse(o1.split(" - ")[0]);
+                LocalTime time2 = LocalTime.parse(o2.split(" - ")[0]);
+
+                // Compare the start times
+                return time1.compareTo(time2);
+            }
+        });
 
         textArea.addMouseListener(new MouseAdapter() {
             @Override
@@ -83,15 +95,20 @@ public class CalendarCell extends JPanel {
      * @param appointment Der Termin als String.
      */
     public void addAppointment(String appointmentText, Termin appointment) {
-        textArea.append(appointmentText + "\n");
+        // Füge Termin zur TreeMap hinzu
         appointmentMap.put(appointmentText, appointment);
+
+        // TextAre löschen und mit sortierten Terminen füllen
+        textArea.setText("");
+        for (String sortedAppointmentText : appointmentMap.keySet()) {
+            textArea.append(sortedAppointmentText + "\n");
+        }
     }
 
     /**
      * Beispielanwendung zum Testen der Klasse.
      *
      * @param args Kommandozeilenargumente (werden ignoriert).
-     *
      */
     public static void main(String[] args) {
         JFrame frame = new JFrame("Calendar Cell Example");
