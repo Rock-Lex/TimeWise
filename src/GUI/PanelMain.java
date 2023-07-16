@@ -14,6 +14,7 @@ import java.awt.*;
  * Version: 1.3
  * Erstellt am: 02.06.2023
  * Letzte Änderung: 16.07.2023
+ *
  */
 public class PanelMain extends JPanel {
     private JTabbedPane tabbedPane;

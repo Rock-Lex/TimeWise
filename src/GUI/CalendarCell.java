@@ -91,6 +91,7 @@ public class CalendarCell extends JPanel {
      * Beispielanwendung zum Testen der Klasse.
      *
      * @param args Kommandozeilenargumente (werden ignoriert).
+     *
      */
     public static void main(String[] args) {
         JFrame frame = new JFrame("Calendar Cell Example");

@@ -12,6 +12,7 @@ import java.util.Map;
  * Autor: Philipp Voß
  * Version: 1.0
  * Erstellt am: 16.07.2023
+ *
  */
 public class CalendarViewManager {
     private Map<String, CalendarView> views;

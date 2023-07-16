@@ -12,6 +12,7 @@ import java.time.YearMonth;
  * Autor: Philipp Voß
  * Version: 1.0
  * Erstellt am: 16.07.2023
+ *
  */
 public abstract class CalendarView extends JPanel {
     protected YearMonth yearMonth;

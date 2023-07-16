@@ -22,6 +22,7 @@ import java.util.Locale;
  * Autor: Philipp Voß
  * Version: 1.3
  * Erstellt am: 18.06.2023
+ *
  */
 public class MonthView extends CalendarView {
     private YearMonth yearMonth;
