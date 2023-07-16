@@ -6,6 +6,13 @@ import java.time.YearMonth;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Verwaltungsklasse für die verschiedenen Kalenderansichten.
+ *
+ * Autor: Philipp Voß
+ * Version: 1.0
+ * Erstellt am: 16.07.2023
+ */
 public class CalendarViewManager {
     private Map<String, CalendarView> views;
     private CalendarView currentView;
@@ -13,13 +20,14 @@ public class CalendarViewManager {
     public CalendarViewManager() {
         views = new HashMap<>();
 
-        // Initialisiere die verschiedenen Ansichten
+        // Initialisiere die verschiedenen Views
         int currentYear = YearMonth.now().getYear();
         int currentMonth = YearMonth.now().getMonthValue();
         views.put("month", new MonthView(currentYear, currentMonth));
-        // Fügen Sie hier weitere Ansichten hinzu (z.B. WeekView, DayView)...
+        // Hier weitere Views hinzufügen
 
-        // Standardmäßig die Monatsansicht setzen
+
+        // Monatsansicht als Standard gesetzt
         currentView = views.get("month");
     }
 
@@ -29,7 +37,8 @@ public class CalendarViewManager {
         }
 
         currentView = views.get(viewName);
-        currentView.updateView();  // Aktualisiere die Ansicht
+        // Aktualisieren der Ansicht
+        currentView.updateView();
     }
 
     public void nextMonth() {

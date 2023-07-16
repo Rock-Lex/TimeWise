@@ -21,7 +21,7 @@ public class CalendarCell extends JPanel {
     private JLabel label;
     private Color defaultBackground;
     private JTextArea textArea;
-    private Map<String, Termin> appointmentMap;  // Map to store appointments
+    private Map<String, Termin> appointmentMap;
 
 
     /**
@@ -37,7 +37,7 @@ public class CalendarCell extends JPanel {
         defaultBackground = label.getBackground();
         textArea = new JTextArea();
         textArea.setEditable(false);
-        appointmentMap = new HashMap<>();  // Initialize the map
+        appointmentMap = new HashMap<>();
 
         textArea.addMouseListener(new MouseAdapter() {
             @Override
@@ -47,9 +47,9 @@ public class CalendarCell extends JPanel {
                     int rowStart = javax.swing.text.Utilities.getRowStart(textArea, pos);
                     int rowEnd = javax.swing.text.Utilities.getRowEnd(textArea, pos);
                     String selectedText = textArea.getText().substring(rowStart, rowEnd).trim();
-                    Termin appointment = appointmentMap.get(selectedText);  // Get the appointment object
+                    Termin appointment = appointmentMap.get(selectedText);
                     if (appointment != null) {
-                        System.out.println(appointment.toString());  // Print appointment information
+                        System.out.println(appointment.toString());
                     }
                     textArea.getHighlighter().removeAllHighlights();
                     textArea.getHighlighter().addHighlight(rowStart, rowEnd, DefaultHighlighter.DefaultPainter);
@@ -84,7 +84,7 @@ public class CalendarCell extends JPanel {
      */
     public void addAppointment(String appointmentText, Termin appointment) {
         textArea.append(appointmentText + "\n");
-        appointmentMap.put(appointmentText, appointment);  // Store the appointment in the map
+        appointmentMap.put(appointmentText, appointment);
     }
 
     /**
@@ -106,5 +106,4 @@ public class CalendarCell extends JPanel {
         frame.pack();
         frame.setVisible(true);
     }
-
 }

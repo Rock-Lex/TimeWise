@@ -7,7 +7,14 @@ import GUI.monthView.MonthView;
 
 import javax.swing.*;
 import java.awt.*;
-
+/**
+ * Diese Klasse repräsentiert das Hauptpanel der Anwendung.
+ *
+ * Autor: Philipp Voß
+ * Version: 1.3
+ * Erstellt am: 02.06.2023
+ * Letzte Änderung: 16.07.2023
+ */
 public class PanelMain extends JPanel {
     private JTabbedPane tabbedPane;
     private PanelChange panelChange;

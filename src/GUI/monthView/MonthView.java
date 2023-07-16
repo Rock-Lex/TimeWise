@@ -44,7 +44,7 @@ public class MonthView extends CalendarView {
 
         setLayout(new GridLayout(0, 7));
 
-        // Add days of the week
+
         for (int i = 0; i < 7; i++) {
             DayOfWeek dayOfWeek = DayOfWeek.of((i) % 7 + 1);  // Start with Monday
             String dayName = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.GERMAN);
@@ -53,8 +53,8 @@ public class MonthView extends CalendarView {
             add(dayLabel);
         }
 
-        int offset = (LocalDate.of(year, month, 1).getDayOfWeek().getValue() + 6) % 7;  // Day of the week of the first day of the month
-        for (int i = 0; i < offset; i++) {  // Add empty cells for days before the start of the month
+        int offset = (LocalDate.of(year, month, 1).getDayOfWeek().getValue() + 6) % 7;  // Erster Tag der ersten Woche im Monat
+        for (int i = 0; i < offset; i++) {  // Hinzufügen leerer Zellen als Offset am Monatsanfang
             add(new JLabel());
         }
 
@@ -91,7 +91,7 @@ public class MonthView extends CalendarView {
 
         int day = appointment.getStart().getDayOfMonth(); // Extrahieren des Tages aus dem Termin
         CalendarCell cell = calendarCells[day - 1];
-        cell.addAppointment(formattedAppointment, appointment);  // Pass the appointment object to the method
+        cell.addAppointment(formattedAppointment, appointment);  // Appointment an UI Methode übergeben
     }
 
     @Override
