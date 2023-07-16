@@ -3,6 +3,8 @@ package GUI.monthView;
 
 import Calendar.Termin;
 import GUI.CalendarCell;
+import GUI.Views.CalendarView;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -21,7 +23,7 @@ import java.util.Locale;
  * Version: 1.3
  * Erstellt am: 18.06.2023
  */
-public class MonthView extends JPanel {
+public class MonthView extends CalendarView {
     private YearMonth yearMonth;
     private CalendarCell[] calendarCells;
     private JLabel[] daysLabels;
@@ -34,6 +36,7 @@ public class MonthView extends JPanel {
      * @param month Der aktuelle Monat als int.
      */
     public MonthView(int year, int month) {
+        super(year, month);  // Fügt den Aufruf des Superkonstruktors hinzu
         yearMonth = YearMonth.of(year, month);
         int numberOfDays = yearMonth.lengthOfMonth();
         calendarCells = new CalendarCell[numberOfDays];
@@ -77,21 +80,23 @@ public class MonthView extends JPanel {
     /**
      * Fügt einen Termin zu einem bestimmten Tag im Kalender hinzu.
      *
-     * @param day Der Tag als int.
      * @param appointment Der Termin als String.
      */
-
-
-
-    public void addAppointment(int day, Termin appointment) {
+    public void addAppointment(Termin appointment) {
         String formattedAppointment = appointment.getStart().format(DateTimeFormatter.ofPattern("HH:mm")) +
                 " - " +
                 appointment.getEnd().format(DateTimeFormatter.ofPattern("HH:mm")) +
                 " " +
                 appointment.getTitle();
 
+        int day = appointment.getStart().getDayOfMonth(); // Extrahieren des Tages aus dem Termin
         CalendarCell cell = calendarCells[day - 1];
         cell.addAppointment(formattedAppointment, appointment);  // Pass the appointment object to the method
+    }
+
+    @Override
+    public void updateView() {
+
     }
 
     /**
@@ -106,8 +111,8 @@ public class MonthView extends JPanel {
         MonthView monthView = new MonthView(2023, 6);
         Termin termin1 = new Termin("Terminname 1", "Typ 1", false, "2023-06-01", "2023-06-01", "10:00", "11:30");
         Termin termin2 = new Termin("Terminname 2", "Typ 2", false, "2023-06-01", "2023-06-01", "13:00", "14:30");
-        monthView.addAppointment(1, termin1);
-        monthView.addAppointment(1, termin2);
+        monthView.addAppointment(termin1);
+        monthView.addAppointment(termin2);
 
         monthView.setToday(18);
 

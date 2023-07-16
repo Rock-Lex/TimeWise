@@ -1,5 +1,7 @@
 package GUI;
 
+import GUI.Views.CalendarViewManager;
+
 import javax.swing.*;
 import java.awt.*;
 /**
@@ -23,8 +25,12 @@ public class PanelChange extends JPanel {
     private JButton aktuellerTagButton;
     private JButton nextButton;
     private JButton prevButton;
+    private CalendarViewManager viewManager;
 
-    public PanelChange(){
+
+    public PanelChange(CalendarViewManager viewManager){
+        this.viewManager = viewManager;
+
         setOpaque(false);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -66,5 +72,41 @@ public class PanelChange extends JPanel {
         add(buttonPanel);
         setSize(600, 100);
         setVisible(true);
+
+        prevButton.addActionListener(e -> viewManager.previousMonth());
+        nextButton.addActionListener(e -> viewManager.nextMonth());
+        monatButton.addActionListener(e -> viewManager.switchToView("month"));
+        wocheButton.addActionListener(e -> wocheAction());
+        tagButton.addActionListener(e -> tagAction());
+        aktuellerTagButton.addActionListener(e -> aktuellerTagAction());
+        springeNachButton.addActionListener(e -> springeNachAction());
+    }
+
+    private void prevAction() {
+        // Implementieren Sie die Funktion für den "Zurück"-Button hier...
+    }
+
+    private void nextAction() {
+        // Implementieren Sie die Funktion für den "Weiter"-Button hier...
+    }
+
+    private void monatAction() {
+        // Implementieren Sie die Funktion für den "Monat"-Button hier...
+    }
+
+    private void wocheAction() {
+        // Implementieren Sie die Funktion für den "Woche"-Button hier...
+    }
+
+    private void tagAction() {
+        // Implementieren Sie die Funktion für den "Tag"-Button hier...
+    }
+
+    private void aktuellerTagAction() {
+        // Implementieren Sie die Funktion für den "Aktueller Tag"-Button hier...
+    }
+
+    private void springeNachAction() {
+        // Implementieren Sie die Funktion für den "Springe nach"-Button hier...
     }
 }
