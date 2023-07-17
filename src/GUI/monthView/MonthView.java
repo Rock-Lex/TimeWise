@@ -22,7 +22,6 @@ import java.util.Locale;
  * Autor: Philipp Voß
  * Version: 1.4
  * Erstellt am: 16.17.2023
- *
  */
 public class MonthView extends CalendarView {
     private YearMonth yearMonth;
@@ -44,7 +43,6 @@ public class MonthView extends CalendarView {
         daysLabels = new JLabel[7];
 
         setLayout(new GridLayout(0, 7));
-
 
         for (int i = 0; i < 7; i++) {
             DayOfWeek dayOfWeek = DayOfWeek.of((i) % 7 + 1);  // Start with Monday
@@ -97,7 +95,38 @@ public class MonthView extends CalendarView {
 
     @Override
     public void updateView() {
+        System.out.println("Update");
 
+        this.removeAll();
+
+        System.out.println(yearMonth);
+
+        int numberOfDays = yearMonth.lengthOfMonth();
+        calendarCells = new CalendarCell[numberOfDays];
+        daysLabels = new JLabel[7];
+
+        // Wiederholen Sie den Vorgang der Initialisierung von MonthView
+        for (int i = 0; i < 7; i++) {
+            DayOfWeek dayOfWeek = DayOfWeek.of((i) % 7 + 1);  // Start with Monday
+            String dayName = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.GERMAN);
+            JLabel dayLabel = new JLabel(dayName, SwingConstants.CENTER);
+            daysLabels[i] = dayLabel;
+            add(dayLabel);
+        }
+
+        int offset = (LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), 1).getDayOfWeek().getValue() + 6) % 7;  // Erster Tag der ersten Woche im Monat
+        for (int i = 0; i < offset; i++) {  // Hinzufügen leerer Zellen als Offset am Monatsanfang
+            add(new JLabel());
+        }
+
+        for (int i = 1; i <= numberOfDays; i++) {
+            CalendarCell cell = new CalendarCell(Integer.toString(i));
+            calendarCells[i - 1] = cell;
+            add(cell);
+        }
+        // Update the UI
+        revalidate();
+        repaint();
     }
 
     /**
@@ -121,5 +150,13 @@ public class MonthView extends CalendarView {
         frame.pack();
         frame.setVisible(true);
     }
+    @Override
+    public void setYearMonth(YearMonth yearMonth) {
+        super.setYearMonth(yearMonth);
+        this.yearMonth = yearMonth;
+    }
 
+    public YearMonth getYearMonth() {
+        return this.yearMonth;
+    }
 }

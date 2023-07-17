@@ -1,9 +1,13 @@
 package GUI;
 
+import GUI.Views.CalendarView;
 import GUI.Views.CalendarViewManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 /**
  * Diese Klasse repräsentiert das Panel für die Änderung von Ansichten und
  * weiter- bzw. zurückblättern im Kalender.
@@ -26,10 +30,15 @@ public class PanelChange extends JPanel {
     private JButton nextButton;
     private JButton prevButton;
     private CalendarViewManager viewManager;
+    private CalendarView calendarView;
+    private PanelMain mainPanel;
 
 
-    public PanelChange(CalendarViewManager viewManager){
+
+    public PanelChange(CalendarViewManager viewManager,PanelMain mainPanel){
         this.viewManager = viewManager;
+        this.mainPanel = mainPanel;
+
 
         setOpaque(false);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -73,8 +82,23 @@ public class PanelChange extends JPanel {
         setSize(600, 100);
         setVisible(true);
 
-        prevButton.addActionListener(e -> viewManager.previousMonth());
-        nextButton.addActionListener(e -> viewManager.nextMonth());
+        nextButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                viewManager.nextMonth();
+                mainPanel.updateCurrentMonthLabel();
+                mainPanel.updateTabTitle();
+            }
+        });
+
+        prevButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                viewManager.previousMonth();
+                mainPanel.updateCurrentMonthLabel();
+                mainPanel.updateTabTitle();
+
+            }
+        });
+
         monatButton.addActionListener(e -> viewManager.switchToView("month"));
         wocheButton.addActionListener(e -> wocheAction());
         tagButton.addActionListener(e -> tagAction());
@@ -87,7 +111,7 @@ public class PanelChange extends JPanel {
     }
 
     private void nextAction() {
-        // Implementieren Sie die Funktion für den "Weiter"-Button hier...
+
     }
 
     private void monatAction() {

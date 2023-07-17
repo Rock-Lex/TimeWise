@@ -2,8 +2,11 @@ package GUI.Views;
 
 import GUI.monthView.MonthView;
 
+import java.time.Month;
 import java.time.YearMonth;
+import java.time.format.TextStyle;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -17,9 +20,12 @@ import java.util.Map;
 public class CalendarViewManager {
     private Map<String, CalendarView> views;
     private CalendarView currentView;
+    private YearMonth currentYearMonth;
+
 
     public CalendarViewManager() {
         views = new HashMap<>();
+        this.currentYearMonth = YearMonth.now();
 
         // Initialisiere die verschiedenen Views
         int currentYear = YearMonth.now().getYear();
@@ -44,7 +50,13 @@ public class CalendarViewManager {
 
     public void nextMonth() {
         YearMonth nextMonth = currentView.getYearMonth().plusMonths(1);
-        currentView.setYearMonth(nextMonth);
+
+        if (currentView instanceof MonthView) {
+            ((MonthView) currentView).setYearMonth(nextMonth);
+            System.out.println(nextMonth);
+            System.out.println("MonthView");
+        }
+
         currentView.updateView();
     }
 
@@ -53,9 +65,31 @@ public class CalendarViewManager {
         currentView.setYearMonth(previousMonth);
         currentView.updateView();
     }
+    public MonthView updateCurrentMonthView() {
+        YearMonth nextMonth = currentView.getYearMonth().plusMonths(1);
 
+        if (currentView instanceof MonthView) {
+            ((MonthView) currentView).setYearMonth(nextMonth);
+            System.out.println(nextMonth);
+            System.out.println("MonthView");
+        }
+
+        MonthView newView = (MonthView) currentView;
+        newView.updateView();
+        return newView;
+    }
     public CalendarView getCurrentView() {
         return currentView;
+    }
+    public String getCurrentMonthAndYear() {
+        Month month = currentYearMonth.getMonth();
+        int year = currentYearMonth.getYear();
+
+        // formatiert den Monat in seine volle textuelle Darstellung, z.B. "January", "February", etc.
+        String monthName = month.getDisplayName(TextStyle.FULL, Locale.GERMANY);
+
+        // gibt den formatierten String zurück
+        return monthName + " " + year;
     }
 }
 

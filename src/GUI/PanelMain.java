@@ -2,12 +2,16 @@ package GUI;
 
 import Calendar.Termin;
 import GUI.PanelChange;
+import GUI.Views.CalendarView;
 import GUI.Views.CalendarViewManager;
 import GUI.monthView.MonthView;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.Month;
 import java.time.YearMonth;
+import java.time.format.TextStyle;
+import java.util.Locale;
 import java.util.Random;
 
 /**
@@ -24,37 +28,42 @@ public class PanelMain extends JPanel {
     private PanelChange panelChange;
     private JFrame mainFrame;
     private CalendarViewManager viewManager;
-    private MonthView monthView;
+    private CalendarView monthView;
+    JLabel currentMonthLabel;
+
 
     public PanelMain(){
         YearMonth currentYearMonth = YearMonth.now();
         viewManager = new CalendarViewManager();
+
         mainFrame = new JFrame("Main Panel");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setOpaque(false);
         setLayout(new BorderLayout());
-        panelChange = new PanelChange(viewManager);
-        monthView = new MonthView(currentYearMonth.getYear(), currentYearMonth.getMonthValue());
 
+        // Hole die monthView von viewManager
+        monthView = viewManager.getCurrentView();
         tabbedPane = new JTabbedPane();
-        tabbedPane.addTab("Monatsansicht", monthView);
-
+        tabbedPane.addTab(String.valueOf(currentYearMonth), monthView);
+        panelChange = new PanelChange(viewManager, this);
         add(panelChange, BorderLayout.NORTH);
         add(tabbedPane, BorderLayout.CENTER);
 
         mainFrame.getContentPane().add(this);
         mainFrame.setSize(800, 600);
         mainFrame.setVisible(true);
+        currentMonthLabel = new JLabel(viewManager.getCurrentView().getYearMonth().toString());
+        add(currentMonthLabel, BorderLayout.SOUTH);
     }
+
     public MonthView getMonthView() {
-        return monthView;
+        return (MonthView) monthView;
     }
 
     public static void main(String[] args){
         PanelMain panelMain = new GUI.PanelMain();
 
         YearMonth currentYearMonth = YearMonth.now();
-
 
         Random random = new Random();
 
@@ -82,5 +91,21 @@ public class PanelMain extends JPanel {
             // Hinzufügen des Termins
             panelMain.getMonthView().addAppointment(termin);
         }
+    }
+
+    public void updateMonthView(MonthView newView) {
+        tabbedPane.remove(monthView);
+        monthView = newView;
+        String monthName = String.valueOf(monthView.getYearMonth().getMonth());
+        int year = monthView.getYearMonth().getYear();
+        tabbedPane.addTab(monthName + " " + year, monthView);
+    }
+    public void updateCurrentMonthLabel() {
+        currentMonthLabel.setText(viewManager.getCurrentView().getYearMonth().toString());
+    }
+
+    public void updateTabTitle() {
+        String currentMonthAndYear = String.valueOf(monthView.getYearMonth());
+        tabbedPane.setTitleAt(0, currentMonthAndYear);
     }
 }
