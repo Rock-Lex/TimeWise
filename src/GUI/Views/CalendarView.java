@@ -1,6 +1,7 @@
 package GUI.Views;
 
 import Calendar.Termin;
+import Calendar.TerminListe;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,8 +19,9 @@ public abstract class CalendarView extends JPanel {
     protected YearMonth yearMonth;
     private int year;
     private int month;
+    private TerminListe terminListe;
 
-    public CalendarView(int year, int month) {
+    public CalendarView(int year, int month, TerminListe terminListe) {
         yearMonth = YearMonth.of(year, month);
         setLayout(new GridLayout(0, 7));
         this.year = year;
@@ -38,7 +40,10 @@ public abstract class CalendarView extends JPanel {
         this.yearMonth = yearMonth;
     }
 
-    public abstract void updateView();
+    public abstract void updateView(TerminListe terminListe);
+    public abstract void nextPeriod();
+    public abstract void previousPeriod();
+
 
     public int getYear() {
         return this.year;

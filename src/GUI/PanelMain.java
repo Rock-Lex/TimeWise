@@ -28,7 +28,7 @@ public class PanelMain extends JPanel {
     private CalendarView monthView;
     public PanelMain(TerminListe terminListe){
         YearMonth currentYearMonth = YearMonth.now();
-        viewManager = new CalendarViewManager();
+        viewManager = new CalendarViewManager(terminListe);
 
         mainFrame = new JFrame("Main Panel");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -62,14 +62,6 @@ public class PanelMain extends JPanel {
         System.out.println("Anzahl der Termine in terminListe (Main Methode): " + terminListe.getTermine().size());
 
         PanelMain panelMain = new GUI.PanelMain(terminListe);
-
-        YearMonth currentYearMonth = YearMonth.now();
-        for (Termin termin : terminListe.getTermine()) {
-            YearMonth terminYearMonth = YearMonth.from(termin.getStart().toLocalDate());
-            if(terminYearMonth.equals(currentYearMonth)){
-                panelMain.getMonthView().addAppointment(termin);
-            }
-        }
     }
     public void updateTabTitle() {
         String currentMonthAndYear = String.valueOf(monthView.getYearMonth());

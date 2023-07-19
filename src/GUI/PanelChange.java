@@ -45,7 +45,6 @@ public class PanelChange extends JPanel {
         setOpaque(false);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        // Erstelle die Buttons und füge sie dem Panel hinzu
         prevButton = new JButton("Zurück");
         nextButton = new JButton("Weiter");
         monatButton = new JButton("Monat");
@@ -54,18 +53,11 @@ public class PanelChange extends JPanel {
         aktuellerTagButton = new JButton("Aktueller Tag");
         springeNachButton = new JButton("Springe nach");
 
-        // Hinzufügen von jumpPanel, welches aus 2 Buttons besteht
-        // 1. Button: Zum aktuellen Tag springen
-        // 2. Button: Zu eingegebenen Datum springen
         jumpPanel = new JPanel();
         jumpPanel.setLayout(new BoxLayout(jumpPanel, BoxLayout.Y_AXIS));
         jumpPanel.add(aktuellerTagButton);
         jumpPanel.add(springeNachButton);
 
-        // Hinzufügen von monthChangePanel, welches aus 2 Buttons besteht und dem jumpPanel
-        // besteht.
-        // 1. Button: Blätter zum vorherigen Monat/Woche/Tag je nach aktueller Ansicht
-        // 2. Button: Blättere zum nächsten Monat/Woche/Tag je nach aktueller Ansicht
         monthChangePanel = new JPanel();
         monthChangePanel.setLayout(new BoxLayout(monthChangePanel, BoxLayout.X_AXIS));
         monthChangePanel.add(prevButton);
@@ -86,18 +78,16 @@ public class PanelChange extends JPanel {
 
         nextButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                viewManager.nextMonth(terminListe);
+                viewManager.nextPeriod(terminListe);
                 mainPanel.updateTabTitle();
             }
         });
 
         prevButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                viewManager.previousMonth(terminListe);
+                viewManager.previousPeriod(terminListe);
                 mainPanel.updateTabTitle();
             }
         });
-
-        monatButton.addActionListener(e -> viewManager.switchToView("month"));
     }
 }
