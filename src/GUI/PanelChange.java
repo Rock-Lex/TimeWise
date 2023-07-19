@@ -1,5 +1,6 @@
 package GUI;
 
+import Calendar.TerminListe;
 import GUI.Views.CalendarView;
 import GUI.Views.CalendarViewManager;
 
@@ -32,13 +33,14 @@ public class PanelChange extends JPanel {
     private CalendarViewManager viewManager;
     private CalendarView calendarView;
     private PanelMain mainPanel;
+    private TerminListe terminListe;
 
 
-
-    public PanelChange(CalendarViewManager viewManager,PanelMain mainPanel){
+    public PanelChange(CalendarViewManager viewManager,PanelMain mainPanel, TerminListe terminListe){
         this.viewManager = viewManager;
         this.mainPanel = mainPanel;
-
+        this.terminListe = terminListe;
+        System.out.println("Anzahl der Termine in terminListe in PanelChange: " + this.terminListe.getTermine().size());
 
         setOpaque(false);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -84,53 +86,18 @@ public class PanelChange extends JPanel {
 
         nextButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                viewManager.nextMonth();
-                mainPanel.updateCurrentMonthLabel();
+                viewManager.nextMonth(terminListe);
                 mainPanel.updateTabTitle();
             }
         });
 
         prevButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                viewManager.previousMonth();
-                mainPanel.updateCurrentMonthLabel();
+                viewManager.previousMonth(terminListe);
                 mainPanel.updateTabTitle();
-
             }
         });
 
         monatButton.addActionListener(e -> viewManager.switchToView("month"));
-        wocheButton.addActionListener(e -> wocheAction());
-        tagButton.addActionListener(e -> tagAction());
-        aktuellerTagButton.addActionListener(e -> aktuellerTagAction());
-        springeNachButton.addActionListener(e -> springeNachAction());
-    }
-
-    private void prevAction() {
-        // Implementieren Sie die Funktion für den "Zurück"-Button hier...
-    }
-
-    private void nextAction() {
-
-    }
-
-    private void monatAction() {
-        // Implementieren Sie die Funktion für den "Monat"-Button hier...
-    }
-
-    private void wocheAction() {
-        // Implementieren Sie die Funktion für den "Woche"-Button hier...
-    }
-
-    private void tagAction() {
-        // Implementieren Sie die Funktion für den "Tag"-Button hier...
-    }
-
-    private void aktuellerTagAction() {
-        // Implementieren Sie die Funktion für den "Aktueller Tag"-Button hier...
-    }
-
-    private void springeNachAction() {
-        // Implementieren Sie die Funktion für den "Springe nach"-Button hier...
     }
 }

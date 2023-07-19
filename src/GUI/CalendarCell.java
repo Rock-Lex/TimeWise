@@ -26,6 +26,7 @@ public class CalendarCell extends JPanel {
     private TreeMap<String, Termin> appointmentMap;
 
 
+
     /**
      * Erstellt eine neue Kalenderzelle mit dem angegebenen Tag.
      *
@@ -123,5 +124,10 @@ public class CalendarCell extends JPanel {
         frame.getContentPane().add(cell);
         frame.pack();
         frame.setVisible(true);
+    }
+
+    public void clearAppointments() {
+        appointmentMap.clear();
+        textArea.setText("");  // Außerdem sollten Sie das Textfeld leeren
     }
 }

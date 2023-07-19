@@ -82,16 +82,28 @@ public class MonthView extends CalendarView {
      * @param appointment Der Termin als String.
      */
     public void addAppointment(Termin appointment) {
-        String formattedAppointment = appointment.getStart().format(DateTimeFormatter.ofPattern("HH:mm")) +
-                " - " +
-                appointment.getEnd().format(DateTimeFormatter.ofPattern("HH:mm")) +
-                " " +
-                appointment.getTitle();
+        // Vergleich des Monats des Termins mit dem Monat der `MonthView`
+        if (appointment.getStart().getMonth() == yearMonth.getMonth()) {
+            String formattedAppointment = appointment.getStart().format(DateTimeFormatter.ofPattern("HH:mm")) +
+                    " - " +
+                    appointment.getEnd().format(DateTimeFormatter.ofPattern("HH:mm")) +
+                    " " +
+                    appointment.getTitle();
 
-        int day = appointment.getStart().getDayOfMonth(); // Extrahieren des Tages aus dem Termin
-        CalendarCell cell = calendarCells[day - 1];
-        cell.addAppointment(formattedAppointment, appointment);  // Appointment an UI Methode übergeben
+            int day = appointment.getStart().getDayOfMonth(); // Extrahieren des Tages aus dem Termin
+            if (day <= calendarCells.length) {
+                CalendarCell cell = calendarCells[day - 1];
+                cell.addAppointment(formattedAppointment, appointment);  // Appointment an UI Methode übergeben
+            } else {
+                // Behandlung des Fehlers, wenn der Tag des Termins größer ist als die Länge des `calendarCells` Arrays
+                System.out.println("Fehler: Der Tag des Termins ("+ appointment.getTitle() + day + ") liegt außerhalb des aktuellen Monats (" + yearMonth.getMonth() + ").");
+            }
+        } else {
+            // Behandlung des Fehlers, wenn der Monat des Termins nicht dem Monat der `MonthView` entspricht
+            System.out.println("Fehler: Der Termin gehört nicht zum aktuellen Monat (" + yearMonth.getMonth() + ").");
+        }
     }
+
 
     @Override
     public void updateView() {
@@ -125,6 +137,7 @@ public class MonthView extends CalendarView {
             add(cell);
         }
         // Update the UI
+
         revalidate();
         repaint();
     }
@@ -158,5 +171,11 @@ public class MonthView extends CalendarView {
 
     public YearMonth getYearMonth() {
         return this.yearMonth;
+    }
+
+    public void clearAppointments() {
+        for (CalendarCell cell : calendarCells) {
+            cell.clearAppointments();
+        }
     }
 }

@@ -1,5 +1,7 @@
 package GUI.Views;
 
+import Calendar.Termin;
+import Calendar.TerminListe;
 import GUI.monthView.MonthView;
 
 import java.time.Month;
@@ -48,33 +50,61 @@ public class CalendarViewManager {
         currentView.updateView();
     }
 
-    public void nextMonth() {
+    public void nextMonth(TerminListe terminListe) {
         YearMonth nextMonth = currentView.getYearMonth().plusMonths(1);
 
         if (currentView instanceof MonthView) {
             ((MonthView) currentView).setYearMonth(nextMonth);
-            System.out.println(nextMonth);
-            System.out.println("MonthView");
         }
 
-        currentView.updateView();
+        updateCurrentMonthView(terminListe);
+        reloadAppointments(terminListe);
     }
 
-    public void previousMonth() {
+    public void previousMonth(TerminListe terminListe) {
         YearMonth previousMonth = currentView.getYearMonth().minusMonths(1);
-        currentView.setYearMonth(previousMonth);
-        currentView.updateView();
-    }
-    public MonthView updateCurrentMonthView() {
-        YearMonth nextMonth = currentView.getYearMonth().plusMonths(1);
 
         if (currentView instanceof MonthView) {
-            ((MonthView) currentView).setYearMonth(nextMonth);
-            System.out.println(nextMonth);
-            System.out.println("MonthView");
+            ((MonthView) currentView).setYearMonth(previousMonth);
+        }
+
+        updateCurrentMonthView(terminListe);
+        reloadAppointments(terminListe);
+    }
+
+    private void reloadAppointments(TerminListe terminListe) {
+        if (currentView instanceof MonthView) {
+            MonthView monthView = (MonthView) currentView;
+            monthView.clearAppointments();
+            for (Termin termin : terminListe.getTermine()) {
+                if (termin.getStart().getMonth() == monthView.getYearMonth().getMonth()
+                        && termin.getStart().getYear() == monthView.getYearMonth().getYear()) {
+                    monthView.addAppointment(termin);
+                }
+            }
+            monthView.updateView();
+        }
+    }
+
+    public MonthView updateCurrentMonthView(TerminListe terminListe) {
+        System.out.println("CalenderView Terminlistengröße: " + terminListe.getTermine().size());
+        if (!(currentView instanceof MonthView)) {
+            throw new IllegalArgumentException("Current view is not MonthView");
         }
 
         MonthView newView = (MonthView) currentView;
+        YearMonth currentMonth = newView.getYearMonth();
+
+        // Lösche alle Termine der aktuellen Ansicht
+        newView.clearAppointments();
+
+        // Füge nur die Termine des aktuellen Monats zur Ansicht hinzu
+        for (Termin termin : terminListe.getTermine()) {
+            if (termin.getStart().getMonth() == currentMonth.getMonth() && termin.getStart().getYear() == currentMonth.getYear()) {
+                newView.addAppointment(termin);
+            }
+        }
+
         newView.updateView();
         return newView;
     }
@@ -92,4 +122,3 @@ public class CalendarViewManager {
         return monthName + " " + year;
     }
 }
-

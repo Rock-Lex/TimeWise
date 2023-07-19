@@ -122,8 +122,6 @@ public class Termin implements Comparable<Termin>{
      * @return String mit allen Daten zu einem Termin.
      */
 
-
-
     @Override
     public String toString() {
         return "Termin{" +
