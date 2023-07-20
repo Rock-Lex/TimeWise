@@ -116,7 +116,6 @@ public class Database {
         } catch (SQLCommandException e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
-
     }
 
     public void deleteTermin(String id) {

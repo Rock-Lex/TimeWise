@@ -34,6 +34,10 @@ public class TerminListe implements Comparable<TerminListe>{
 
     }
 
+    public TerminListe(){
+
+    }
+
     /**
      *
      * @return sb Daten in Kalender gespeichert
