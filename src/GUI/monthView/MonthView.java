@@ -21,8 +21,9 @@ import java.util.Locale;
  * Eine benutzerdefinierte Swing-Komponente zur Darstellung einer Monatsansicht im Kalender.
  *
  * Autor: Philipp Voß
- * Version: 1.4
+ * Version: 1.6
  * Erstellt am: 16.17.2023
+ * Letzte Änderung: 19.07.2023
  */
 public class MonthView extends CalendarView {
     private TerminListe terminListe;
@@ -35,6 +36,7 @@ public class MonthView extends CalendarView {
      *
      * @param year Der aktuelle Jahr als int.
      * @param month Der aktuelle Monat als int.
+     * @param terminListe Eine Liste von Terminen
      */
     public MonthView(int year, int month, TerminListe terminListe) {
         super(year, month, terminListe);
@@ -177,7 +179,9 @@ public class MonthView extends CalendarView {
     public YearMonth getYearMonth() {
         return this.yearMonth;
     }
-
+    /**
+     * Löscht alle Termine aus den Kalenderzellen.
+     */
     public void clearAppointments() {
         for (CalendarCell cell : calendarCells) {
             cell.clearAppointments();

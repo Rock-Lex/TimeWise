@@ -12,16 +12,20 @@ import java.util.Map;
  * Verwaltungsklasse für die verschiedenen Kalenderansichten.
  *
  * Autor: Philipp Voß
- * Version: 1.0
+ * Version: 1.3
  * Erstellt am: 16.07.2023
- *
+ * Letzte Änderung: 19.07.2023
  */
 public class CalendarViewManager {
     private Map<String, CalendarView> views;
     private CalendarView currentView;
     private YearMonth currentYearMonth;
     private TerminListe terminListe;
-
+    /**
+     * Konstruktor für die Klasse CalendarViewManager.
+     *
+     * @param terminListe Eine Liste von Terminen
+     */
     public CalendarViewManager(TerminListe terminListe) {
         views = new HashMap<>();
         this.currentYearMonth = YearMonth.now();
@@ -37,16 +41,30 @@ public class CalendarViewManager {
         // Monatsansicht als Standard gesetzt
         currentView = views.get("month");
     }
+    /**
+     * Wechselt zur nächsten Zeitspanne in der aktuellen Ansicht.
+     *
+     * @param terminListe Eine Liste von Terminen
+     */
     public void nextPeriod(TerminListe terminListe) {
         currentView.nextPeriod();
         reloadAppointments(terminListe);
     }
-
+    /**
+     * Wechselt zur vorherigen Zeitspanne in der aktuellen Ansicht.
+     *
+     * @param terminListe Eine Liste von Terminen
+     */
     public void previousPeriod(TerminListe terminListe) {
         currentView.previousPeriod();
         reloadAppointments(terminListe);
     }
 
+    /**
+     * Aktualisiert die Termine in der aktuellen Ansicht.
+     *
+     * @param terminListe Eine Liste von Terminen
+     */
     private void reloadAppointments(TerminListe terminListe) {
         if (currentView instanceof MonthView) {
             MonthView monthView = (MonthView) currentView;
@@ -61,26 +79,11 @@ public class CalendarViewManager {
         }
     }
 
-    public MonthView updateCurrentMonthView(TerminListe terminListe) {
-        System.out.println("CalenderView Terminlistengröße: " + terminListe.getTermine().size());
-        if (!(currentView instanceof MonthView)) {
-            throw new IllegalArgumentException("Current view is not MonthView");
-        }
-
-        MonthView newView = (MonthView) currentView;
-        YearMonth currentMonth = newView.getYearMonth();
-
-        newView.clearAppointments();
-
-        for (Termin termin : terminListe.getTermine()) {
-            if (termin.getStart().getMonth() == currentMonth.getMonth() && termin.getStart().getYear() == currentMonth.getYear()) {
-                newView.addAppointment(termin);
-            }
-        }
-
-        newView.updateView(terminListe);
-        return newView;
-    }
+    /**
+     * Gibt die aktuelle Ansicht zurück.
+     *
+     * @return Die aktuelle Ansicht
+     */
     public CalendarView getCurrentView() {
         return currentView;
     }

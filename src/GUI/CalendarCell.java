@@ -15,7 +15,7 @@ import Calendar.Termin;
  * Eine benutzerdefinierte Swing-Komponente zur Darstellung von Kalenderzellen.
  *
  * Autor: Philipp Voß
- * Version: 1.2
+ * Version: 1.3
  * Erstellt am: 08.06.2023
  * Letzte Änderung: 16.07.2023
  */
@@ -125,9 +125,11 @@ public class CalendarCell extends JPanel {
         frame.pack();
         frame.setVisible(true);
     }
-
+    /**
+     * Löscht alle Termine und leert das Textfeld.
+     */
     public void clearAppointments() {
         appointmentMap.clear();
-        textArea.setText("");  // Außerdem sollten Sie das Textfeld leeren
+        textArea.setText("");
     }
 }

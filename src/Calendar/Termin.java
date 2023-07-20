@@ -45,7 +45,7 @@ public class Termin implements Comparable<Termin>{
         this.multiDay = !startDate.equals(endDate);
 
         this.id = IDGenerator.generateID(type);
-
+        
         if(this.start.isAfter(this.end)){
             throw new InvalidDateException("Startdatum muss vor dem Enddatum liegen.");
         }

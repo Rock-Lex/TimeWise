@@ -15,9 +15,9 @@ import java.util.Random;
  * Diese Klasse repräsentiert das Hauptpanel der Anwendung.
  *
  * Autor: Philipp Voß
- * Version: 1.4
+ * Version: 1.5
  * Erstellt am: 02.06.2023
- * Letzte Änderung: 16.07.2023
+ * Letzte Änderung: 19.07.2023
  *
  */
 public class PanelMain extends JPanel {
@@ -26,6 +26,11 @@ public class PanelMain extends JPanel {
     private JFrame mainFrame;
     private CalendarViewManager viewManager;
     private CalendarView monthView;
+    /**
+     * Erstellt ein neues PanelMain-Objekt mit der angegebenen Terminliste.
+     *
+     * @param terminListe Die Terminliste für den Kalender
+     */
     public PanelMain(TerminListe terminListe){
         YearMonth currentYearMonth = YearMonth.now();
         viewManager = new CalendarViewManager(terminListe);
@@ -49,11 +54,19 @@ public class PanelMain extends JPanel {
         mainFrame.setSize(800, 600);
         mainFrame.setVisible(true);
     }
-
+    /**
+     * Gibt die MonthView zurück.
+     *
+     * @return Die MonthView
+     */
     public MonthView getMonthView() {
         return (MonthView) monthView;
     }
-
+    /**
+     * Die Hauptmethode der Anwendung.
+     *
+     * @param args Kommandozeilenargumente (werden ignoriert)
+     */
     public static void main(String[] args){
         TerminListe terminListe = new TerminListe();
 
@@ -63,13 +76,20 @@ public class PanelMain extends JPanel {
 
         PanelMain panelMain = new GUI.PanelMain(terminListe);
     }
+    /**
+     * Aktualisiert den Titel des Tabs mit dem aktuellen Monat und Jahr.
+     */
     public void updateTabTitle() {
         String currentMonthAndYear = String.valueOf(monthView.getYearMonth());
         tabbedPane.setTitleAt(0, currentMonthAndYear);
         revalidate();
         repaint();
     }
-
+    /**
+     * Erstellt zufällige Termine und fügt sie der Terminliste hinzu.
+     *
+     * @param terminListe Die Terminliste, zu der die Termine hinzugefügt werden sollen
+     */
     public static void erstelleZufaelligeTermine(TerminListe terminListe) {
         YearMonth currentYearMonth = YearMonth.now();
 
