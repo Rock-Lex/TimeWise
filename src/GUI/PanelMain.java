@@ -26,6 +26,9 @@ public class PanelMain extends JPanel {
     private JFrame mainFrame;
     private CalendarViewManager viewManager;
     private CalendarView monthView;
+    private JButton btn_createAppointment;
+    private JPanel upperPanel;
+
     /**
      * Erstellt ein neues PanelMain-Objekt mit der angegebenen Terminliste.
      *
@@ -40,19 +43,33 @@ public class PanelMain extends JPanel {
         setOpaque(false);
         setLayout(new BorderLayout());
 
+        // Erstellen des Buttons
+        btn_createAppointment = new JButton("Erstelle Termin");
+
+        // Erstellen des neuen JPanels und Hinzufügen von PanelChange und dem Button
+        upperPanel = new JPanel(new BorderLayout());
+        upperPanel.add(btn_createAppointment, BorderLayout.WEST); // Button an der linken Seite
+
+        panelChange = new PanelChange(viewManager, this, terminListe);
+        upperPanel.add(panelChange, BorderLayout.CENTER); // PanelChange in der Mitte
+
         // Hole die monthView von viewManager
         monthView = viewManager.getCurrentView();
         tabbedPane = new JTabbedPane();
         tabbedPane.addTab(String.valueOf(currentYearMonth), monthView);
         System.out.println("Anzahl der Termine in terminListe in PanelMain (Konstruktor): " + terminListe.getTermine().size());
 
-        panelChange = new PanelChange(viewManager, this, terminListe);
-        add(panelChange, BorderLayout.NORTH);
+
+        add(upperPanel, BorderLayout.NORTH);
         add(tabbedPane, BorderLayout.CENTER);
 
         mainFrame.getContentPane().add(this);
-        mainFrame.setSize(800, 600);
+        mainFrame.setSize(1200, 800);
+        mainFrame.setLocationRelativeTo(null); // Fenster in der Bildschirmmitte öffnen
         mainFrame.setVisible(true);
+
+        mainFrame.revalidate();
+        mainFrame.repaint();
     }
     /**
      * Gibt die MonthView zurück.
