@@ -2,6 +2,8 @@ package GUI.Views;
 
 import Calendar.Termin;
 import Calendar.TerminListe;
+import GUI.Exceptions.AppointmentMismatchMonthException;
+import GUI.Exceptions.AppointmentOutOfMonthRangeException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,7 +47,7 @@ public abstract class CalendarView extends JPanel {
      *
      * @param appointment Der Termin, der hinzugefügt werden soll
      */
-    public abstract void addAppointment(Termin appointment);
+    public abstract void addAppointment(Termin appointment) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException;
 
     /**
      * Gibt das Jahr und den Monat der Kalenderansicht zurück.
@@ -68,7 +70,7 @@ public abstract class CalendarView extends JPanel {
      *
      * @param terminListe Die aktualisierte Terminliste
      */
-    public abstract void updateView(TerminListe terminListe);
+    public abstract void updateView(TerminListe terminListe) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException;
     /**
      * Wechselt zur nächsten Zeitspanne in der Kalenderansicht.
      */
@@ -108,5 +110,8 @@ public abstract class CalendarView extends JPanel {
      */
     public void setMonth(int month) {
         this.month = month;
+    }
+
+    public void todaysPeriod() {
     }
 }

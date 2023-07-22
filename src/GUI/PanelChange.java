@@ -1,6 +1,8 @@
 package GUI;
 
 import Calendar.TerminListe;
+import GUI.Exceptions.AppointmentMismatchMonthException;
+import GUI.Exceptions.AppointmentOutOfMonthRangeException;
 import GUI.Views.CalendarView;
 import GUI.Views.CalendarViewManager;
 
@@ -8,26 +10,28 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 /**
  * Diese Klasse repräsentiert das Panel für die Änderung von Ansichten und
  * weiter- bzw. zurückblättern im Kalender.
  *
  * Autor: Philipp Voß
- * Version: 1.1
+ * Version: 1.2
  * Erstellt am: 03.06.2023
  * Letzte Änderung: 19.07.2023
  */
 public class PanelChange extends JPanel {
     private JPanel panelChange;
-    private JPanel buttonPanel;
-    private JButton wocheButton;
-    private JButton monatButton;
-    private JButton tagButton;
+    private JPanel bottomPanel;
+    private JButton btn_week;
+    private JButton btn_month;
+    private JButton btn_day;
     private JPanel monthChangePanel;
     private JPanel jumpPanel;
-    private JButton springeNachButton;
-    private JButton aktuellerTagButton;
+    private JButton btn_jumpTo;
+    private JButton btn_today;
     private JButton nextButton;
     private JButton prevButton;
     private CalendarViewManager viewManager;
@@ -54,16 +58,16 @@ public class PanelChange extends JPanel {
 
         prevButton = new JButton("Zurück");
         nextButton = new JButton("Weiter");
-        monatButton = new JButton("Monat");
-        wocheButton = new JButton("Woche");
-        tagButton = new JButton("Tag");
-        aktuellerTagButton = new JButton("Aktueller Tag");
-        springeNachButton = new JButton("Springe nach");
+        btn_month = new JButton("Monat");
+        btn_week = new JButton("Woche");
+        btn_day = new JButton("Tag");
+        btn_today = new JButton("Aktueller Tag");
+        btn_jumpTo = new JButton("Springe zu");
 
         jumpPanel = new JPanel();
         jumpPanel.setLayout(new BoxLayout(jumpPanel, BoxLayout.Y_AXIS));
-        jumpPanel.add(aktuellerTagButton);
-        jumpPanel.add(springeNachButton);
+        jumpPanel.add(btn_today);
+        jumpPanel.add(btn_jumpTo);
 
         monthChangePanel = new JPanel();
         monthChangePanel.setLayout(new BoxLayout(monthChangePanel, BoxLayout.X_AXIS));
@@ -71,30 +75,77 @@ public class PanelChange extends JPanel {
         monthChangePanel.add(jumpPanel);
         monthChangePanel.add(nextButton);
 
-        buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout());
+        bottomPanel = new JPanel();
+        bottomPanel.setLayout(new FlowLayout());
 
-        buttonPanel.add(tagButton);
-        buttonPanel.add(wocheButton);
-        buttonPanel.add(monatButton);
+        bottomPanel.add(btn_day);
+        bottomPanel.add(btn_week);
+        bottomPanel.add(btn_month);
 
         add(monthChangePanel);
-        add(buttonPanel);
+        add(bottomPanel);
         setSize(600, 100);
         setVisible(true);
 
         nextButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                viewManager.nextPeriod(terminListe);
+                try {
+                    viewManager.nextPeriod(terminListe);
+                } catch (AppointmentOutOfMonthRangeException ex) {
+                    throw new RuntimeException(ex);
+                } catch (AppointmentMismatchMonthException ex) {
+                    throw new RuntimeException(ex);
+                }
                 mainPanel.updateTabTitle();
             }
         });
 
         prevButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                viewManager.previousPeriod(terminListe);
+                try {
+                    viewManager.previousPeriod(terminListe);
+                } catch (AppointmentOutOfMonthRangeException ex) {
+                    throw new RuntimeException(ex);
+                } catch (AppointmentMismatchMonthException ex) {
+                    throw new RuntimeException(ex);
+                }
                 mainPanel.updateTabTitle();
             }
         });
+
+        btn_today.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Springe zum aktuellen Tag
+                try {
+                    viewManager.jumpToCurrentDay();
+                } catch (AppointmentOutOfMonthRangeException ex) {
+                    throw new RuntimeException(ex);
+                } catch (AppointmentMismatchMonthException ex) {
+                    throw new RuntimeException(ex);
+                }
+                mainPanel.updateTabTitle();
+            }
+        });
+
+        btn_jumpTo.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                String input = JOptionPane.showInputDialog(null, "Geben Sie ein Datum ein (YYYY-MM-DD):");
+
+                if (input != null && !input.isEmpty()) {
+                    try {
+                        LocalDate date = LocalDate.parse(input);
+                        viewManager.jumpToDate(date);
+                        mainPanel.updateTabTitle();
+                    } catch (DateTimeParseException dtpe) {
+                        JOptionPane.showMessageDialog(null, "Ungültiges Datumsformat. Bitte geben Sie das Datum im Format YYYY-MM-DD ein.", "Fehler", JOptionPane.ERROR_MESSAGE);
+                    } catch (AppointmentOutOfMonthRangeException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (AppointmentMismatchMonthException ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+            }
+        });
+
     }
 }
