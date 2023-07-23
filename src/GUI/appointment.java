@@ -25,7 +25,6 @@ import org.jdatepicker.impl.UtilDateModel;
 
 public class appointment {
 
-
     private static final List<Termin> appointments = new ArrayList<>();
     private static final JFrame frame = new JFrame("Termin App");
     private static final JPanel mainPanel = new JPanel(new BorderLayout());
@@ -39,6 +38,10 @@ public class appointment {
         // Richtet die Graphische Oberfläche ein
         setupUI();
 
+    }
+
+    public static void showUI() {
+        setupUI();
     }
 
     private static void setupUI() {

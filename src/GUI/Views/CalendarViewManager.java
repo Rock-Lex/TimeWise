@@ -2,8 +2,11 @@ package GUI.Views;
 
 import Calendar.Termin;
 import Calendar.TerminListe;
+import GUI.Exceptions.AppointmentMismatchMonthException;
+import GUI.Exceptions.AppointmentOutOfMonthRangeException;
 import GUI.monthView.MonthView;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +29,7 @@ public class CalendarViewManager {
      *
      * @param terminListe Eine Liste von Terminen
      */
-    public CalendarViewManager(TerminListe terminListe) {
+    public CalendarViewManager(TerminListe terminListe) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         views = new HashMap<>();
         this.currentYearMonth = YearMonth.now();
         this.terminListe = terminListe;
@@ -46,7 +49,7 @@ public class CalendarViewManager {
      *
      * @param terminListe Eine Liste von Terminen
      */
-    public void nextPeriod(TerminListe terminListe) {
+    public void nextPeriod(TerminListe terminListe) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         currentView.nextPeriod();
         reloadAppointments(terminListe);
     }
@@ -55,7 +58,7 @@ public class CalendarViewManager {
      *
      * @param terminListe Eine Liste von Terminen
      */
-    public void previousPeriod(TerminListe terminListe) {
+    public void previousPeriod(TerminListe terminListe) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         currentView.previousPeriod();
         reloadAppointments(terminListe);
     }
@@ -65,7 +68,7 @@ public class CalendarViewManager {
      *
      * @param terminListe Eine Liste von Terminen
      */
-    private void reloadAppointments(TerminListe terminListe) {
+    private void reloadAppointments(TerminListe terminListe) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         if (currentView instanceof MonthView) {
             MonthView monthView = (MonthView) currentView;
             monthView.clearAppointments();
@@ -87,4 +90,30 @@ public class CalendarViewManager {
     public CalendarView getCurrentView() {
         return currentView;
     }
+
+    public void jumpToCurrentDay() throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
+        this.currentView.todaysPeriod();
+        reloadAppointments(terminListe);
+    }
+
+    public void jumpToDate(LocalDate date) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
+        // Setzt das aktuelle Jahr und den aktuellen Monat auf das eingegebene Datum
+        this.currentYearMonth = YearMonth.of(date.getYear(), date.getMonth());
+
+        // Aktualisiert die Ansicht
+        this.currentView.setYearMonth(currentYearMonth);
+
+        // Wenn die aktuelle Ansicht eine MonthView ist, aktualisieren Sie die Termine
+        if (this.currentView instanceof MonthView) {
+            ((MonthView) this.currentView).clearAppointments();
+            for (Termin termin : this.terminListe.getTermine()) {
+                if (termin.getStart().getYear() == currentYearMonth.getYear()
+                        && termin.getStart().getMonth() == currentYearMonth.getMonth()) {
+                    ((MonthView) this.currentView).addAppointment(termin);
+                }
+            }
+            ((MonthView) this.currentView).updateView(this.terminListe);
+        }
+    }
+
 }
