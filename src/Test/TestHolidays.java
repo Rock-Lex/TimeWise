@@ -21,7 +21,7 @@ import java.util.List;
 
 public class TestHolidays {
 	public static void main(String[] args) {
-		HolidaysList holidaysList = new HolidaysList();
+		HolidaysList holidaysList = new HolidaysList(2023);
 
 		for (Holidays holidays1 : holidaysList.getHolidays()) { // Use getHolidays() to get the list of holidays
 			System.out.println(holidays1.getName());

@@ -13,8 +13,6 @@ import java.awt.event.ActionListener;
 //import org.jdatepicker.impl.UtilDateModel;
 
 
-
-
  /* Eine GUI zur erstellung von Terminen.
          *
          * Autor: Simon Degmair

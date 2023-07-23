@@ -4,7 +4,6 @@ import Calendar.Termin;
 import Calendar.TerminListe;
 import GUI.Exceptions.AppointmentMismatchMonthException;
 import GUI.Exceptions.AppointmentOutOfMonthRangeException;
-import GUI.monthView.MonthView;
 
 import java.time.LocalDate;
 import java.time.YearMonth;

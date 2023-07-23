@@ -6,11 +6,11 @@ import GUI.Exceptions.AppointmentMismatchMonthException;
 import GUI.Exceptions.AppointmentOutOfMonthRangeException;
 import GUI.Views.CalendarView;
 import GUI.Views.CalendarViewManager;
-import GUI.monthView.MonthView;
+import GUI.Views.MonthView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.*;
+
 import IOManager.Database;
 import IOManager.Exceptions.SQLPackageException;
 import IOManager.Exceptions.WrongPathException;

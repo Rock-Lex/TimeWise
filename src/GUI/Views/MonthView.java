@@ -1,17 +1,15 @@
-package GUI.monthView;
+package GUI.Views;
 
 
+import Calendar.HolidaysList;
 import Calendar.Termin;
 import Calendar.TerminListe;
 import GUI.CalendarCell;
 import GUI.Exceptions.AppointmentMismatchMonthException;
 import GUI.Exceptions.AppointmentOutOfMonthRangeException;
-import GUI.Views.CalendarView;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -196,6 +194,10 @@ public class MonthView extends CalendarView {
         for (CalendarCell cell : calendarCells) {
             cell.clearAppointments();
         }
+    }
+
+    public void getHolidays(){
+        HolidaysList holidaysList = new HolidaysList(yearMonth.getYear());
     }
 
     /**
