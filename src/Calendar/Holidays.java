@@ -10,57 +10,64 @@ package Calendar;
  * Letzte Änderung: 23.05.2023
  */
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+
 public class Holidays {
-
 	private String name;
-	private int month;
-	private int day;
-//	private int year;
+	private int year;
+	private LocalDate date;
 
-	public Holidays(String name, int month, int day) {
+	public Holidays(String name, LocalDate date) {
 		this.name = name;
-//		this.year = year;
-		this.month = month;
-		this.day = day;
+		//	this.year = year;
+		this.date = date;
+		// verwaltungsklasse integrieren -> Array
 	}
-	
-	public void display() {
-		System.out.println("\tFeiertag: " + this.name);
-//		System.out.println("\tFeiertag: " + this.year);
-		System.out.println("\tFeiertag: " + this.month);
-		System.out.println("\tFeiertag: " + this.day);
+
+	public static LocalDate calculateEasterSunday(int year) {
+		int a = year % 19;
+		int b = year / 100;
+		int c = year % 100;
+		int d = b / 4;
+		int e = b % 4;
+		int f = (b + 8) / 25;
+		int g = (b - f + 1) / 3;
+		int h = (19 * a + b - d - g + 15) % 30;
+		int i = c / 4;
+		int k = c % 4;
+		int l = (32 + 2 * e + 2 * i - h - k) % 7;
+		int m = (a + 11 * h + 22 * l) / 451;
+		int n = (h + l - 7 * m + 114) / 31;
+		int p = (h + l - 7 * m + 114) % 31;
+
+		int day = p + 1;
+		int month = n;
+
+		// return day + month * 100; // Gib den Ostersonntag im Format MMTT zurück
+
+		return LocalDate.of(year, month, day); // Gib den Ostersonntag im Format MMTT zurück
 	}
-	
-	/*public int getYear() {
+
+	public static LocalDate BussUndBettag(int year){
+		LocalDate nov23 = LocalDate.of(year, 11, 23);
+
+		while(nov23.getDayOfWeek() != DayOfWeek.WEDNESDAY){
+			nov23 = nov23.minusDays(1);
+		}
+		return nov23;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public int getYear() {
 		return year;
 	}
-	
-	public void setYear(int stand) {
-		this.year = year;
-	}
-*/	
-	
-	public void Osterfeiertage() {
-		int year = 2023;
 
-		int a = year % 4;
-		int b = year % 7;
-		int c = year % 19;
-		int d = (19 * c + 24) % 30;
-		int e = (2 * a + 4 * b + 6 * d + 5) % 7;
-		int f = (c + 11 * d + 22 * e) / 451;
-		
-		int Ostern = 22 + d + e - (7 * f);
-		
-		int Ostersonntag = Ostern;
-			if(Ostern > 31) {
-				int z = 22 + d + e - (7 * f) - 9;
-			}
-			
-			System.out.println(Ostersonntag);
-	}
-	
-	public void print() {
-		System.out.println(name + " " + day + "." + month + ".");
+	public LocalDate getDate() {
+		return date;
 	}
 }
+
