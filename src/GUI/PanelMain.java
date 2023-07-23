@@ -7,6 +7,9 @@ import GUI.Exceptions.AppointmentOutOfMonthRangeException;
 import GUI.Views.CalendarView;
 import GUI.Views.CalendarViewManager;
 import GUI.monthView.MonthView;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 import IOManager.Database;
 import IOManager.Exceptions.SQLPackageException;
@@ -58,6 +61,13 @@ public class PanelMain extends JPanel {
         // Erstellen des neuen JPanels und Hinzufügen von PanelChange und dem Button
         upperPanel = new JPanel(new BorderLayout());
         upperPanel.add(btn_createAppointment, BorderLayout.WEST); // Button an der linken Seite
+
+        btn_createAppointment.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                GUI.appointment.showUI();
+            }
+        });
 
         panelChange = new PanelChange(viewManager, this, terminListe);
         upperPanel.add(panelChange, BorderLayout.CENTER); // PanelChange in der Mitte
