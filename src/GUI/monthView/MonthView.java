@@ -4,6 +4,8 @@ package GUI.monthView;
 import Calendar.Termin;
 import Calendar.TerminListe;
 import GUI.CalendarCell;
+import GUI.Exceptions.AppointmentMismatchMonthException;
+import GUI.Exceptions.AppointmentOutOfMonthRangeException;
 import GUI.Views.CalendarView;
 
 import javax.swing.*;
@@ -38,7 +40,7 @@ public class MonthView extends CalendarView {
      * @param month Der aktuelle Monat als int.
      * @param terminListe Eine Liste von Terminen
      */
-    public MonthView(int year, int month, TerminListe terminListe) {
+    public MonthView(int year, int month, TerminListe terminListe) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         super(year, month, terminListe);
         this.terminListe = terminListe;
         yearMonth = YearMonth.of(year, month);
@@ -83,6 +85,11 @@ public class MonthView extends CalendarView {
         this.yearMonth = this.yearMonth.minusMonths(1);
     }
 
+    @Override
+    public void todaysPeriod() {
+        this.yearMonth=YearMonth.now();
+    }
+
     /**
      * Setzt den aktuellen Tag im Kalender.
      *
@@ -102,7 +109,10 @@ public class MonthView extends CalendarView {
      */
     public void addAppointment(Termin appointment) {
         // Vergleich des Monats des Termins mit dem Monat der `MonthView`
-        if (appointment.getStart().getMonth() == yearMonth.getMonth()) {
+        try {
+            if (appointment.getStart().getMonth() != yearMonth.getMonth()) {
+                throw new AppointmentMismatchMonthException("Fehler: Der Termin (" + appointment.getTitle() + ", " + appointment.getStart().toString() + ") gehört nicht zum aktuellen Monat (" + yearMonth.getMonth() + ").");
+            }
             String formattedAppointment = appointment.getStart().format(DateTimeFormatter.ofPattern("HH:mm")) +
                     " - " +
                     appointment.getEnd().format(DateTimeFormatter.ofPattern("HH:mm")) +
@@ -110,24 +120,24 @@ public class MonthView extends CalendarView {
                     appointment.getTitle();
 
             int day = appointment.getStart().getDayOfMonth(); // Extrahieren des Tages aus dem Termin
-            if (day <= calendarCells.length) {
-                CalendarCell cell = calendarCells[day - 1];
-                cell.addAppointment(formattedAppointment, appointment);  // Appointment an UI Methode übergeben
-            } else {
-                // Behandlung des Fehlers, wenn der Tag des Termins größer ist als die Länge des `calendarCells` Arrays
-                System.out.println("Fehler: Der Tag des Termins ("+ appointment.getTitle() + day + ") liegt außerhalb des aktuellen Monats (" + yearMonth.getMonth() + ").");
+            if (day > calendarCells.length) {
+                throw new AppointmentOutOfMonthRangeException("Fehler: Der Tag des Termins ("+ appointment.getTitle() + ", " + appointment.getStart().toString() + ") liegt außerhalb des aktuellen Monats (" + yearMonth.getMonth() + ").");
             }
-        } else {
-            // Behandlung des Fehlers, wenn der Monat des Termins nicht dem Monat der `MonthView` entspricht
-            System.out.println("Fehler: Der Termin gehört nicht zum aktuellen Monat (" + yearMonth.getMonth() + ").");
-            System.out.println("Es handelt sich um Termin: " + appointment.getTitle());
-            System.out.println(appointment.toString());
+            CalendarCell cell = calendarCells[day - 1];
+            cell.addAppointment(formattedAppointment, appointment);  // Appointment an UI Methode übergeben
+        } catch (AppointmentOutOfMonthRangeException e) {
+            // Hier können Sie definieren, was passieren soll, wenn eine AppointmentOutOfMonthRangeException auftritt.
+            System.err.println(e.getMessage());
+        } catch (AppointmentMismatchMonthException e) {
+            // Hier können Sie definieren, was passieren soll, wenn eine AppointmentMismatchMonthException auftritt.
+            System.err.println(e.getMessage());
         }
     }
 
 
+
     @Override
-    public void updateView(TerminListe terminListe) {
+    public void updateView(TerminListe terminListe) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         System.out.println("Update");
 
         this.removeAll();
@@ -187,12 +197,13 @@ public class MonthView extends CalendarView {
             cell.clearAppointments();
         }
     }
+
     /**
      * Beispielanwendung zum Testen der Klasse.
      *
      * @param args Kommandozeilenargumente (werden ignoriert).
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         JFrame frame = new JFrame("Month View Example");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

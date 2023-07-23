@@ -2,9 +2,15 @@ package GUI;
 
 import Calendar.Termin;
 import Calendar.TerminListe;
+import GUI.Exceptions.AppointmentMismatchMonthException;
+import GUI.Exceptions.AppointmentOutOfMonthRangeException;
 import GUI.Views.CalendarView;
 import GUI.Views.CalendarViewManager;
 import GUI.monthView.MonthView;
+import java.sql.*;
+import IOManager.Database;
+import IOManager.Exceptions.SQLPackageException;
+import IOManager.Exceptions.WrongPathException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,9 +40,12 @@ public class PanelMain extends JPanel {
      *
      * @param terminListe Die Terminliste für den Kalender
      */
-    public PanelMain(TerminListe terminListe){
+    public PanelMain(TerminListe terminListe) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         YearMonth currentYearMonth = YearMonth.now();
         viewManager = new CalendarViewManager(terminListe);
+
+        // Get screen size
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
         mainFrame = new JFrame("Main Panel");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -59,12 +68,14 @@ public class PanelMain extends JPanel {
         tabbedPane.addTab(String.valueOf(currentYearMonth), monthView);
         System.out.println("Anzahl der Termine in terminListe in PanelMain (Konstruktor): " + terminListe.getTermine().size());
 
-
         add(upperPanel, BorderLayout.NORTH);
         add(tabbedPane, BorderLayout.CENTER);
 
         mainFrame.getContentPane().add(this);
-        mainFrame.setSize(1200, 800);
+        // Set the frame size to 80% of the screen size
+        int width = (int) (screenSize.width * 0.7);
+        int height = (int) (screenSize.height * 0.7);
+        mainFrame.setSize(width, height);
         mainFrame.setLocationRelativeTo(null); // Fenster in der Bildschirmmitte öffnen
         mainFrame.setVisible(true);
 
@@ -83,8 +94,9 @@ public class PanelMain extends JPanel {
      * Die Hauptmethode der Anwendung.
      *
      * @param args Kommandozeilenargumente (werden ignoriert)
+     *             TODO: Tausche erstelleZufäelligeTermine mit DB Import aus nachdem Testdaten hinzugefügt wurden.
      */
-    public static void main(String[] args){
+    public static void main(String[] args) throws SQLPackageException, WrongPathException, AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         TerminListe terminListe = new TerminListe();
 
         erstelleZufaelligeTermine(terminListe);
@@ -106,15 +118,18 @@ public class PanelMain extends JPanel {
      * Erstellt zufällige Termine und fügt sie der Terminliste hinzu.
      *
      * @param terminListe Die Terminliste, zu der die Termine hinzugefügt werden sollen
+     * TODO: Binde die Datenbank an und exportiere die erstellten Termine damit wir einige Testdaten haben.
      */
-    public static void erstelleZufaelligeTermine(TerminListe terminListe) {
+    public static void erstelleZufaelligeTermine(TerminListe terminListe) throws SQLPackageException, WrongPathException {
         YearMonth currentYearMonth = YearMonth.now();
-
+        int currentYear = currentYearMonth.getYear();
+        //Database db = new Database();
         Random random = new Random();
 
         for (int i = 1; i <= 1000; i++) {
+            int year = currentYear + random.nextInt(2);  // Wählt zufällig das aktuelle oder nächste Jahr
             int month = random.nextInt(12) + 1;
-            YearMonth randomYearMonth = YearMonth.of(currentYearMonth.getYear(), month);
+            YearMonth randomYearMonth = YearMonth.of(year, month);
 
             int day = random.nextInt(28) + 1;
 
@@ -132,7 +147,12 @@ public class PanelMain extends JPanel {
                     String.format("%02d:%02d", startHour, startMinute),
                     String.format("%02d:%02d", endHour, endMinute)
             );
+
+
             terminListe.addTermin(termin);
+
+            //db.addTermin();
         }
     }
+
 }
