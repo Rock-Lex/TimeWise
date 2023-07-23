@@ -50,10 +50,6 @@ public class TerminListe {
 
         System.out.println(kalender.toString());
 
-
-
-
-
         System.out.println("Test ended");
     }
 }

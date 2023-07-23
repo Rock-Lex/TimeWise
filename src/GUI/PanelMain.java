@@ -133,7 +133,7 @@ public class PanelMain extends JPanel {
     public static void erstelleZufaelligeTermine(TerminListe terminListe) throws SQLPackageException, WrongPathException {
         YearMonth currentYearMonth = YearMonth.now();
         int currentYear = currentYearMonth.getYear();
-        //Database db = new Database();
+        Database db = new Database();
         Random random = new Random();
 
         for (int i = 1; i <= 1000; i++) {
