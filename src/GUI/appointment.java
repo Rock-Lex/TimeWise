@@ -8,6 +8,9 @@ import java.util.List;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
 
 
 
@@ -21,7 +24,6 @@ import java.awt.event.ActionListener;
          */
 
 public class appointment {
-
 
     private static final List<Termin> appointments = new ArrayList<>();
     private static final JFrame frame = new JFrame("Termin App");
@@ -38,6 +40,10 @@ public class appointment {
 
     }
 
+    public static void showUI() {
+        setupUI();
+    }
+
     private static void setupUI() {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
@@ -47,21 +53,29 @@ public class appointment {
         editPanel.add(editButton);
 
         // Panel für die Textfelder und Checkbox
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(0, 2, 10, 10));
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = GridBagConstraints.RELATIVE;
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.insets = new Insets(5, 5, 5, 15); // Ändere die rechte Padding der Labels
 
         for (String columnName : columnNames) {
             JLabel label = new JLabel(columnName + ":");
             if (columnName.equals("Mehrtägig")) {
                 JCheckBox checkBox = new JCheckBox();
                 checkBox.setEnabled(false); // Deaktiviert die Checkbox zu Beginn
-                panel.add(label);
-                panel.add(checkBox);
+                panel.add(label, gbc);
+                gbc.gridx = 1;
+                panel.add(checkBox, gbc);
+                gbc.gridx = 0; // Zurücksetzen der x-Position für das nächste Label
             } else {
                 JTextField textField = new JTextField(15);
                 textField.setEnabled(false); // Deaktiviert die Textfelder zu Beginn
-                panel.add(label);
-                panel.add(textField);
+                panel.add(label, gbc);
+                gbc.gridx = 1;
+                panel.add(textField, gbc);
+                gbc.gridx = 0; // Zurücksetzen der x-Position für das nächste Label
             }
         }
 
@@ -99,8 +113,14 @@ public class appointment {
         mainPanel.add(buttonPanel, BorderLayout.SOUTH);
         frame.add(mainPanel);
         frame.setVisible(true);
-    }
 
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = (int) (screenSize.width * 0.7);
+        int height = (int) (screenSize.height * 0.7);
+        frame.setSize(width, height);
+        frame.setLocationRelativeTo(null); // Fenster in der Bildschirmmitte öffnen
+        frame.setVisible(true);
+    }
 
     private static void toggleEditing(JPanel panel) {
         // Aktiviert/Deaktiviert die Textfelder und die Checkbox je nach aktuellem Zustand
@@ -137,7 +157,7 @@ public class appointment {
         }
 
         // Hier werden die Daten in der Datenbank gespeichert
-       /* try {
+        /*try {
             Database database = new Database();
             database.addTermin(null, rowData[0], LocalDateTime.parse(rowData[2]), LocalDateTime.parse(rowData[4]), rowData[6], Integer.parseInt(rowData[1]), rowData[7]);
         } catch (WrongPathException | SQLPackageException e) {
@@ -146,7 +166,7 @@ public class appointment {
     }
 
 
-    static class Termin {
+    static class appointment {
         String title;
         String multiDay;
         String startDate;
@@ -166,9 +186,12 @@ public class appointment {
             this.type = type;
             this.description = description;
 
-        */
-        }
+
+        }*/
     }
+}
+
+
 
 
 
