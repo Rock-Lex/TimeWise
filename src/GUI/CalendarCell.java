@@ -25,16 +25,17 @@ public class CalendarCell extends JPanel {
     private JTextArea textArea;
     private TreeMap<String, Termin> appointmentMap;
 
-
-
     /**
      * Erstellt eine neue Kalenderzelle mit dem angegebenen Tag.
      *
      * @param text Der Tag des Monats als String.
      */
+
     public CalendarCell(String text) {
         setLayout(new BorderLayout());
+
         label = new JLabel(text);
+
         label.setEnabled(false);
         add(label, BorderLayout.NORTH);
         defaultBackground = label.getBackground();

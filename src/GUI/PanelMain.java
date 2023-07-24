@@ -6,11 +6,11 @@ import GUI.Exceptions.AppointmentMismatchMonthException;
 import GUI.Exceptions.AppointmentOutOfMonthRangeException;
 import GUI.Views.CalendarView;
 import GUI.Views.CalendarViewManager;
-import GUI.monthView.MonthView;
+import GUI.Views.MonthView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.*;
+
 import IOManager.Database;
 import IOManager.Exceptions.SQLPackageException;
 import IOManager.Exceptions.WrongPathException;
@@ -133,7 +133,7 @@ public class PanelMain extends JPanel {
     public static void erstelleZufaelligeTermine(TerminListe terminListe) throws SQLPackageException, WrongPathException {
         YearMonth currentYearMonth = YearMonth.now();
         int currentYear = currentYearMonth.getYear();
-        //Database db = new Database();
+        Database db = new Database();
         Random random = new Random();
 
         for (int i = 1; i <= 1000; i++) {
