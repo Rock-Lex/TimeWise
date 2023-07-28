@@ -281,7 +281,8 @@ public class Appointment {
                     LocalDate.parse(textFieldStartdatum.getText(), dateFormatter),
                     LocalTime.parse(textFieldStartzeit.getText(), timeFormatter));
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Das Startdatum oder die Startzeit ist ungültig.");
+            JOptionPane.showMessageDialog(null, "Das Startdatum oder die Startzeit ist ungültig.", "Eingabefehler", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
         if (textFieldEnddatum.getText().isEmpty()) {
@@ -292,11 +293,13 @@ public class Appointment {
                         LocalDate.parse(textFieldEnddatum.getText(), dateFormatter),
                         LocalTime.parse(textFieldEndzeit.getText(), timeFormatter));
             } catch (DateTimeParseException e) {
-                throw new IllegalArgumentException("Das Enddatum oder die Endzeit ist ungültig.");
+                JOptionPane.showMessageDialog(null, "Das Enddatum oder die Endzeit ist ungültig.", "Eingabefehler", JOptionPane.ERROR_MESSAGE);
+                return;
             }
 
             if (endDateTime.isBefore(startDateTime)) {
-                throw new IllegalArgumentException("Das Enddatum kann nicht vor dem Startdatum liegen.");
+                JOptionPane.showMessageDialog(null, "Das Enddatum kann nicht vor dem Startdatum liegen.", "Eingabefehler", JOptionPane.ERROR_MESSAGE);
+                return;
             }
         }
 
@@ -326,7 +329,8 @@ public class Appointment {
                     LocalDate.parse(textFieldStartdatum.getText(), dateFormatter),
                     LocalTime.parse(textFieldStartzeit.getText(), timeFormatter));
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Das Startdatum oder die Startzeit ist ungültig.");
+            JOptionPane.showMessageDialog(null, "Das Startdatum oder die Startzeit ist ungültig.", "Eingabefehler", JOptionPane.ERROR_MESSAGE);
+            return;
         }
 
         if (textFieldEnddatum.getText().isEmpty()) {
@@ -337,11 +341,13 @@ public class Appointment {
                         LocalDate.parse(textFieldEnddatum.getText(), dateFormatter),
                         LocalTime.parse(textFieldEndzeit.getText(), timeFormatter));
             } catch (DateTimeParseException e) {
-                throw new IllegalArgumentException("Das Enddatum oder die Endzeit ist ungültig.");
+                JOptionPane.showMessageDialog(null, "Das Enddatum oder die Endzeit ist ungültig.", "Eingabefehler", JOptionPane.ERROR_MESSAGE);
+                return;
             }
 
             if (endDateTime.isBefore(startDateTime)) {
-                throw new IllegalArgumentException("Das Enddatum kann nicht vor dem Startdatum liegen.");
+                JOptionPane.showMessageDialog(null, "Das Enddatum kann nicht vor dem Startdatum liegen.", "Eingabefehler", JOptionPane.ERROR_MESSAGE);
+                return;
             }
         }
 
