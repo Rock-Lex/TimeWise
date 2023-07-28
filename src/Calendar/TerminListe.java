@@ -9,19 +9,23 @@ import java.util.List;
 
 
 /**
- *  Die Klasse Kalender repräsentiert den Kalender. Die Daten im Kalender sollen auf einer Datenbank basieren und
- *  stellen eine Liste von Terminen zur Verfügung. Sie ermöglicht das Verwalten von Terminen.
+ * Die Klasse TerminListe repräsentiert den Kalender. Die Daten im Kalender sollen auf einer Datenbank basieren und
+ * stellen eine Liste von Terminen zur Verfügung. Sie ermöglicht das Verwalten von Terminen.
  *
- *  Autor: Simon Degmair
- *  Erstellt am: 23.05.2023
- *  Version: 1.0.1
- *
+ * Autor: Simon Degmair
+ * Erstellt am: 23.05.2023
+ * Version: 1.0.1
  */
 public class TerminListe implements Comparable<TerminListe>{
 
     private Database database;
     private List<Termin> termine;
-
+    /**
+     * Erstellt eine neue TerminListe mit einer gegebenen Datenbank und einer Liste von Terminen.
+     *
+     * @param database Die Datenbank, auf der der Kalender basiert.
+     * @param termine  Die Liste von Terminen.
+     */
     public TerminListe(Database database, List<Termin> termine) {
 
         try {
@@ -33,7 +37,9 @@ public class TerminListe implements Comparable<TerminListe>{
 //        this.termine = this.database.getTerminArray();
 
     }
-
+    /**
+     * Erstellt eine leere TerminListe.
+     */
     public TerminListe(){
 
     }
@@ -59,8 +65,9 @@ public class TerminListe implements Comparable<TerminListe>{
     }
 
     /**
+     * Fügt einen Termin der TerminListe hinzu.
      *
-     * @param termin Objekt der Klasse Termin.
+     * @param termin Das Termin-Objekt, das hinzugefügt werden soll.
      */
     public void addTermin(Termin termin) {
         if (termine == null) {
@@ -70,16 +77,18 @@ public class TerminListe implements Comparable<TerminListe>{
     }
 
     /**
+     * Entfernt einen Termin aus der TerminListe.
      *
-     * @param termin Objekt der Klasse Termin.
+     * @param termin Das Termin-Objekt, das entfernt werden soll.
      */
     public void removeTermin(Termin termin) {
         this.termine.remove(termin);
     }
 
     /**
+     * Gibt die Datenbank zurück, auf der der Kalender basiert.
      *
-     * @return Objekt der Klasse Database.
+     * @return Die Datenbank der TerminListe.
      */
     public Database getDatabase() {
         return database;
@@ -89,22 +98,30 @@ public class TerminListe implements Comparable<TerminListe>{
 //        this.database = database;
 //    }
 
+    /**
+     * Setzt die Liste der Termine für den Kalender.
+     *
+     * @param termine Die Liste von Terminen.
+     */
     public void setTermine(List<Termin> termine) {
         this.termine = termine;
     }
 
+
     /**
+     * Gibt die Liste von Terminen zurück.
      *
-     * @return Listenobjekt der Klasse Termine
+     * @return Die Liste von Terminen.
      */
     public List<Termin> getTermine() {
         return this.termine;
     }
 
     /**
+     * Vergleicht diese TerminListe mit einer anderen TerminListe.
      *
-     * @param other the object to be compared.
-     * @return
+     * @param other Die andere TerminListe, die verglichen werden soll.
+     * @return Eine Ganzzahl, die angibt, ob diese TerminListe größer, kleiner oder gleich der anderen TerminListe ist.
      */
     @Override
     public int compareTo(TerminListe other) {

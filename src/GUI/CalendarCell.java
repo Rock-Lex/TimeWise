@@ -63,12 +63,35 @@ public class CalendarCell extends JPanel {
                     String selectedText = textArea.getText().substring(rowStart, rowEnd).trim();
                     Termin appointment = appointmentMap.get(selectedText);
                     if (appointment != null) {
+
                         System.out.println(appointment.toString());
                     }
                     textArea.getHighlighter().removeAllHighlights();
                     textArea.getHighlighter().addHighlight(rowStart, rowEnd, DefaultHighlighter.DefaultPainter);
                 } catch (Exception ex) {
                     // Do nothing
+                }
+            }
+        });
+        textArea.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) { // Doppelklick erkannt
+                    int pos = textArea.viewToModel(e.getPoint());
+                    try {
+                        int rowStart = javax.swing.text.Utilities.getRowStart(textArea, pos);
+                        int rowEnd = javax.swing.text.Utilities.getRowEnd(textArea, pos);
+                        String selectedText = textArea.getText().substring(rowStart, rowEnd).trim();
+                        Termin appointment = appointmentMap.get(selectedText);
+                        if (appointment != null) {
+                            // Rufe die Appointment Klasse auf und übergebe den ausgewählten Termin
+                            new Appointment(appointment).showUI();
+                        }
+                        textArea.getHighlighter().removeAllHighlights();
+                        textArea.getHighlighter().addHighlight(rowStart, rowEnd, DefaultHighlighter.DefaultPainter);
+                    } catch (Exception ex) {
+                        // Do nothing
+                    }
                 }
             }
         });

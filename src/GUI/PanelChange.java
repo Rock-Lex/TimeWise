@@ -23,6 +23,7 @@ import java.time.format.DateTimeParseException;
  * Letzte Änderung: 19.07.2023
  */
 public class PanelChange extends JPanel {
+    // Deklaration der UI-Elemente und Variablen
     private JPanel panelChange;
     private JPanel bottomPanel;
     private JButton btn_week;
@@ -43,9 +44,9 @@ public class PanelChange extends JPanel {
      * Erstellt ein neues PanelChange-Objekt mit dem angegebenen CalendarViewManager,
      * PanelMain und TerminListe.
      *
-     * @param viewManager Der CalendarViewManager für die Ansichtsverwaltung
-     * @param mainPanel Das Hauptpanel, zu dem dieses PanelChange gehört
-     * @param terminListe Die Terminliste für den Kalender
+     * @param viewManager Der CalendarViewManager für die Ansichtsverwaltung.
+     * @param mainPanel Das Hauptpanel, zu dem dieses PanelChange gehört.
+     * @param terminListe Die Terminliste für den Kalender.
      */
     public PanelChange(CalendarViewManager viewManager,PanelMain mainPanel, TerminListe terminListe){
         this.viewManager = viewManager;
@@ -87,6 +88,13 @@ public class PanelChange extends JPanel {
         setSize(600, 100);
         setVisible(true);
 
+        /**
+         * ActionListener, der aufgerufen wird, wenn der "Weiter" Button geklickt wird.
+         * Führt den Wechsel zur nächsten Zeitspanne in der aktuellen Ansicht durch.
+         *
+         * @param e Das ActionEvent-Objekt, das den Button-Klick ausgelöst hat.
+         * @throws RuntimeException Falls ein Fehler beim Wechsel zur nächsten Zeitspanne auftritt.
+         */
         nextButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -100,6 +108,13 @@ public class PanelChange extends JPanel {
             }
         });
 
+/**
+ * ActionListener, der aufgerufen wird, wenn der "Zurück" Button geklickt wird.
+ * Führt den Wechsel zur vorherigen Zeitspanne in der aktuellen Ansicht durch.
+ *
+ * @param e Das ActionEvent-Objekt, das den Button-Klick ausgelöst hat.
+ * @throws RuntimeException Falls ein Fehler beim Wechsel zur vorherigen Zeitspanne auftritt.
+ */
         prevButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -113,9 +128,15 @@ public class PanelChange extends JPanel {
             }
         });
 
+/**
+ * ActionListener, der aufgerufen wird, wenn der "Aktueller Tag" Button geklickt wird.
+ * Springt zur Ansicht des aktuellen Tages in der aktuellen Ansicht.
+ *
+ * @param e Das ActionEvent-Objekt, das den Button-Klick ausgelöst hat.
+ * @throws RuntimeException Falls ein Fehler beim Springen zum aktuellen Tag auftritt.
+ */
         btn_today.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Springe zum aktuellen Tag
                 try {
                     viewManager.jumpToCurrentDay();
                 } catch (AppointmentOutOfMonthRangeException ex) {
@@ -127,6 +148,14 @@ public class PanelChange extends JPanel {
             }
         });
 
+/**
+ * ActionListener, der aufgerufen wird, wenn der "Springe zu" Button geklickt wird.
+ * Zeigt einen Dialog an, in dem der Benutzer ein Datum eingeben kann, zu dem er springen möchte.
+ * Wenn ein gültiges Datum eingegeben wird, wird zur Ansicht dieses Datums gewechselt.
+ *
+ * @param e Das ActionEvent-Objekt, das den Button-Klick ausgelöst hat.
+ * @throws RuntimeException Falls ein Fehler beim Springen zum eingegebenen Datum auftritt.
+ */
         btn_jumpTo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String input = JOptionPane.showInputDialog(null, "Geben Sie ein Datum ein (YYYY-MM-DD):");
@@ -146,6 +175,7 @@ public class PanelChange extends JPanel {
                 }
             }
         });
+
 
     }
 }

@@ -1,6 +1,7 @@
 package IOManager;
 
 import Calendar.Termin;
+import Calendar.TerminListe;
 import IDgen.IDGenerator;
 import IOManager.Exceptions.NullConnectionException;
 import IOManager.Exceptions.SQLCommandException;
@@ -117,6 +118,27 @@ public class Database {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
+    public void addTermin(Termin termin) {
+        String startStr = convertToSQLiteDateTime(termin.getStart());
+        String endStr = convertToSQLiteDateTime(termin.getEnd());
+        String id = termin.getId();
+        String title = termin.getTitle();
+        String type = termin.getType();
+        String participants = "";
+        Integer multiday = termin.isMultiDay()? 1 : 0;
+
+        if (id == "") {
+            id = IDGenerator.generateID(50);
+        }
+
+        String sql = String.format("INSERT INTO Termine (ID, Titel, Start, End, Type, MultiDay, Participants) VALUES ('%s','%s', '%s', '%s', '%s', '%d', '%s')", id, title, startStr, endStr,  type, multiday, participants);
+        System.out.println(sql);
+        try {
+            executeUpdateSQL(sql);
+        } catch (SQLCommandException e) {
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+    }
 
     public void deleteTermin(String id) {
 
@@ -130,16 +152,17 @@ public class Database {
 
     }
 
-    public List<Termin> getTermine() {
+    public TerminListe getTermine() {
         String sql = "SELECT * FROM termine;";
         try {
-            List<Termin> termins = executeQueryTermine(sql);
+            TerminListe termins = executeQueryTermine(sql);
             return termins;
         } catch (SQLCommandException | NullConnectionException e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
         return null;
     }
+
 
     /**
      *  DB Utils
@@ -221,9 +244,9 @@ public class Database {
 //        return null;
 //    }
 
-    private List<Termin> executeQueryTermine(String sql) throws NullConnectionException, SQLCommandException {
+    private TerminListe executeQueryTermine(String sql) throws NullConnectionException, SQLCommandException {
         ResultSet resultSet = null;
-        List<Termin> termins = new ArrayList<>();
+        TerminListe termins = new TerminListe();
         try {
             String dbPath = "jdbc:sqlite:" +  this.projectPath + this.databaseName;
             Connection connection = DriverManager.getConnection(dbPath);
@@ -235,14 +258,14 @@ public class Database {
                 while (resultSet.next())
                 {
                     String titel = resultSet.getString("Titel");
-                    String start = resultSet.getString("Start");
-                    String end = resultSet.getString("End");
+                    LocalDateTime start = convertToJavaDateTime(resultSet.getString("Start"));
+                    LocalDateTime end = convertToJavaDateTime(resultSet.getString("End"));
                     String terminTyp = resultSet.getString("Type");
                     Integer multiday = resultSet.getInt("Multiday");
                     String participants = resultSet.getString("Participants");
 
-                    Termin termin = new Termin(titel, terminTyp, false, start, end, start, end);
-                    termins.add(termin);
+                    Termin termin = new Termin(titel, terminTyp, false, start, end);
+                    termins.addTermin(termin);
                 }
                 statement.close();
                 // connection.commit();  // Dselete when DB in auto-commit mode

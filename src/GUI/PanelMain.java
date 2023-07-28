@@ -30,6 +30,7 @@ import java.util.Random;
  *
  */
 public class PanelMain extends JPanel {
+    // Deklaration der Variablen
     private JTabbedPane tabbedPane;
     private PanelChange panelChange;
     private JFrame mainFrame;
@@ -37,6 +38,8 @@ public class PanelMain extends JPanel {
     private CalendarView monthView;
     private JButton btn_createAppointment;
     private JPanel upperPanel;
+
+    // --------------------------- Konstruktor und Hauptmethode -------------------------------------------
 
     /**
      * Erstellt ein neues PanelMain-Objekt mit der angegebenen Terminliste.
@@ -65,7 +68,8 @@ public class PanelMain extends JPanel {
         btn_createAppointment.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                GUI.appointment.showUI();
+                Appointment newAppointment = new Appointment();
+                newAppointment.showUI();
             }
         });
 
@@ -92,29 +96,28 @@ public class PanelMain extends JPanel {
         mainFrame.revalidate();
         mainFrame.repaint();
     }
-    /**
-     * Gibt die MonthView zurück.
-     *
-     * @return Die MonthView
-     */
-    public MonthView getMonthView() {
-        return (MonthView) monthView;
-    }
+
     /**
      * Die Hauptmethode der Anwendung.
      *
      * @param args Kommandozeilenargumente (werden ignoriert)
-     *             TODO: Tausche erstelleZufäelligeTermine mit DB Import aus nachdem Testdaten hinzugefügt wurden.
+     *
      */
     public static void main(String[] args) throws SQLPackageException, WrongPathException, AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         TerminListe terminListe = new TerminListe();
+        Database db = new Database();
 
-        erstelleZufaelligeTermine(terminListe);
+
+        //erstelleZufaelligeTermine(terminListe);
+        terminListe = db.getTermine();
+
 
         System.out.println("Anzahl der Termine in terminListe (Main Methode): " + terminListe.getTermine().size());
 
         PanelMain panelMain = new GUI.PanelMain(terminListe);
     }
+    // --------------------------- Methoden zur Manipulation der GUI -------------------------------------------
+
     /**
      * Aktualisiert den Titel des Tabs mit dem aktuellen Monat und Jahr.
      */
@@ -125,10 +128,20 @@ public class PanelMain extends JPanel {
         repaint();
     }
     /**
+     * Gibt die MonthView zurück.
+     *
+     * @return Die MonthView
+     */
+    public MonthView getMonthView() {
+        return (MonthView) monthView;
+    }
+    // --------------------------- Methoden zur Bearbeitung der Daten -------------------------------------------
+
+    /**
      * Erstellt zufällige Termine und fügt sie der Terminliste hinzu.
      *
      * @param terminListe Die Terminliste, zu der die Termine hinzugefügt werden sollen
-     * TODO: Binde die Datenbank an und exportiere die erstellten Termine damit wir einige Testdaten haben.
+     *
      */
     public static void erstelleZufaelligeTermine(TerminListe terminListe) throws SQLPackageException, WrongPathException {
         YearMonth currentYearMonth = YearMonth.now();
@@ -158,11 +171,9 @@ public class PanelMain extends JPanel {
                     String.format("%02d:%02d", endHour, endMinute)
             );
 
-
             terminListe.addTermin(termin);
 
-            //db.addTermin();
+            db.addTermin(termin);
         }
     }
-
 }
