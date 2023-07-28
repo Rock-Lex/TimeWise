@@ -52,7 +52,6 @@ public class PanelMain extends JPanel {
         YearMonth currentYearMonth = YearMonth.now();
         viewManager = new CalendarViewManager(terminListe);
 
-        // Get screen size
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
         mainFrame = new JFrame("Main Panel");
@@ -60,15 +59,13 @@ public class PanelMain extends JPanel {
         setOpaque(false);
         setLayout(new BorderLayout());
 
-        // Erstellen des Buttons
         btn_createAppointment = new JButton("Erstelle Termin");
 
-        // Erstellen des neuen JPanels und Hinzufügen von PanelChange und dem Button
         upperPanel = new JPanel(new BorderLayout());
-        upperPanel.add(btn_createAppointment, BorderLayout.WEST); // Button an der linken Seite
+        upperPanel.add(btn_createAppointment, BorderLayout.WEST);
 
         panelChange = new PanelChange(viewManager, this, terminListe);
-        upperPanel.add(panelChange, BorderLayout.CENTER); // PanelChange in der Mitte
+        upperPanel.add(panelChange, BorderLayout.CENTER);
 
         // Hole die monthView von viewManager
         monthView = viewManager.getCurrentView();
