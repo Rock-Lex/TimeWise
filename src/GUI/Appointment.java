@@ -10,14 +10,21 @@ import java.awt.event.ItemListener;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.format.DateTimeParseException;
-//import org.jdatepicker.impl.JDatePanelImpl;
-//import org.jdatepicker.impl.JDatePickerImpl;
-//import org.jdatepicker.impl.UtilDateModel;
+import java.util.Properties;
+import java.util.Date;
+import java.time.ZoneId;
+
+import GUI.Utilities.DateLabelFormatter;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
+
 
 
 /**
@@ -49,6 +56,10 @@ public class Appointment {
     private boolean running = true;
     private boolean isEditing = false;
     private Termin currentTermin;
+
+    private JDatePickerImpl datePickerStart;
+    private JDatePickerImpl datePickerEnd;
+
     /**
      * Konstruktor für die Erstellung einer neuen Termin-GUI ohne initialen Termin.
      * Erzeugt ein neues Appointment-Objekt ohne einen initialen Termin.
@@ -73,13 +84,19 @@ public class Appointment {
         this.cancelButton = new JButton("Abbrechen");
         this.saveButton = new JButton("Speichern");
 
+        UtilDateModel modelStart = new UtilDateModel();
+        UtilDateModel modelEnd = new UtilDateModel();
+
+        Properties p = new Properties();
+
         // Erstellen der Textfelder und der Checkbox
         this.textFieldTitel = new JTextField(15);
         this.checkBoxMehrtagig = new JCheckBox();
-        this.textFieldStartdatum = new JTextField(15);
+        JDatePanelImpl datePanelStart = new JDatePanelImpl(modelStart, p);
+        this.datePickerStart = new JDatePickerImpl(datePanelStart, new DateLabelFormatter());
         this.textFieldStartzeit = new JTextField(15);
-        this.textFieldEnddatum = new JTextField(15);
-        this.textFieldEnddatum.setEnabled(false);
+        JDatePanelImpl datePanelEnd = new JDatePanelImpl(modelEnd, p);
+        this.datePickerEnd = new JDatePickerImpl(datePanelEnd, new DateLabelFormatter());
         this.textFieldEndzeit = new JTextField(15);
         this.textFieldTyp = new JTextField(15);
         this.textFieldTerminbeschreibung = new JTextField(15);
@@ -89,9 +106,13 @@ public class Appointment {
             this.currentTermin = termin;
             textFieldTitel.setText(termin.getTitle());
             checkBoxMehrtagig.setSelected(termin.isMultiDay());
-            textFieldStartdatum.setText(termin.getStartDate());
+            datePickerStart.getModel().setDate(termin.getStart().getYear(), termin.getStart().getMonthValue(), termin.getStart().getDayOfMonth());
+            datePickerStart.getModel().setSelected(true);
+//            textFieldStartdatum.setText(termin.getStartDate());
             textFieldStartzeit.setText(termin.getStartTime());
-            textFieldEnddatum.setText(termin.getEndDate());
+            datePickerEnd.getModel().setDate(termin.getEnd().getYear(), termin.getEnd().getMonthValue(), termin.getEnd().getDayOfMonth());
+            datePickerEnd.getModel().setSelected(true);
+//            textFieldEnddatum.setText(termin.getEndDate());
             textFieldEndzeit.setText(termin.getEndTime());
             textFieldTyp.setText(termin.getType());
             textFieldTerminbeschreibung.setText(termin.getDescription());
@@ -139,22 +160,10 @@ public class Appointment {
         gbc.gridx = 1;
         panel.add(checkBoxMehrtagig, gbc);
 
-        checkBoxMehrtagig.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if(e.getStateChange() == ItemEvent.SELECTED) {
-                    textFieldEnddatum.setEnabled(true);
-                } else {
-                    textFieldEnddatum.setEnabled(false);
-                }
-            }
-        });
-
-
         gbc.gridx = 0;
         panel.add(new JLabel("Startdatum:"), gbc);
         gbc.gridx = 1;
-        panel.add(textFieldStartdatum, gbc);
+        panel.add(datePickerStart, gbc);
         gbc.gridx = 0;
         panel.add(new JLabel("Startzeit:"), gbc);
         gbc.gridx = 1;
@@ -162,7 +171,7 @@ public class Appointment {
         gbc.gridx = 0;
         panel.add(new JLabel("Enddatum:"), gbc);
         gbc.gridx = 1;
-        panel.add(textFieldEnddatum, gbc);
+        panel.add(datePickerEnd, gbc);
         gbc.gridx = 0;
         panel.add(new JLabel("Endzeit:"), gbc);
         gbc.gridx = 1;
@@ -231,69 +240,42 @@ public class Appointment {
      * @param isEditing True, wenn der Bearbeitungsmodus aktiviert werden soll, andernfalls False.
      */
     public void toggleEditing(boolean isEditing) {
-        // Aktiviert/Deaktiviert die Textfelder und die Checkbox basierend auf dem übergebenen Bearbeitungszustand
         textFieldTitel.setEnabled(isEditing);
         checkBoxMehrtagig.setEnabled(isEditing);
-        textFieldStartdatum.setEnabled(isEditing);
+        datePickerStart.setEnabled(isEditing);
         textFieldStartzeit.setEnabled(isEditing);
+        datePickerEnd.setEnabled(isEditing);
         textFieldEndzeit.setEnabled(isEditing);
         textFieldTyp.setEnabled(isEditing);
         textFieldTerminbeschreibung.setEnabled(isEditing);
     }
-    /**
-     * Fügt einen Termin von den Textfeldern und der Checkbox in die Datenbank hinzu.
-     * Extrahiert die eingegebenen Daten, erstellt einen Termin und speichert ihn in der Datenbank.
-     *
-     * @param panel Das JPanel, das die Textfelder und Checkbox enthält.
-     */
-    private void addAppointment(JPanel panel) {
-        // Code zur Hinzufügung eines Termins von den Textfeldern und Checkbox in die Datenbank
-        String[] rowData = new String[columnNames.length];
-        Component[] components = panel.getComponents();
-
-        for (int i = 0; i < components.length; i += 2) {
-            JLabel label = (JLabel) components[i];
-            Component component = components[i + 1];
-
-            if (component instanceof JTextField) {
-                JTextField textField = (JTextField) component;
-                rowData[i / 2] = textField.getText();
-                textField.setText(""); // Zurücksetzen des Textfelds für den nächsten Termin
-            } else if (component instanceof JCheckBox) {
-                JCheckBox checkBox = (JCheckBox) component;
-                rowData[i / 2] = String.valueOf(checkBox.isSelected());
-            }
-        }
-
-        // Wenn die Checkbox "Mehrtägig" nicht angekreuzt ist, wird das Enddatum mit dem Startdatum gleichgesetzt
-        if (!Boolean.parseBoolean(rowData[1])) {
-            rowData[4] = rowData[2];
-        }
-    }
     private void saveAppointment() {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         LocalDateTime startDateTime;
         LocalDateTime endDateTime;
 
+        // Umwandlung von java.util.Date in java.time.LocalDate
+        LocalDate startDate = ((java.util.Date) datePickerStart.getModel().getValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate endDate = ((java.util.Date) datePickerEnd.getModel().getValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
         try {
             startDateTime = LocalDateTime.of(
-                    LocalDate.parse(textFieldStartdatum.getText(), dateFormatter),
+                    startDate,
                     LocalTime.parse(textFieldStartzeit.getText(), timeFormatter));
         } catch (DateTimeParseException e) {
-            JOptionPane.showMessageDialog(null, "Das Startdatum oder die Startzeit ist ungültig.", "Eingabefehler", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Die Startzeit ist ungültig.", "Eingabefehler", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        if (textFieldEnddatum.getText().isEmpty()) {
+        if (endDate == null) {
             endDateTime = startDateTime;
         } else {
             try {
                 endDateTime = LocalDateTime.of(
-                        LocalDate.parse(textFieldEnddatum.getText(), dateFormatter),
+                        endDate,
                         LocalTime.parse(textFieldEndzeit.getText(), timeFormatter));
             } catch (DateTimeParseException e) {
-                JOptionPane.showMessageDialog(null, "Das Enddatum oder die Endzeit ist ungültig.", "Eingabefehler", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Die Endzeit ist ungültig.", "Eingabefehler", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -319,29 +301,33 @@ public class Appointment {
      * Aktualisiert einen vorhandenen Termin basierend auf den Daten in den Textfeldern und der Checkbox.
      */
     private void updateAppointment() {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         LocalDateTime startDateTime;
         LocalDateTime endDateTime;
 
+        Date start = (Date) datePickerStart.getModel().getValue();
+        Date end = (Date) datePickerEnd.getModel().getValue();
+        LocalDate startDate = start.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate endDate = end != null ? end.toInstant().atZone(ZoneId.systemDefault()).toLocalDate() : null;
+
         try {
             startDateTime = LocalDateTime.of(
-                    LocalDate.parse(textFieldStartdatum.getText(), dateFormatter),
+                    startDate,
                     LocalTime.parse(textFieldStartzeit.getText(), timeFormatter));
         } catch (DateTimeParseException e) {
-            JOptionPane.showMessageDialog(null, "Das Startdatum oder die Startzeit ist ungültig.", "Eingabefehler", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Die Startzeit ist ungültig.", "Eingabefehler", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
-        if (textFieldEnddatum.getText().isEmpty()) {
+        if (endDate == null) {
             endDateTime = startDateTime;
         } else {
             try {
                 endDateTime = LocalDateTime.of(
-                        LocalDate.parse(textFieldEnddatum.getText(), dateFormatter),
+                        endDate,
                         LocalTime.parse(textFieldEndzeit.getText(), timeFormatter));
             } catch (DateTimeParseException e) {
-                JOptionPane.showMessageDialog(null, "Das Enddatum oder die Endzeit ist ungültig.", "Eingabefehler", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Die Endzeit ist ungültig.", "Eingabefehler", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
