@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.format.DateTimeParseException;
 //import org.jdatepicker.impl.JDatePanelImpl;
 //import org.jdatepicker.impl.JDatePickerImpl;
 //import org.jdatepicker.impl.UtilDateModel;
@@ -272,17 +273,31 @@ public class Appointment {
     private void saveAppointment() {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-        LocalDateTime startDateTime = LocalDateTime.of(
-                LocalDate.parse(textFieldStartdatum.getText(), dateFormatter),
-                LocalTime.parse(textFieldStartzeit.getText(), timeFormatter));
+        LocalDateTime startDateTime;
         LocalDateTime endDateTime;
-        // Überprüfen, ob das Enddatum leer ist. Wenn ja, verwenden wir das Startdatum als Enddatum.
+
+        try {
+            startDateTime = LocalDateTime.of(
+                    LocalDate.parse(textFieldStartdatum.getText(), dateFormatter),
+                    LocalTime.parse(textFieldStartzeit.getText(), timeFormatter));
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Das Startdatum oder die Startzeit ist ungültig.");
+        }
+
         if (textFieldEnddatum.getText().isEmpty()) {
             endDateTime = startDateTime;
         } else {
-            endDateTime = LocalDateTime.of(
-                    LocalDate.parse(textFieldEnddatum.getText(), dateFormatter),
-                    LocalTime.parse(textFieldEndzeit.getText(), timeFormatter));
+            try {
+                endDateTime = LocalDateTime.of(
+                        LocalDate.parse(textFieldEnddatum.getText(), dateFormatter),
+                        LocalTime.parse(textFieldEndzeit.getText(), timeFormatter));
+            } catch (DateTimeParseException e) {
+                throw new IllegalArgumentException("Das Enddatum oder die Endzeit ist ungültig.");
+            }
+
+            if (endDateTime.isBefore(startDateTime)) {
+                throw new IllegalArgumentException("Das Enddatum kann nicht vor dem Startdatum liegen.");
+            }
         }
 
         // Erstellen eines neuen Termins
@@ -303,17 +318,31 @@ public class Appointment {
     private void updateAppointment() {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        LocalDateTime startDateTime;
         LocalDateTime endDateTime;
-        LocalDateTime startDateTime = LocalDateTime.of(
-                LocalDate.parse(textFieldStartdatum.getText(), dateFormatter),
-                LocalTime.parse(textFieldStartzeit.getText(), timeFormatter));
-        // Überprüfen, ob das Enddatum leer ist. Wenn ja, verwenden wir das Startdatum als Enddatum.
+
+        try {
+            startDateTime = LocalDateTime.of(
+                    LocalDate.parse(textFieldStartdatum.getText(), dateFormatter),
+                    LocalTime.parse(textFieldStartzeit.getText(), timeFormatter));
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Das Startdatum oder die Startzeit ist ungültig.");
+        }
+
         if (textFieldEnddatum.getText().isEmpty()) {
             endDateTime = startDateTime;
         } else {
-            endDateTime = LocalDateTime.of(
-                    LocalDate.parse(textFieldEnddatum.getText(), dateFormatter),
-                    LocalTime.parse(textFieldEndzeit.getText(), timeFormatter));
+            try {
+                endDateTime = LocalDateTime.of(
+                        LocalDate.parse(textFieldEnddatum.getText(), dateFormatter),
+                        LocalTime.parse(textFieldEndzeit.getText(), timeFormatter));
+            } catch (DateTimeParseException e) {
+                throw new IllegalArgumentException("Das Enddatum oder die Endzeit ist ungültig.");
+            }
+
+            if (endDateTime.isBefore(startDateTime)) {
+                throw new IllegalArgumentException("Das Enddatum kann nicht vor dem Startdatum liegen.");
+            }
         }
 
         // Aktualisieren eines bestehenden Termins
