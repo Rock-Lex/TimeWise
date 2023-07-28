@@ -2,9 +2,15 @@ package GUI;
 
 
 import Calendar.Termin;
+import Calendar.TerminListe;
+
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,7 +30,7 @@ import java.awt.event.ActionListener;
  * Letzte Änderung: 22.07.2023
  */
 public class Appointment {
-    private List<Termin> appointments;
+    private TerminListe appointments;
     private JFrame frame;
     private JPanel mainPanel;
     private JButton editButton;
@@ -41,14 +47,16 @@ public class Appointment {
     private String[] columnNames = {"Titel", "Mehrtägig", "Startdatum", "Startzeit", "Enddatum", "Endzeit", "Typ", "Terminbeschreibung"};
     private boolean running = true;
     private boolean isEditing = false;
+    private Termin currentTermin;
     /**
      * Konstruktor für die Erstellung einer neuen Termin-GUI ohne initialen Termin.
      * Erzeugt ein neues Appointment-Objekt ohne einen initialen Termin.
      * Ruft den anderen Konstruktor auf und setzt die Bearbeitung auf den deaktivierten Zustand.
      */
-    public Appointment() {
-        this(null);  // Ruft den anderen Konstruktor mit null als Argument auf
+    public Appointment(TerminListe terminListe) {
+        this(null, terminListe);  // Ruft den anderen Konstruktor mit null und terminListe als Argument auf
     }
+
     /**
      * Konstruktor für die Erstellung einer Termin-GUI mit einem initialen Termin.
      * Erzeugt ein neues Appointment-Objekt mit einem initialen Termin, falls vorhanden.
@@ -56,8 +64,8 @@ public class Appointment {
      *
      * @param termin Der Termin, der angezeigt und bearbeitet werden soll.
      */
-    public Appointment(Termin termin) {
-        this.appointments = new ArrayList<>();
+    public Appointment(Termin termin, TerminListe terminListe) {
+        this.appointments = terminListe;
         this.frame = new JFrame("Termin App");
         this.mainPanel = new JPanel(new BorderLayout());
         this.editButton = new JButton("Bearbeiten");
@@ -70,12 +78,14 @@ public class Appointment {
         this.textFieldStartdatum = new JTextField(15);
         this.textFieldStartzeit = new JTextField(15);
         this.textFieldEnddatum = new JTextField(15);
+        this.textFieldEnddatum.setEnabled(false);
         this.textFieldEndzeit = new JTextField(15);
         this.textFieldTyp = new JTextField(15);
         this.textFieldTerminbeschreibung = new JTextField(15);
 
         // Wenn ein Termin übergeben wurde, die Textfelder und die Checkbox entsprechend vorbelegen
         if (termin != null) {
+            this.currentTermin = termin;
             textFieldTitel.setText(termin.getTitle());
             checkBoxMehrtagig.setSelected(termin.isMultiDay());
             textFieldStartdatum.setText(termin.getStartDate());
@@ -84,6 +94,8 @@ public class Appointment {
             textFieldEndzeit.setText(termin.getEndTime());
             textFieldTyp.setText(termin.getType());
             textFieldTerminbeschreibung.setText(termin.getDescription());
+        } else {
+            this.currentTermin = null;
         }
 
         setupUI();
@@ -92,9 +104,12 @@ public class Appointment {
     /**
      * Zeigt die GUI zur Terminerstellung an.
      * Stellt das Fenster der GUI sichtbar dar.
+     *
+     * @return
      */
-    public void showUI() {
+    public JFrame showUI() {
         frame.setVisible(true);  // Stellt nur die Sichtbarkeit des Fensters ein
+        return frame;
     }
     /**
      * Initialisiert die Benutzeroberfläche.
@@ -122,6 +137,19 @@ public class Appointment {
         panel.add(new JLabel("Mehrtägig:"), gbc);
         gbc.gridx = 1;
         panel.add(checkBoxMehrtagig, gbc);
+
+        checkBoxMehrtagig.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                if(e.getStateChange() == ItemEvent.SELECTED) {
+                    textFieldEnddatum.setEnabled(true);
+                } else {
+                    textFieldEnddatum.setEnabled(false);
+                }
+            }
+        });
+
+
         gbc.gridx = 0;
         panel.add(new JLabel("Startdatum:"), gbc);
         gbc.gridx = 1;
@@ -161,15 +189,19 @@ public class Appointment {
         // ActionListener für den "Abbrechen"-Knopf
         cancelButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                running = false;
+                frame.dispose(); // Schließt das Fenster
             }
         });
 
         // ActionListener für den "Speichern"-Knopf
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                addAppointment(panel); // Speichert die Daten und schließt das Fenster
-                running = false;
+                if (currentTermin == null) {
+                    saveAppointment(); // Neuer Termin
+                } else {
+                    updateAppointment(); // Aktualisierung eines bestehenden Termins
+                }
+                frame.dispose(); // Schließt das Fenster
             }
         });
 
@@ -197,13 +229,12 @@ public class Appointment {
      *
      * @param isEditing True, wenn der Bearbeitungsmodus aktiviert werden soll, andernfalls False.
      */
-    private void toggleEditing(boolean isEditing) {
+    public void toggleEditing(boolean isEditing) {
         // Aktiviert/Deaktiviert die Textfelder und die Checkbox basierend auf dem übergebenen Bearbeitungszustand
         textFieldTitel.setEnabled(isEditing);
         checkBoxMehrtagig.setEnabled(isEditing);
         textFieldStartdatum.setEnabled(isEditing);
         textFieldStartzeit.setEnabled(isEditing);
-        textFieldEnddatum.setEnabled(isEditing);
         textFieldEndzeit.setEnabled(isEditing);
         textFieldTyp.setEnabled(isEditing);
         textFieldTerminbeschreibung.setEnabled(isEditing);
@@ -237,5 +268,60 @@ public class Appointment {
         if (!Boolean.parseBoolean(rowData[1])) {
             rowData[4] = rowData[2];
         }
+    }
+    private void saveAppointment() {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        LocalDateTime startDateTime = LocalDateTime.of(
+                LocalDate.parse(textFieldStartdatum.getText(), dateFormatter),
+                LocalTime.parse(textFieldStartzeit.getText(), timeFormatter));
+        LocalDateTime endDateTime;
+        // Überprüfen, ob das Enddatum leer ist. Wenn ja, verwenden wir das Startdatum als Enddatum.
+        if (textFieldEnddatum.getText().isEmpty()) {
+            endDateTime = startDateTime;
+        } else {
+            endDateTime = LocalDateTime.of(
+                    LocalDate.parse(textFieldEnddatum.getText(), dateFormatter),
+                    LocalTime.parse(textFieldEndzeit.getText(), timeFormatter));
+        }
+
+        // Erstellen eines neuen Termins
+        this.currentTermin = new Termin(
+                textFieldTitel.getText(),
+                textFieldTyp.getText(),
+                checkBoxMehrtagig.isSelected(),
+                startDateTime,
+                endDateTime
+        );
+        currentTermin.setDescription(textFieldTerminbeschreibung.getText());
+        appointments.addTermin(currentTermin);
+    }
+
+    /**
+     * Aktualisiert einen vorhandenen Termin basierend auf den Daten in den Textfeldern und der Checkbox.
+     */
+    private void updateAppointment() {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+        LocalDateTime endDateTime;
+        LocalDateTime startDateTime = LocalDateTime.of(
+                LocalDate.parse(textFieldStartdatum.getText(), dateFormatter),
+                LocalTime.parse(textFieldStartzeit.getText(), timeFormatter));
+        // Überprüfen, ob das Enddatum leer ist. Wenn ja, verwenden wir das Startdatum als Enddatum.
+        if (textFieldEnddatum.getText().isEmpty()) {
+            endDateTime = startDateTime;
+        } else {
+            endDateTime = LocalDateTime.of(
+                    LocalDate.parse(textFieldEnddatum.getText(), dateFormatter),
+                    LocalTime.parse(textFieldEndzeit.getText(), timeFormatter));
+        }
+
+        // Aktualisieren eines bestehenden Termins
+        this.currentTermin.setTitle(textFieldTitel.getText());
+        this.currentTermin.setType(textFieldTyp.getText());
+        this.currentTermin.setMultiDay(checkBoxMehrtagig.isSelected());
+        this.currentTermin.setStart(startDateTime);
+        this.currentTermin.setEnd(endDateTime);
+        this.currentTermin.setDescription(textFieldTerminbeschreibung.getText());
     }
 }

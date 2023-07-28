@@ -10,6 +10,7 @@ import java.util.Comparator;
 import java.util.TreeMap;
 
 import Calendar.Termin;
+import Calendar.TerminListe;
 
 /**
  * Eine benutzerdefinierte Swing-Komponente zur Darstellung von Kalenderzellen.
@@ -24,6 +25,7 @@ public class CalendarCell extends JPanel {
     private Color defaultBackground;
     private JTextArea textArea;
     private TreeMap<String, Termin> appointmentMap;
+    private TerminListe terminListe;
 
     /**
      * Erstellt eine neue Kalenderzelle mit dem angegebenen Tag.
@@ -31,7 +33,7 @@ public class CalendarCell extends JPanel {
      * @param text Der Tag des Monats als String.
      */
 
-    public CalendarCell(String text) {
+    public CalendarCell(String text, TerminListe terminListe) {
         setLayout(new BorderLayout());
 
         label = new JLabel(text);
@@ -44,13 +46,25 @@ public class CalendarCell extends JPanel {
         appointmentMap = new TreeMap<>(new Comparator<String>() {
             @Override
             public int compare(String o1, String o2) {
-                // Extract the start times from the strings
-                LocalTime time1 = LocalTime.parse(o1.split(" - ")[0]);
-                LocalTime time2 = LocalTime.parse(o2.split(" - ")[0]);
+                // Extract the start times and end times from the strings
+                LocalTime startTime1 = LocalTime.parse(o1.split(" - ")[0]);
+                LocalTime endTime1 = LocalTime.parse(o1.split(" - ")[1].split(" ")[0]);
+                String name1 = o1.split(" ")[2];
 
-                // Compare the start times
-                return time1.compareTo(time2);
+                LocalTime startTime2 = LocalTime.parse(o2.split(" - ")[0]);
+                LocalTime endTime2 = LocalTime.parse(o2.split(" - ")[1].split(" ")[0]);
+                String name2 = o2.split(" ")[2];
+
+                // Compare the start times, then end times, then names
+                int compareStartTimes = startTime1.compareTo(startTime2);
+                if (compareStartTimes != 0) return compareStartTimes;
+
+                int compareEndTimes = endTime1.compareTo(endTime2);
+                if (compareEndTimes != 0) return compareEndTimes;
+
+                return name1.compareTo(name2);
             }
+
         });
 
         textArea.addMouseListener(new MouseAdapter() {
@@ -85,7 +99,7 @@ public class CalendarCell extends JPanel {
                         Termin appointment = appointmentMap.get(selectedText);
                         if (appointment != null) {
                             // Rufe die Appointment Klasse auf und übergebe den ausgewählten Termin
-                            new Appointment(appointment).showUI();
+                            new Appointment(appointment, terminListe).showUI();
                         }
                         textArea.getHighlighter().removeAllHighlights();
                         textArea.getHighlighter().addHighlight(rowStart, rowEnd, DefaultHighlighter.DefaultPainter);
@@ -139,7 +153,7 @@ public class CalendarCell extends JPanel {
         JFrame frame = new JFrame("Calendar Cell Example");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        CalendarCell cell = new CalendarCell("1");
+        CalendarCell cell = new CalendarCell("1", new TerminListe());
         Termin termin1 = new Termin("Terminname 1", "Typ 1", false, "2023-06-01", "2023-06-01", "10:00", "11:30");
         Termin termin2 = new Termin("Terminname 2", "Typ 2", false, "2023-06-01", "2023-06-01", "13:00", "14:30");
         cell.addAppointment("10:00 - 11:30 Terminname 1", termin1);

@@ -64,7 +64,7 @@ public class MonthView extends CalendarView {
         }
 
         for (int i = 1; i <= numberOfDays; i++) {
-            CalendarCell cell = new CalendarCell(Integer.toString(i));
+            CalendarCell cell = new CalendarCell(Integer.toString(i), terminListe);
             calendarCells[i - 1] = cell;
             add(cell);
         }
@@ -154,7 +154,7 @@ public class MonthView extends CalendarView {
         }
 
         for (int i = 1; i <= numberOfDays; i++) {
-            CalendarCell cell = new CalendarCell(Integer.toString(i));
+            CalendarCell cell = new CalendarCell(Integer.toString(i), terminListe);
             calendarCells[i - 1] = cell;
             add(cell);
         }

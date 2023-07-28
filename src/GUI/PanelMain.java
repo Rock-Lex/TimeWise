@@ -17,6 +17,8 @@ import IOManager.Exceptions.WrongPathException;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.time.YearMonth;
 import java.util.Random;
 
@@ -65,14 +67,6 @@ public class PanelMain extends JPanel {
         upperPanel = new JPanel(new BorderLayout());
         upperPanel.add(btn_createAppointment, BorderLayout.WEST); // Button an der linken Seite
 
-        btn_createAppointment.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Appointment newAppointment = new Appointment();
-                newAppointment.showUI();
-            }
-        });
-
         panelChange = new PanelChange(viewManager, this, terminListe);
         upperPanel.add(panelChange, BorderLayout.CENTER); // PanelChange in der Mitte
 
@@ -84,7 +78,29 @@ public class PanelMain extends JPanel {
 
         add(upperPanel, BorderLayout.NORTH);
         add(tabbedPane, BorderLayout.CENTER);
-
+        btn_createAppointment.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Appointment newAppointment = new Appointment(terminListe);
+                JFrame appointmentFrame = newAppointment.showUI();
+                newAppointment.toggleEditing(true);
+                appointmentFrame.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        super.windowClosed(e);
+                        // Hier der Code zum Aktualisieren des Hauptfensters
+                        mainFrame.repaint();  // Angenommen, mainFrame ist eine Referenz auf Ihr Hauptfenster
+                        try {
+                            monthView.updateView(terminListe);
+                        } catch (AppointmentOutOfMonthRangeException ex) {
+                            throw new RuntimeException(ex);
+                        } catch (AppointmentMismatchMonthException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    }
+                });
+            }
+        });
         mainFrame.getContentPane().add(this);
         // Set the frame size to 80% of the screen size
         int width = (int) (screenSize.width * 0.7);
