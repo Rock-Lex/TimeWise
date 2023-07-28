@@ -78,9 +78,9 @@ public class PanelMain extends JPanel {
         btn_createAppointment.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Appointment newAppointment = new Appointment(terminListe);
-                JFrame appointmentFrame = newAppointment.showUI();
-                newAppointment.toggleEditing(true);
+                AppointmentForm newAppointmentForm = new AppointmentForm(terminListe);
+                JFrame appointmentFrame = newAppointmentForm.showUI();
+                newAppointmentForm.toggleEditing(true);
                 appointmentFrame.addWindowListener(new WindowAdapter() {
                     @Override
                     public void windowClosed(WindowEvent e) {
