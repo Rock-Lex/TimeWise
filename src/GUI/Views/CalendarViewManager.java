@@ -23,10 +23,12 @@ public class CalendarViewManager {
     private CalendarView currentView;
     private YearMonth currentYearMonth;
     private TerminListe terminListe;
+
+    // --------------------------- Konstruktor -------------------------------------------
     /**
      * Konstruktor für die Klasse CalendarViewManager.
      *
-     * @param terminListe Eine Liste von Terminen
+     * @param terminListe Eine Liste von Terminen.
      */
     public CalendarViewManager(TerminListe terminListe) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         views = new HashMap<>();
@@ -39,33 +41,36 @@ public class CalendarViewManager {
         views.put("month", new MonthView(currentYear, currentMonth, this.terminListe));
         // Hier weitere Views hinzufügen
 
-
         // Monatsansicht als Standard gesetzt
         currentView = views.get("month");
     }
+
+    // --------------------------- Perioden-Methoden -------------------------------------------
     /**
      * Wechselt zur nächsten Zeitspanne in der aktuellen Ansicht.
      *
-     * @param terminListe Eine Liste von Terminen
+     * @param terminListe Eine Liste von Terminen.
      */
     public void nextPeriod(TerminListe terminListe) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         currentView.nextPeriod();
         reloadAppointments(terminListe);
     }
+
     /**
      * Wechselt zur vorherigen Zeitspanne in der aktuellen Ansicht.
      *
-     * @param terminListe Eine Liste von Terminen
+     * @param terminListe Eine Liste von Terminen.
      */
     public void previousPeriod(TerminListe terminListe) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         currentView.previousPeriod();
         reloadAppointments(terminListe);
     }
 
+    // --------------------------- Termine-Methoden -------------------------------------------
     /**
      * Aktualisiert die Termine in der aktuellen Ansicht.
      *
-     * @param terminListe Eine Liste von Terminen
+     * @param terminListe Eine Liste von Terminen.
      */
     private void reloadAppointments(TerminListe terminListe) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         if (currentView instanceof MonthView) {
@@ -81,20 +86,33 @@ public class CalendarViewManager {
         }
     }
 
+    // --------------------------- Ansichts-Methoden -------------------------------------------
     /**
      * Gibt die aktuelle Ansicht zurück.
      *
-     * @return Die aktuelle Ansicht
+     * @return Die aktuelle Ansicht.
      */
     public CalendarView getCurrentView() {
         return currentView;
     }
 
+    /**
+     * Markiert den aktuellen Tag in der Kalenderansicht und aktualisiert die Termine.
+     *
+     * @throws AppointmentOutOfMonthRangeException Wenn der aktuelle Tag außerhalb des angezeigten Monats liegt.
+     * @throws AppointmentMismatchMonthException   Wenn der aktuelle Tag nicht mit dem angezeigten Monat übereinstimmt.
+     */
     public void jumpToCurrentDay() throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         this.currentView.todaysPeriod();
         reloadAppointments(terminListe);
     }
-
+    /**
+     * Wechselt zur angegebenen Datumsansicht und aktualisiert die Termine.
+     *
+     * @param date Das Datum, zu dem gewechselt werden soll.
+     * @throws AppointmentOutOfMonthRangeException Wenn das angegebene Datum außerhalb des angezeigten Monats liegt.
+     * @throws AppointmentMismatchMonthException   Wenn das angegebene Datum nicht mit dem angezeigten Monat übereinstimmt.
+     */
     public void jumpToDate(LocalDate date) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         // Setzt das aktuelle Jahr und den aktuellen Monat auf das eingegebene Datum
         this.currentYearMonth = YearMonth.of(date.getYear(), date.getMonth());
@@ -114,5 +132,4 @@ public class CalendarViewManager {
             ((MonthView) this.currentView).updateView(this.terminListe);
         }
     }
-
 }

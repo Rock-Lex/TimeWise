@@ -10,7 +10,7 @@ import java.awt.*;
 import java.time.YearMonth;
 
 /**
- * Abstrakte Basisklasse für eine Kalender Ansicht.
+ * Abstrakte Basisklasse für eine Kalenderansicht.
  *
  * Autor: Philipp Voß
  * Version: 1.2
@@ -25,9 +25,9 @@ public abstract class CalendarView extends JPanel {
     /**
      * Erstellt eine neue Kalenderansicht mit dem angegebenen Jahr, Monat und Terminliste.
      *
-     * @param year Das Jahr der Kalenderansicht
-     * @param month Der Monat der Kalenderansicht
-     * @param terminListe Die Terminliste für die Kalenderansicht
+     * @param year       Das Jahr der Kalenderansicht.
+     * @param month      Der Monat der Kalenderansicht.
+     * @param terminListe Die Terminliste für die Kalenderansicht.
      */
     public CalendarView(int year, int month, TerminListe terminListe) {
         yearMonth = YearMonth.of(year, month);
@@ -38,21 +38,21 @@ public abstract class CalendarView extends JPanel {
     /**
      * Setzt den aktuellen Tag in der Kalenderansicht.
      *
-     * @param day Der aktuelle Tag als int
+     * @param day Der aktuelle Tag als int.
      */
     public abstract void setToday(int day);
 
     /**
      * Fügt einen Termin zur Kalenderansicht hinzu.
      *
-     * @param appointment Der Termin, der hinzugefügt werden soll
+     * @param appointment Der Termin, der hinzugefügt werden soll.
      */
     public abstract void addAppointment(Termin appointment) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException;
 
     /**
      * Gibt das Jahr und den Monat der Kalenderansicht zurück.
      *
-     * @return Das YearMonth-Objekt der Kalenderansicht
+     * @return Das YearMonth-Objekt der Kalenderansicht.
      */
     public YearMonth getYearMonth() {
         return yearMonth;
@@ -60,7 +60,7 @@ public abstract class CalendarView extends JPanel {
     /**
      * Setzt das Jahr und den Monat der Kalenderansicht.
      *
-     * @param yearMonth Das YearMonth-Objekt mit dem neuen Jahr und Monat
+     * @param yearMonth Das YearMonth-Objekt mit dem neuen Jahr und Monat.
      */
     public void setYearMonth(YearMonth yearMonth) {
         this.yearMonth = yearMonth;
@@ -68,7 +68,7 @@ public abstract class CalendarView extends JPanel {
     /**
      * Aktualisiert die Kalenderansicht mit der angegebenen Terminliste.
      *
-     * @param terminListe Die aktualisierte Terminliste
+     * @param terminListe Die aktualisierte Terminliste.
      */
     public abstract void updateView(TerminListe terminListe) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException;
     /**
@@ -82,7 +82,7 @@ public abstract class CalendarView extends JPanel {
     /**
      * Gibt das Jahr der Kalenderansicht zurück.
      *
-     * @return Das Jahr der Kalenderansicht
+     * @return Das Jahr der Kalenderansicht.
      */
     public int getYear() {
         return this.year;
@@ -90,7 +90,7 @@ public abstract class CalendarView extends JPanel {
     /**
      * Gibt den Monat der Kalenderansicht zurück.
      *
-     * @return Der Monat der Kalenderansicht
+     * @return Der Monat der Kalenderansicht.
      */
     public int getMonth() {
         return this.month;
@@ -98,7 +98,7 @@ public abstract class CalendarView extends JPanel {
     /**
      * Setzt das Jahr der Kalenderansicht.
      *
-     * @param year Das Jahr, das gesetzt werden soll
+     * @param year Das Jahr, das gesetzt werden soll.
      */
     public void setYear(int year) {
         this.year = year;
@@ -106,12 +106,14 @@ public abstract class CalendarView extends JPanel {
     /**
      * Setzt den Monat der Kalenderansicht.
      *
-     * @param month Der Monat, der gesetzt werden soll
+     * @param month Der Monat, der gesetzt werden soll.
      */
     public void setMonth(int month) {
         this.month = month;
     }
-
+    /**
+     * Markiert den heutigen Tag in der Kalenderansicht.
+     */
     public void todaysPeriod() {
     }
 }

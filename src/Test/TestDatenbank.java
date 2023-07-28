@@ -1,6 +1,7 @@
 package Test;
 
 import Calendar.Termin;
+import Calendar.TerminListe;
 import IOManager.Database;
 import IOManager.Exceptions.SQLPackageException;
 import IOManager.Exceptions.WrongPathException;
@@ -64,12 +65,12 @@ public class TestDatenbank {
 
         printTestCase(1, "Get Termins");
 
-        List<Termin> termine = database.getTermine();
+        TerminListe termine = database.getTermine();
 
         if (termine != null) {
-            System.out.println("List termine size: " + termine.size());
+            System.out.println("List termine size: " + termine.getTermine().size());
             int counter = 0;
-            for (Termin termin : termine)
+            for (Termin termin : termine.getTermine())
             {
                 printTestLine();
                 System.out.println("Termin " + counter + ": ");

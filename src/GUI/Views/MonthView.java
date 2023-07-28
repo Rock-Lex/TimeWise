@@ -26,11 +26,13 @@ import java.util.Locale;
  * Letzte Änderung: 19.07.2023
  */
 public class MonthView extends CalendarView {
+    // ... Klassenvariablen ...
     private TerminListe terminListe;
     private YearMonth yearMonth;
     private CalendarCell[] calendarCells;
     private JLabel[] daysLabels;
 
+// ----------- Konstruktoren -----------
     /**
      * Erstellt eine neue Monatsansicht mit dem angegebenen Jahr und Monat.
      *
@@ -62,30 +64,18 @@ public class MonthView extends CalendarView {
         }
 
         for (int i = 1; i <= numberOfDays; i++) {
-            CalendarCell cell = new CalendarCell(Integer.toString(i));
+            CalendarCell cell = new CalendarCell(Integer.toString(i), terminListe);
             calendarCells[i - 1] = cell;
             add(cell);
         }
 
         // Add appointments from the list
         for (Termin termin : terminListe.getTermine()) {
-            addAppointment(termin);
+            LocalDate terminDate = termin.getStart().toLocalDate();
+            if(terminDate.getMonth() == yearMonth.getMonth() && terminDate.getYear() == yearMonth.getYear()){
+                addAppointment(termin);
+            }
         }
-    }
-
-    @Override
-    public void nextPeriod() {
-        this.yearMonth = this.yearMonth.plusMonths(1);
-    }
-
-    @Override
-    public void previousPeriod() {
-        this.yearMonth = this.yearMonth.minusMonths(1);
-    }
-
-    @Override
-    public void todaysPeriod() {
-        this.yearMonth=YearMonth.now();
     }
 
     /**
@@ -106,7 +96,6 @@ public class MonthView extends CalendarView {
      * @param appointment Der Termin als String.
      */
     public void addAppointment(Termin appointment) {
-        // Vergleich des Monats des Termins mit dem Monat der `MonthView`
         try {
             if (appointment.getStart().getMonth() != yearMonth.getMonth()) {
                 throw new AppointmentMismatchMonthException("Fehler: Der Termin (" + appointment.getTitle() + ", " + appointment.getStart().toString() + ") gehört nicht zum aktuellen Monat (" + yearMonth.getMonth() + ").");
@@ -117,12 +106,12 @@ public class MonthView extends CalendarView {
                     " " +
                     appointment.getTitle();
 
-            int day = appointment.getStart().getDayOfMonth(); // Extrahieren des Tages aus dem Termin
+            int day = appointment.getStart().getDayOfMonth();
             if (day > calendarCells.length) {
                 throw new AppointmentOutOfMonthRangeException("Fehler: Der Tag des Termins ("+ appointment.getTitle() + ", " + appointment.getStart().toString() + ") liegt außerhalb des aktuellen Monats (" + yearMonth.getMonth() + ").");
             }
             CalendarCell cell = calendarCells[day - 1];
-            cell.addAppointment(formattedAppointment, appointment);  // Appointment an UI Methode übergeben
+            cell.addAppointment(formattedAppointment, appointment);
         } catch (AppointmentOutOfMonthRangeException e) {
             // Hier können Sie definieren, was passieren soll, wenn eine AppointmentOutOfMonthRangeException auftritt.
             System.err.println(e.getMessage());
@@ -132,8 +121,13 @@ public class MonthView extends CalendarView {
         }
     }
 
-
-
+    /**
+     * Aktualisiert die Ansicht des Kalenders basierend auf einer neuen Terminliste.
+     *
+     * @param terminListe Die neue Terminliste, die zur Aktualisierung der Ansicht verwendet werden soll.
+     * @throws AppointmentOutOfMonthRangeException Wenn der Tag eines Termins in der Liste außerhalb des aktuellen Monats liegt.
+     * @throws AppointmentMismatchMonthException Wenn der Monat eines Termins in der Liste nicht mit dem Monat der MonthView übereinstimmt.
+     */
     @Override
     public void updateView(TerminListe terminListe) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         System.out.println("Update");
@@ -160,7 +154,7 @@ public class MonthView extends CalendarView {
         }
 
         for (int i = 1; i <= numberOfDays; i++) {
-            CalendarCell cell = new CalendarCell(Integer.toString(i));
+            CalendarCell cell = new CalendarCell(Integer.toString(i), terminListe);
             calendarCells[i - 1] = cell;
             add(cell);
         }
@@ -177,16 +171,25 @@ public class MonthView extends CalendarView {
         repaint();
     }
 
-
+    /**
+     * Setzt das aktuelle Jahr und den Monat.
+     *
+     * @param yearMonth Das YearMonth-Objekt, das das aktuelle Jahr und den Monat repräsentiert.
+     */
     @Override
     public void setYearMonth(YearMonth yearMonth) {
         super.setYearMonth(yearMonth);
         this.yearMonth = yearMonth;
     }
-
+    /**
+     * Gibt das aktuelle Jahr und den Monat zurück.
+     *
+     * @return Ein YearMonth-Objekt, das das aktuelle Jahr und den Monat repräsentiert.
+     */
     public YearMonth getYearMonth() {
         return this.yearMonth;
     }
+
     /**
      * Löscht alle Termine aus den Kalenderzellen.
      */
@@ -195,9 +198,26 @@ public class MonthView extends CalendarView {
             cell.clearAppointments();
         }
     }
-
+    /**
+     * Ruft die Feiertage für das aktuelle Jahr ab.
+     */
     public void getHolidays(){
         HolidaysList holidaysList = new HolidaysList(yearMonth.getYear());
+    }
+
+    // ----------- Überschriebene Methoden -----------
+
+    @Override
+    public void nextPeriod() {
+        this.yearMonth = this.yearMonth.plusMonths(1);
+    }
+    @Override
+    public void previousPeriod() {
+        this.yearMonth = this.yearMonth.minusMonths(1);
+    }
+    @Override
+    public void todaysPeriod() {
+        this.yearMonth=YearMonth.now();
     }
 
     /**

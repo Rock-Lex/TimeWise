@@ -17,6 +17,8 @@ import IOManager.Exceptions.WrongPathException;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.time.YearMonth;
 import java.util.Random;
 
@@ -30,6 +32,7 @@ import java.util.Random;
  *
  */
 public class PanelMain extends JPanel {
+    // Deklaration der Variablen
     private JTabbedPane tabbedPane;
     private PanelChange panelChange;
     private JFrame mainFrame;
@@ -37,6 +40,8 @@ public class PanelMain extends JPanel {
     private CalendarView monthView;
     private JButton btn_createAppointment;
     private JPanel upperPanel;
+
+    // --------------------------- Konstruktor und Hauptmethode -------------------------------------------
 
     /**
      * Erstellt ein neues PanelMain-Objekt mit der angegebenen Terminliste.
@@ -47,7 +52,6 @@ public class PanelMain extends JPanel {
         YearMonth currentYearMonth = YearMonth.now();
         viewManager = new CalendarViewManager(terminListe);
 
-        // Get screen size
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
         mainFrame = new JFrame("Main Panel");
@@ -55,22 +59,13 @@ public class PanelMain extends JPanel {
         setOpaque(false);
         setLayout(new BorderLayout());
 
-        // Erstellen des Buttons
         btn_createAppointment = new JButton("Erstelle Termin");
 
-        // Erstellen des neuen JPanels und Hinzufügen von PanelChange und dem Button
         upperPanel = new JPanel(new BorderLayout());
-        upperPanel.add(btn_createAppointment, BorderLayout.WEST); // Button an der linken Seite
-
-        btn_createAppointment.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                GUI.appointment.showUI();
-            }
-        });
+        upperPanel.add(btn_createAppointment, BorderLayout.WEST);
 
         panelChange = new PanelChange(viewManager, this, terminListe);
-        upperPanel.add(panelChange, BorderLayout.CENTER); // PanelChange in der Mitte
+        upperPanel.add(panelChange, BorderLayout.CENTER);
 
         // Hole die monthView von viewManager
         monthView = viewManager.getCurrentView();
@@ -80,7 +75,29 @@ public class PanelMain extends JPanel {
 
         add(upperPanel, BorderLayout.NORTH);
         add(tabbedPane, BorderLayout.CENTER);
-
+        btn_createAppointment.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Appointment newAppointment = new Appointment(terminListe);
+                JFrame appointmentFrame = newAppointment.showUI();
+                newAppointment.toggleEditing(true);
+                appointmentFrame.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        super.windowClosed(e);
+                        // Hier der Code zum Aktualisieren des Hauptfensters
+                        mainFrame.repaint();  // Angenommen, mainFrame ist eine Referenz auf Ihr Hauptfenster
+                        try {
+                            monthView.updateView(terminListe);
+                        } catch (AppointmentOutOfMonthRangeException ex) {
+                            throw new RuntimeException(ex);
+                        } catch (AppointmentMismatchMonthException ex) {
+                            throw new RuntimeException(ex);
+                        }
+                    }
+                });
+            }
+        });
         mainFrame.getContentPane().add(this);
         // Set the frame size to 80% of the screen size
         int width = (int) (screenSize.width * 0.7);
@@ -92,29 +109,28 @@ public class PanelMain extends JPanel {
         mainFrame.revalidate();
         mainFrame.repaint();
     }
-    /**
-     * Gibt die MonthView zurück.
-     *
-     * @return Die MonthView
-     */
-    public MonthView getMonthView() {
-        return (MonthView) monthView;
-    }
+
     /**
      * Die Hauptmethode der Anwendung.
      *
      * @param args Kommandozeilenargumente (werden ignoriert)
-     *             TODO: Tausche erstelleZufäelligeTermine mit DB Import aus nachdem Testdaten hinzugefügt wurden.
+     *
      */
     public static void main(String[] args) throws SQLPackageException, WrongPathException, AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         TerminListe terminListe = new TerminListe();
+        Database db = new Database();
 
-        erstelleZufaelligeTermine(terminListe);
+
+        //erstelleZufaelligeTermine(terminListe);
+        terminListe = db.getTermine();
+
 
         System.out.println("Anzahl der Termine in terminListe (Main Methode): " + terminListe.getTermine().size());
 
         PanelMain panelMain = new GUI.PanelMain(terminListe);
     }
+    // --------------------------- Methoden zur Manipulation der GUI -------------------------------------------
+
     /**
      * Aktualisiert den Titel des Tabs mit dem aktuellen Monat und Jahr.
      */
@@ -125,10 +141,20 @@ public class PanelMain extends JPanel {
         repaint();
     }
     /**
+     * Gibt die MonthView zurück.
+     *
+     * @return Die MonthView
+     */
+    public MonthView getMonthView() {
+        return (MonthView) monthView;
+    }
+    // --------------------------- Methoden zur Bearbeitung der Daten -------------------------------------------
+
+    /**
      * Erstellt zufällige Termine und fügt sie der Terminliste hinzu.
      *
      * @param terminListe Die Terminliste, zu der die Termine hinzugefügt werden sollen
-     * TODO: Binde die Datenbank an und exportiere die erstellten Termine damit wir einige Testdaten haben.
+     *
      */
     public static void erstelleZufaelligeTermine(TerminListe terminListe) throws SQLPackageException, WrongPathException {
         YearMonth currentYearMonth = YearMonth.now();
@@ -158,11 +184,9 @@ public class PanelMain extends JPanel {
                     String.format("%02d:%02d", endHour, endMinute)
             );
 
-
             terminListe.addTermin(termin);
 
-            //db.addTermin();
+            db.addTermin(termin);
         }
     }
-
 }
