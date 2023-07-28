@@ -7,6 +7,7 @@ import Calendar.TerminListe;
 import javax.swing.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -24,8 +25,6 @@ import GUI.Utilities.DateLabelFormatter;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
-
-
 
 /**
  * Eine GUI zur Erstellung von Terminen.
@@ -88,6 +87,7 @@ public class Appointment {
         UtilDateModel modelEnd = new UtilDateModel();
 
         Properties p = new Properties();
+        SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy");
 
         // Erstellen der Textfelder und der Checkbox
         this.textFieldTitel = new JTextField(15);
@@ -106,13 +106,12 @@ public class Appointment {
             this.currentTermin = termin;
             textFieldTitel.setText(termin.getTitle());
             checkBoxMehrtagig.setSelected(termin.isMultiDay());
-            datePickerStart.getModel().setDate(termin.getStart().getYear(), termin.getStart().getMonthValue(), termin.getStart().getDayOfMonth());
+            int month = termin.getStart().getMonthValue() - 1;
+            datePickerStart.getModel().setDate(termin.getStart().getYear(), month, termin.getStart().getDayOfMonth());
             datePickerStart.getModel().setSelected(true);
-//            textFieldStartdatum.setText(termin.getStartDate());
             textFieldStartzeit.setText(termin.getStartTime());
             datePickerEnd.getModel().setDate(termin.getEnd().getYear(), termin.getEnd().getMonthValue(), termin.getEnd().getDayOfMonth());
             datePickerEnd.getModel().setSelected(true);
-//            textFieldEnddatum.setText(termin.getEndDate());
             textFieldEndzeit.setText(termin.getEndTime());
             textFieldTyp.setText(termin.getType());
             textFieldTerminbeschreibung.setText(termin.getDescription());

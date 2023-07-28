@@ -53,6 +53,7 @@ public class CalendarViewManager {
      */
     public void nextPeriod(TerminListe terminListe) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         currentView.nextPeriod();
+        System.out.println(terminListe.getTermine().size());
         reloadAppointments(terminListe);
     }
 
@@ -63,6 +64,7 @@ public class CalendarViewManager {
      */
     public void previousPeriod(TerminListe terminListe) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         currentView.previousPeriod();
+        System.out.println(terminListe.getTermine().size());
         reloadAppointments(terminListe);
     }
 
