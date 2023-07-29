@@ -8,7 +8,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class TestHolidays {
-
 	@Test
 	public void testCalculateEasterSunday_TID0101_calculateEasterSunday_REQ01_input2020_returnsApril12() {
 		// Test ID: TID0101
