@@ -18,7 +18,10 @@ import java.time.format.DateTimeParseException;
 import java.util.Properties;
 import java.util.Date;
 
+import GUI.Exceptions.AppointmentMismatchMonthException;
+import GUI.Exceptions.AppointmentOutOfMonthRangeException;
 import GUI.Utilities.DateLabelFormatter;
+import GUI.Views.CalendarView;
 import org.jdatepicker.DateModel;
 import org.jdatepicker.JDatePicker;
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -56,17 +59,19 @@ public class AppointmentForm {
     private JCheckBox repeatAppointmentCheckBox;
     private JComboBox repeatFrequencyComboBox;
     private JDatePicker repeatEndDatePicker;
-
+    private boolean errorOccurred;
     private JDatePickerImpl datePickerStart;
     private JDatePickerImpl datePickerEnd;
+    private CalendarView monthView;
 
     /**
      * Konstruktor für die Erstellung einer neuen Termin-GUI ohne initialen Termin.
      * Erzeugt ein neues Appointment-Objekt ohne einen initialen Termin.
      * Ruft den anderen Konstruktor auf und setzt die Bearbeitung auf den deaktivierten Zustand.
      */
-    public AppointmentForm(TerminListe terminListe) {
-        this(null, terminListe);  // Ruft den anderen Konstruktor mit null und terminListe als Argument auf
+    public AppointmentForm(TerminListe terminListe, CalendarView monthView) {
+        this(null, terminListe, monthView);  // Ruft den anderen Konstruktor mit null und terminListe als Argument auf
+        this.monthView = monthView;
     }
 
     /**
@@ -76,7 +81,7 @@ public class AppointmentForm {
      *
      * @param termin Der Termin, der angezeigt und bearbeitet werden soll.
      */
-    public AppointmentForm(Termin termin, TerminListe terminListe) {
+    public AppointmentForm(Termin termin, TerminListe terminListe, CalendarView monthView) {
         this.appointments = terminListe;
         this.frame = new JFrame("Termin App");
         this.mainPanel = new JPanel(new BorderLayout());
@@ -84,6 +89,8 @@ public class AppointmentForm {
         this.cancelButton = new JButton("Abbrechen");
         this.saveButton = new JButton("Speichern");
         deleteButton = new JButton("Termin löschen");
+        this.monthView = monthView;
+
 
         UtilDateModel modelStart = new UtilDateModel();
         UtilDateModel modelEnd = new UtilDateModel();
@@ -177,7 +184,7 @@ public class AppointmentForm {
             datePickerStart.getModel().setDate(termin.getStart().getYear(), month, termin.getStart().getDayOfMonth());
             datePickerStart.getModel().setSelected(true);
             textFieldStartzeit.setText(termin.getStartTime());
-            datePickerEnd.getModel().setDate(termin.getEnd().getYear(), termin.getEnd().getMonthValue(), termin.getEnd().getDayOfMonth());
+            datePickerEnd.getModel().setDate(termin.getEnd().getYear(), month, termin.getEnd().getDayOfMonth());
             datePickerEnd.getModel().setSelected(true);
             textFieldEndzeit.setText(termin.getEndTime());
             textFieldTyp.setText(termin.getType());
@@ -198,12 +205,21 @@ public class AppointmentForm {
 
                     // Close window
                     frame.dispose();
+                    try {
+                        monthView.updateView(appointments);
+                    } catch (AppointmentOutOfMonthRangeException ex) {
+                        throw new RuntimeException(ex);
+                    } catch (AppointmentMismatchMonthException ex) {
+                        throw new RuntimeException(ex);
+                    }
                 }
             }
         });
 
         setupUI();
         toggleEditing(false);
+
+        errorOccurred = false;
     }
     /**
      * Zeigt die GUI zur Terminerstellung an.
@@ -330,11 +346,32 @@ public class AppointmentForm {
         saveButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (currentTermin == null) {
-                    saveAppointment(); // Neuer Termin
+                    try {
+                        saveAppointment(); // Neuer Termin
+                    } catch (AppointmentOutOfMonthRangeException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage());
+                        errorOccurred = true;
+                    } catch (AppointmentMismatchMonthException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage());
+                        errorOccurred = true;
+                    }
+                    if(!errorOccurred) {
+                        frame.dispose();
+                    }
                 } else {
-                    updateAppointment(); // Aktualisierung eines bestehenden Termins
+                    try {
+                        updateAppointment(); // Aktualisierung eines bestehenden Termins
+                    } catch (AppointmentOutOfMonthRangeException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage());
+                        errorOccurred = true;
+                    } catch (AppointmentMismatchMonthException ex) {
+                        JOptionPane.showMessageDialog(null, ex.getMessage());
+                        errorOccurred = true;
+                    }
                 }
-                frame.dispose(); // Schließt das Fenster
+                if(!errorOccurred) {
+                    frame.dispose();
+                }
             }
         });
         deleteButton.addActionListener(new ActionListener() {
@@ -407,10 +444,11 @@ public class AppointmentForm {
         repeatFrequencyComboBox.setEnabled(isEditing);
         repeatAppointmentCheckBox.setEnabled(isEditing);
     }
-    private void saveAppointment() {
+    private void saveAppointment() throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         LocalDateTime startDateTime;
         LocalDateTime endDateTime;
+        errorOccurred = false;
 
         // Umwandlung von java.util.Date in java.time.LocalDate
         Date start = (Date) datePickerStart.getModel().getValue();
@@ -422,15 +460,14 @@ public class AppointmentForm {
         if (end != null) {
             endDate = end.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         } else {
-            endDate = startDate; // Set end date to start date if end is null
+            endDate = startDate;
         }
 
         try {
-            startDateTime = LocalDateTime.of(
-                    startDate,
-                    LocalTime.parse(textFieldStartzeit.getText(), timeFormatter));
+            startDateTime = LocalDateTime.of(startDate, LocalTime.parse(textFieldStartzeit.getText(), timeFormatter));
         } catch (DateTimeParseException e) {
-            JOptionPane.showMessageDialog(null, "Die Startzeit ist ungültig.", "Eingabefehler", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Invalid start time");
+            errorOccurred = true;
             return;
         }
 
@@ -438,16 +475,16 @@ public class AppointmentForm {
             endDateTime = startDateTime;
         } else {
             try {
-                endDateTime = LocalDateTime.of(
-                        endDate,
-                        LocalTime.parse(textFieldEndzeit.getText(), timeFormatter));
+                endDateTime = LocalDateTime.of(endDate, LocalTime.parse(textFieldEndzeit.getText(), timeFormatter));
             } catch (DateTimeParseException e) {
                 JOptionPane.showMessageDialog(null, "Die Endzeit ist ungültig.", "Eingabefehler", JOptionPane.ERROR_MESSAGE);
+                errorOccurred = true;
                 return;
             }
 
             if (endDateTime.isBefore(startDateTime)) {
                 JOptionPane.showMessageDialog(null, "Das Enddatum kann nicht vor dem Startdatum liegen.", "Eingabefehler", JOptionPane.ERROR_MESSAGE);
+                errorOccurred = true;
                 return;
             }
         }
@@ -462,12 +499,13 @@ public class AppointmentForm {
         );
         currentTermin.setDescription(textFieldTerminbeschreibung.getText());
         appointments.addTermin(currentTermin);
+        monthView.updateView(appointments);
     }
 
     /**
      * Aktualisiert einen vorhandenen Termin basierend auf den Daten in den Textfeldern und der Checkbox.
      */
-    private void updateAppointment() {
+    private void updateAppointment() throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         LocalDateTime startDateTime;
         LocalDateTime endDateTime;
@@ -511,5 +549,7 @@ public class AppointmentForm {
         this.currentTermin.setStart(startDateTime);
         this.currentTermin.setEnd(endDateTime);
         this.currentTermin.setDescription(textFieldTerminbeschreibung.getText());
+
+        monthView.updateView(appointments);
     }
 }

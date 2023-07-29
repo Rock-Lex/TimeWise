@@ -11,6 +11,7 @@ import java.util.TreeMap;
 
 import Calendar.Termin;
 import Calendar.TerminListe;
+import GUI.Views.CalendarView;
 
 /**
  * Eine benutzerdefinierte Swing-Komponente zur Darstellung von Kalenderzellen.
@@ -33,7 +34,7 @@ public class CalendarCell extends JPanel {
      * @param text Der Tag des Monats als String.
      */
 
-    public CalendarCell(String text, TerminListe terminListe) {
+    public CalendarCell(String text, TerminListe terminListe, CalendarView monthView) {
         setLayout(new BorderLayout());
 
         label = new JLabel(text);
@@ -99,7 +100,7 @@ public class CalendarCell extends JPanel {
                         Termin appointment = appointmentMap.get(selectedText);
                         if (appointment != null) {
                             // Rufe die Appointment Klasse auf und übergebe den ausgewählten Termin
-                            new AppointmentForm(appointment, terminListe).showUI();
+                            new AppointmentForm(appointment, terminListe, monthView).showUI();
                         }
                         textArea.getHighlighter().removeAllHighlights();
                         textArea.getHighlighter().addHighlight(rowStart, rowEnd, DefaultHighlighter.DefaultPainter);
@@ -144,25 +145,6 @@ public class CalendarCell extends JPanel {
         }
     }
 
-    /**
-     * Beispielanwendung zum Testen der Klasse.
-     *
-     * @param args Kommandozeilenargumente (werden ignoriert).
-     */
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Calendar Cell Example");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        CalendarCell cell = new CalendarCell("1", new TerminListe());
-        Termin termin1 = new Termin("Terminname 1", "Typ 1", false, "2023-06-01", "2023-06-01", "10:00", "11:30");
-        Termin termin2 = new Termin("Terminname 2", "Typ 2", false, "2023-06-01", "2023-06-01", "13:00", "14:30");
-        cell.addAppointment("10:00 - 11:30 Terminname 1", termin1);
-        cell.addAppointment("13:00 - 14:30 Terminname 2", termin2);
-
-        frame.getContentPane().add(cell);
-        frame.pack();
-        frame.setVisible(true);
-    }
     /**
      * Löscht alle Termine und leert das Textfeld.
      */

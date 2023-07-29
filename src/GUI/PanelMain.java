@@ -79,7 +79,7 @@ public class PanelMain extends JPanel {
         btn_createAppointment.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AppointmentForm newAppointmentForm = new AppointmentForm(terminListe);
+                AppointmentForm newAppointmentForm = new AppointmentForm(terminListe, monthView);
                 JFrame appointmentFrame = newAppointmentForm.showUI();
                 newAppointmentForm.toggleEditing(true);
                 appointmentFrame.addWindowListener(new WindowAdapter() {

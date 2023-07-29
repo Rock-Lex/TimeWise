@@ -58,4 +58,18 @@ public class TestHolidays {
 		assertEquals(expected, actual);
 	}
 
+	@Test
+	public void testHolidaysList_TID0301_getHolidays_REQ03_input2023_returnsHolidaysList() {
+		// Test ID: TID0301
+		// Name: getHolidays
+		// Requirement ID: REQ03
+		// Input: 2023
+		// Expected system behavior: Returns list of holidays for 2023
+		// Result: Positive
+
+		HolidaysList holidaysList = new HolidaysList(2023);
+		assertFalse(holidaysList.getHolidays().isEmpty());
+		assertEquals(2023, holidaysList.getHolidays().get(0).getYear());
+	}
+
 }
