@@ -49,5 +49,4 @@ public class IntegrationsTest {
         assertEquals(1, termin.getTeilnehmerList().size());
         assertTrue(termin.getTeilnehmerList().contains(teilnehmer));
     }
-
 }
