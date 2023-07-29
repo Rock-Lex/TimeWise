@@ -18,20 +18,19 @@ public class TestDateLabelFormatter {
     @Test
     public void testValidDateString_TID0901() throws ParseException {
         // Test ID: TID0901
-        // Name: Valid date string
+        // Name: valide date String
         // Input: "2023-07-29"
-        // erwartete Ausgabe: Date object for July 29, 2023
+        // erwartete Ausgabe: Datum des 29. Juli 2023
         // Ergebnis: Positiv
         DateLabelFormatter formatter = new DateLabelFormatter();
         Object result = formatter.stringToValue("2023-07-29");
         assertNotNull(result);
-        // additional assertions to check date details
     }
 
     @Test
     public void testInvalidDateString_TID0902() {
         // Test ID: TID0902
-        // Name: Invalid date string
+        // Name: invalide date String
         // Input: "2023-02-29"
         // erwartete Ausgabe: ParseException
         // Ergebnis: Negativ
@@ -40,7 +39,6 @@ public class TestDateLabelFormatter {
             formatter.stringToValue("2023-02-29");
             fail("ParseException expected");
         } catch (ParseException ex) {
-            // expected
         }
     }
 
