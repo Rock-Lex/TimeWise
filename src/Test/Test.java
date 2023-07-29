@@ -11,11 +11,26 @@ public class Test {
      */
 
     public static void main(String[] args) {
+        /**
+         *
+         */
         TerminListe terminListe = new TerminListe();
+        /**
+         *
+         */
         TestTermin testTermin = new TestTermin();
+        /**
+         *
+         */
         TestDatenbank testDatenbank = new TestDatenbank();
+        /**
+         *
+         */
         TestErinnerung testErinnerung = new TestErinnerung();
-        TestTeilnehmer testTeilnehmer = new TestTeilnehmer();
+        /**
+         *
+         */
+        //TestTeilnehmer testTeilnehmer = new TestTeilnehmer();
 
 
         //testCalendar.test();

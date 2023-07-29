@@ -6,8 +6,16 @@ import Calendar.Holidays;
 import Calendar.HolidaysList;
 import org.junit.Test;
 import static org.junit.Assert.*;
-
+/**
+ * Bei dieser Klasse handelt es sich um die Testklasse mit Units für die Klasse Holidays
+ *
+ * Autor: Philipp Voß
+ * Version: 1.0.0
+ * Erstellt am: 23.05.2023
+ * Letzte Änderung: 29.07.2023
+ */
 public class TestHolidays {
+
 	@Test
 	public void testCalculateEasterSunday_TID0101_calculateEasterSunday_REQ01_input2020_returnsApril12() {
 		// Test ID: TID0101
