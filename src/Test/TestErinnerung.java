@@ -17,13 +17,12 @@ public class TestErinnerung {
      * Letzte Änderung: 29.07.2023
      */
     @Test
-    public void testConstructor_TID0801_constructorWithValidInput_REQ08_createsErinnerung() {
-        // Test ID: TID0801
+    public void testConstructor_TID0301_constructorWithValidInput_createsErinnerung() {
+        // Test ID: TID0301
         // Name: constructorWithValidInput
-        // Requirement ID: REQ08
-        // Input: Valid time, message, isActivated
-        // Expected behavior: Erinnerung object created successfully
-        // Result: Positive
+        // Input: gültige Parameter time, message, isActivated
+        // erwartete Ausgabe: erstelltes Objekt Erinnerung
+        // Ergebnis: Positiv
 
         LocalDateTime time = LocalDateTime.of(2023, 3, 1, 15, 30);
         String message = "Team meeting at 3:30 PM";
@@ -38,15 +37,14 @@ public class TestErinnerung {
     }
 
     @Test
-    public void testCompareTo_TID0802_compareTo_REQ08_differentTimes_returnsCorrectValue() {
-        // Test ID: TID0802
+    public void testCompareTo_TID0302_compareTo_differentTimes_returnsCorrectValue() {
+        // Test ID: TID0302
         // Name: compareTo
-        // Requirement ID: REQ08
-        // Input: 2 Erinnerung objects with different times
-        // Expected behavior: Returns negative if this time < other time,
+        // Input: 2 Objekte Erinnerung mit unterschiedlichen Zeiten
+        //erwartete Ausgabe: Returns negative if this time < other time,
         //                     positive if this time > other time,
         //                     zero if times are equal
-        // Result: Positive
+        // Ergebnis: Positiv
 
         Erinnerung erinnerung1 = new Erinnerung(LocalDateTime.of(2023, 3, 1, 15, 0), "", true);
         Erinnerung erinnerung2 = new Erinnerung(LocalDateTime.of(2023, 3, 1, 16, 0), "", true);

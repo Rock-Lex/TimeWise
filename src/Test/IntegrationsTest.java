@@ -16,14 +16,6 @@ import Calendar.TerminListe;
  * Letzte Änderung: 29.07.2023
  */
 
-/**
- * Bei dieser Klasse handelt es sich um eine Testklasse, die alle Testklassen zusammenfasst.
- *
- * Autor: Tobias Rehm
- * Version: 1.1.0
- * Erstellt am: 23.05.2023
- * Letzte Änderung: 29.07.2023
- */
 import static org.junit.Assert.*;
 
 import java.time.LocalDateTime;
@@ -37,33 +29,32 @@ import Calendar.TerminListe;
 public class IntegrationsTest {
 
     @Test
-    public void testAddTerminWithTeilnehmer_TID0701_addTerminWithTeilnehmer_REQ07() {
+    public void testAddTerminWithTeilnehmer_TID0201_addTerminWithTeilnehmer() {
 
-        // Test ID: TID0701
+        // Test ID: TID0201
         // Name: addTerminWithTeilnehmer
-        // Requirement ID: REQ07
 
-        // Input: Valid Termin, Teilnehmer, and TerminListe
-        // Expected behavior: Termin and Teilnehmer objects created and associated correctly
-        // Result: Positive
+        // Input: gültiger Termin, Teilnehmer, und TerminListe
+        // erwartete Ausgabe: Termin und Teilnehmer Objekt erstellen und richtig verbinden
+        // Ergebnis: Positiv
 
-        // Create Teilnehmer
+        // Erstelle Teilnehmer
         Teilnehmer teilnehmer = new Teilnehmer("John Doe", "john@email.com");
 
-        // Create Termin with Teilnehmer
+        // Erstelle Termin mit Teilnehmer
         LocalDateTime start = LocalDateTime.of(2023, 2, 15, 9, 0);
         LocalDateTime end = LocalDateTime.of(2023, 2, 15, 10, 0);
         Termin termin = new Termin("Meeting", "Meeting", false, start, end, teilnehmer);
 
-        // Create TerminListe and add Termin
+        // Erstelle TerminListe und füge Termin hinzu
         TerminListe terminListe = new TerminListe();
         terminListe.addTermin(termin);
 
-        // Assert Termin was added successfully
+        // Termin wurde erfolgreich hinzugefügt
         assertEquals(1, terminListe.getTermine().size());
         assertEquals(termin, terminListe.getTermine().get(0));
 
-        // Assert Teilnehmer was added to Termin
+        // Teilnehmer wurde erfolgreich zum Termin hinzugefügt
         assertEquals(1, termin.getTeilnehmerList().size());
         assertTrue(termin.getTeilnehmerList().contains(teilnehmer));
     }

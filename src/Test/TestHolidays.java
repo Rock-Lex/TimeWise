@@ -50,7 +50,7 @@ public class TestHolidays {
 		// Name: calculateBussUndBettag
 		// Requirement ID: REQ02
 		// Input: 2023
-		// Expected system behavior: Returns LocalDate for BussUndBettag November 22, 2023
+		// erwartete Ausgabe: Return von LocalDate für BussUndBettag November 22, 2023
 		// Result: Positive
 
 		LocalDate expected = LocalDate.of(2023, 11, 22);

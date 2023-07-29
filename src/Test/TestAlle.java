@@ -4,9 +4,17 @@ import java.time.LocalDateTime;
 import org.junit.Test;
 
 import Calendar.*;
+/**
+ * Bei dieser Klasse handelt es sich um eine Testklasse, die alle Testklassen zusammenfasst.
+ *
+ * Autor: Tobias Rehm
+ * Version: 1.1.0
+ * Erstellt am: 23.05.2023
+ * Letzte Änderung: 29.07.2023
+ */
 public class TestAlle {
 
-    // Tests for Termin
+    // Tests für Termin
 
     @Test
     public void testTerminConstructor_TID0101() {
@@ -20,53 +28,53 @@ public class TestAlle {
         // Test Termin compareTo method
     }
 
-    // Tests for Teilnehmer
+    // Tests für Teilnehmer
 
     @Test
-    public void testTeilnehmerConstructor_TID0201() {
-        // Test ID: TID0201
+    public void testTeilnehmerConstructor_TID0103() {
+        // Test ID: TID0103
         // Test Teilnehmer constructor
     }
 
     @Test
-    public void testTeilnehmerCompareTo_TID0202() {
-        // Test ID: TID0202
+    public void testTeilnehmerCompareTo_TID0104() {
+        // Test ID: TID0104
         // Test Teilnehmer compareTo method
     }
 
-    // Tests for TerminListe
+    // Tests für TerminListe
 
     @Test
-    public void testTerminListeConstructor_TID0301() {
-        // Test ID: TID0301
+    public void testTerminListeConstructor_TID0105() {
+        // Test ID: TID0105
         // Test TerminListe constructor
     }
 
     @Test
-    public void testTerminListeAddTermin_TID0302() {
-        // Test ID: TID0302
+    public void testTerminListeAddTermin_TID0106() {
+        // Test ID: TID0106
         // Test TerminListe addTermin method
     }
 
-    // Tests for Erinnerung
+    // Tests für Erinnerung
 
     @Test
-    public void testErinnerungConstructor_TID0401() {
-        // Test ID: TID0401
+    public void testErinnerungConstructor_TID0107() {
+        // Test ID: TID0107
         // Test Erinnerung constructor
     }
 
     @Test
-    public void testErinnerungCompareTo_TID0402() {
-        // Test ID: TID0402
+    public void testErinnerungCompareTo_TID0108() {
+        // Test ID: TID0108
         // Test Erinnerung compareTo method
     }
 
     // Integration test
 
     @Test
-    public void testIntegration_TID0501() {
-        // Test ID: TID0501
+    public void testIntegration_TID0109() {
+        // Test ID: TID0109
         // Integration test
     }
 
