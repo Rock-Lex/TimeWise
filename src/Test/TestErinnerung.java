@@ -41,9 +41,7 @@ public class TestErinnerung {
         // Test ID: TID0302
         // Name: compareTo
         // Input: 2 Objekte Erinnerung mit unterschiedlichen Zeiten
-        //erwartete Ausgabe: Returns negative if this time < other time,
-        //                     positive if this time > other time,
-        //                     zero if times are equal
+        // erwartete Ausgabe: Gibt negativ zurück, wenn: this time < other time; positiv, wenn: this time > other time ist; Null, wenn: die Zeiten gleich sind
         // Ergebnis: Positiv
 
         Erinnerung erinnerung1 = new Erinnerung(LocalDateTime.of(2023, 3, 1, 15, 0), "", true);

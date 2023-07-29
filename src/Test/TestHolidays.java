@@ -17,13 +17,12 @@ import static org.junit.Assert.*;
 public class TestHolidays {
 
 	@Test
-	public void testCalculateEasterSunday_TID0101_calculateEasterSunday_REQ01_input2020_returnsApril12() {
-		// Test ID: TID0101
+	public void testCalculateEasterSunday_TID0401_calculateEasterSunday_input2020_returnsApril12() {
+		// Test ID: TID0401
 		// Name: calculateEasterSunday
-		// Requirement ID: REQ01
-		// Input: 2020
-		// Expected system behavior: Returns LocalDate for Easter Sunday April 12, 2020
-		// Result: Positive
+		// Input: year = 2020
+		// erwartete Ausgabe: Rückgabe von LocalDate für den Ostersonntag 2020: 12. April
+		// Ergebnis: Positiv
 
 		LocalDate expected = LocalDate.of(2020, 4, 12);
 		LocalDate actual = Holidays.calculateEasterSunday(2020);
@@ -31,13 +30,12 @@ public class TestHolidays {
 	}
 
 	@Test
-	public void testCalculateEasterSunday_TID0102_calculateEasterSunday_REQ01_input2023_returnsApril9() {
-		// Test ID: TID0102
+	public void testCalculateEasterSunday_TID0402_calculateEasterSunday_input2023_returnsApril9() {
+		// Test ID: TID0402
 		// Name: calculateEasterSunday
-		// Requirement ID: REQ01
 		// Input: 2023
-		// Expected system behavior: Returns LocalDate for Easter Sunday April 9, 2023
-		// Result: Positive
+		// erwartete Ausgabe: Rückgabe von LocalDate für den Ostersonntag 2023: April 9
+		// Ergebnis: Positiv
 
 		LocalDate expected = LocalDate.of(2023, 4, 9);
 		LocalDate actual = Holidays.calculateEasterSunday(2023);
@@ -45,13 +43,12 @@ public class TestHolidays {
 	}
 
 	@Test
-	public void testCalculateBussUndBettag_TID0201_calculateBussUndBettag_REQ02_input2023_returnsNovember22() {
-		// Test ID: TID0201
+	public void testCalculateBussUndBettag_TID0403_calculateBussUndBettag_input2023_returnsNovember22() {
+		// Test ID: TID0403
 		// Name: calculateBussUndBettag
-		// Requirement ID: REQ02
 		// Input: 2023
-		// erwartete Ausgabe: Return von LocalDate für BussUndBettag November 22, 2023
-		// Result: Positive
+		// erwartete Ausgabe: Rückgabe von LocalDate für den Buß- und Bettag 2023: November 22
+		// Ergebnis: Positiv
 
 		LocalDate expected = LocalDate.of(2023, 11, 22);
 		LocalDate actual = Holidays.BussUndBettag(2023);
@@ -59,13 +56,12 @@ public class TestHolidays {
 	}
 
 	@Test
-	public void testHolidaysList_TID0301_getHolidays_REQ03_input2023_returnsHolidaysList() {
-		// Test ID: TID0301
+	public void testHolidaysList_TID0404_getHolidays_input2023_returnsHolidaysList() {
+		// Test ID: TID0404
 		// Name: getHolidays
-		// Requirement ID: REQ03
 		// Input: 2023
-		// Expected system behavior: Returns list of holidays for 2023
-		// Result: Positive
+		// erwartete Ausgabe: Rückgabe von Liste der Feiertage für das Jahr 2023
+		// Ergebnis: Positiv
 
 		HolidaysList holidaysList = new HolidaysList(2023);
 		assertFalse(holidaysList.getHolidays().isEmpty());

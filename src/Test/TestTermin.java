@@ -20,13 +20,12 @@ public class TestTermin {
      * Letzte Änderung: 29.07.2023
      */
         @Test
-        public void testConstructor_TID0401_constructorWithValidInputs_REQ04_inputMeeting20200101to20200102_createsTermin() {
-            // Test ID: TID0401
+        public void testConstructor_TID0601_constructorWithValidInputs_inputMeeting20200101to20200102_createsTermin() {
+            // Test ID: TID0601
             // Name: constructorWithValidInputs
-            // Requirement ID: REQ04
             // Input: Meeting from 2020-01-01 to 2020-01-02
-            // Expected behavior: Termin object created successfully
-            // Result: Positive
+            // erwartete Ausgabe: Erstellt erfolgreich ein Objekt Termin
+            // Ergebnis: Positiv
 
             LocalDateTime start = LocalDateTime.of(2020, 1, 1, 9, 0);
             LocalDateTime end = LocalDateTime.of(2020, 1, 2, 12, 0);
@@ -40,13 +39,12 @@ public class TestTermin {
         }
 
         @Test
-        public void testConstructor_TID0402_constructorWithInvalidInputs_REQ04_emptyTitleAndType_throwsException() {
-            // Test ID: TID0402
+        public void testConstructor_TID0602_constructorWithInvalidInputs_emptyTitleAndType_throwsException() {
+            // Test ID: TID0602
             // Name: constructorWithInvalidInputs
-            // Requirement ID: REQ04
-            // Input: Empty title and type
-            // Expected behavior: Throws EmptyFieldException
-            // Result: Negative
+            // Input: Leerer title und type; nur Start und Ende
+            // erwartete Ausgabe: Ausgabe einer EmptyFieldException
+            // Ergebnis: Negativ
 
             Exception exception = assertThrows(EmptyFieldException.class, () -> {
                 new Termin("", "", false, "2020-01-01", "2020-01-02", "09:00", "12:00");

@@ -15,13 +15,12 @@ import org.junit.Test;
  */
 public class TestTeilnehmer {
 	@Test
-	public void testConstructor_TID0601_constructorWithValidInput_REQ06_createsTeilnehmer() {
-		// Test ID: TID0601
+	public void testConstructor_TID0501_constructorWithValidInput_createsTeilnehmer() {
+		// Test ID: TID0501
 		// Name: constructorWithValidInput
-		// Requirement ID: REQ06
 		// Input: Valid name and email
-		// Expected behavior: Teilnehmer object created successfully
-		// Result: Positive
+		// erwartete Ausgabe: Objekt Teilnehmer erstellen
+		// Ergebnis: Positiv
 
 		String name = "John Doe";
 		String email = "john.doe@email.com";
@@ -34,15 +33,13 @@ public class TestTeilnehmer {
 	}
 
 	@Test
-	public void testCompareTo_TID0602_compareTo_REQ06_differentNames_returnsCorrectValue() {
-		// Test ID: TID0602
+	public void testCompareTo_TID0502_compareTo_differentNames_returnsCorrectValue() {
+		// Test ID: TID0502
 		// Name: compareTo
-		// Requirement ID: REQ06
-		// Input: 2 Teilnehmer objects with different names
-		// Expected behavior: Returns negative if this name < other name,
-		//                     positive if this name > other name,
-		//                     zero if names are equal
-		// Result: Positive
+		// Input: 2 Teilnehmer Objekte mit verschiedenen Namen
+		// erwartete Ausgabe: Gibt negativ zurück, wenn: this name < other name, positiv, wenn: this name > other name, Null, wenn: die Namen gleich sind
+		//
+		// Ergebnis: Positiv
 
 		Teilnehmer teilnehmer1 = new Teilnehmer("Alice", "");
 		Teilnehmer teilnehmer2 = new Teilnehmer("Bob", "");

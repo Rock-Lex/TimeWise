@@ -17,13 +17,12 @@ import static org.junit.Assert.*;
 public class TestTerminListe {
 
     @Test
-    public void testConstructor_TID0501_constructor_REQ05_createsTerminListe() {
-        // Test ID: TID0501
+    public void testConstructor_TID0701_constructor_createsTerminListe() {
+        // Test ID: TID0701
         // Name: constructor
-        // Requirement ID: REQ05
         // Input: None
-        // Expected behavior: TerminListe object created successfully
-        // Result: Positive
+        // erwartete Ausgabe: TerminListe Objekt erfolgreich erstellen
+        // Ergebnis: Positiv
 
         TerminListe terminListe = new TerminListe();
 
@@ -31,13 +30,12 @@ public class TestTerminListe {
     }
 
     @Test
-    public void testAddTermin_TID0502_addTermin_REQ05_validInput_addsTermin() {
-        // Test ID: TID0502
+    public void testAddTermin_TID0702_addTermin_validInput_addsTermin() {
+        // Test ID: TID0702
         // Name: addTermin
-        // Requirement ID: REQ05
-        // Input: Valid Termin object
-        // Expected behavior: Termin added to list
-        // Result: Positive
+        // Input: valides Objekt Termin
+        // erwartete Ausgabe: Termin zur Liste hinzufügen
+        // Ergebnis: Positiv
 
         TerminListe terminListe = new TerminListe();
         Termin termin = new Termin("Meeting", "Meeting", false, "2020-01-01", "2020-01-01", "10:00", "11:00");
@@ -48,13 +46,12 @@ public class TestTerminListe {
     }
 
     @Test
-    public void testRemoveTermin_TID0503_removeTermin_REQ05_validInput_removesTermin() {
-        // Test ID: TID0503
+    public void testRemoveTermin_TID0703_removeTermin_validInput_removesTermin() {
+        // Test ID: TID0703
         // Name: removeTermin
-        // Requirement ID: REQ05
-        // Input: Valid Termin in list
-        // Expected behavior: Termin removed from list
-        // Result: Positive
+        // Input: valider Termin in Liste
+        // erwartete Ausgabe: Termin wird aus der Liste gelöscht
+        // Ergebnis: Positiv
 
         TerminListe terminListe = new TerminListe();
         Termin termin1 = new Termin("Meeting 1", "Meeting", false, "2020-01-01", "2020-01-01", "10:00", "11:00");
