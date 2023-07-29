@@ -25,17 +25,51 @@ public class Termin implements Comparable<Termin>{
     private LocalDateTime end;
     private String type;
     private String description;
-
+    private List<Teilnehmer> teilnehmerList;
 
     public List<Teilnehmer> getTeilnehmerList() {
         return teilnehmerList;
     }
+    public String getTeilnehmerListAsString() {
+        if (teilnehmerList == null || teilnehmerList.isEmpty()) {
+            return "No participants";
+        }
 
+        StringBuilder sb = new StringBuilder();
+        for (Teilnehmer teilnehmer : teilnehmerList) {
+            sb.append(teilnehmer.getName());
+            sb.append(" (");
+            sb.append(teilnehmer.getEmail());
+            sb.append("), ");
+        }
+
+        // Remove trailing comma and space
+        if (sb.length() > 0) {
+            sb.setLength(sb.length() - 2);
+        }
+
+        return sb.toString();
+    }
     public void setTeilnehmerList(List<Teilnehmer> teilnehmerList) {
         this.teilnehmerList = teilnehmerList;
     }
+    public void setTeilnehmerListFromString(String teilnehmerListString) {
 
-    private List<Teilnehmer> teilnehmerList;
+        teilnehmerList = new ArrayList<>();
+
+        String[] parts = teilnehmerListString.split(", ");
+        for(String part : parts) {
+            String[] nameEmail = part.split("\\(");
+            String name = nameEmail[0];
+
+            int emailStart = nameEmail[1].indexOf(")") + 1;
+            String email = nameEmail[1].substring(emailStart);
+
+            Teilnehmer teilnehmer = new Teilnehmer(name, email);
+            teilnehmerList.add(teilnehmer);
+        }
+
+    }
 
 
     /**
@@ -102,6 +136,15 @@ public class Termin implements Comparable<Termin>{
         this.teilnehmerList.add(teilnehmer);
     }
 
+    public Termin(String title, String type, boolean multiDay, LocalDateTime start, LocalDateTime end, List<Teilnehmer> teilnehmerList) {
+
+        this(title, type, multiDay, start, end);
+
+        teilnehmerList = new ArrayList<>();
+        for(Teilnehmer t : teilnehmerList) {
+            teilnehmerList.add(t);
+        }
+    }
     /**
      * Diese Methode formatiert das übergebende Datum in das LocalDateTime Format.
      *

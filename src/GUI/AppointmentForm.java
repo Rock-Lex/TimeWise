@@ -1,6 +1,7 @@
 package GUI;
 
 
+import Calendar.Teilnehmer;
 import Calendar.Termin;
 import Calendar.TerminListe;
 
@@ -15,6 +16,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Date;
 
@@ -51,6 +53,7 @@ public class AppointmentForm {
     private JTextField textFieldEndzeit;
     private JTextField textFieldTyp;
     private JTextField textFieldTerminbeschreibung;
+    private JTextField textFieldTerminTeilnehmer;
     private JButton deleteButton;
     private String[] columnNames = {"Titel", "Mehrtägig", "Startdatum", "Startzeit", "Enddatum", "Endzeit", "Typ", "Terminbeschreibung"};
     private boolean running = true;
@@ -109,7 +112,7 @@ public class AppointmentForm {
         this.textFieldEndzeit = new JTextField(15);
         this.textFieldTyp = new JTextField(15);
         this.textFieldTerminbeschreibung = new JTextField(15);
-
+        this.textFieldTerminTeilnehmer = new JTextField(15);
         // Create combo box with repeat options
         String[] repeatOptions = {"Daily", "Weekly", "Monthly"};
         repeatFrequencyComboBox = new JComboBox(repeatOptions);
@@ -189,6 +192,7 @@ public class AppointmentForm {
             textFieldEndzeit.setText(termin.getEndTime());
             textFieldTyp.setText(termin.getType());
             textFieldTerminbeschreibung.setText(termin.getDescription());
+            textFieldTerminTeilnehmer.setText(termin.getTeilnehmerListAsString());
         } else {
             this.currentTermin = null;
         }
@@ -296,6 +300,10 @@ public class AppointmentForm {
         panel.add(new JLabel("Typ:"), gbc);
         gbc.gridx = 1;
         panel.add(textFieldTyp, gbc);
+        gbc.gridx = 0;
+        panel.add(new JLabel("Teilnehmer:"), gbc);
+        gbc.gridx = 1;
+        panel.add(textFieldTerminTeilnehmer, gbc);
         gbc.gridx = 0;
         panel.add(new JLabel("Terminbeschreibung:"), gbc);
         gbc.gridx = 1;
@@ -457,6 +465,9 @@ public class AppointmentForm {
         Date end = (Date) datePickerEnd.getModel().getValue();
         LocalDate endDate;
 
+        String teilnehmerString = textFieldTerminTeilnehmer.getText();
+
+
         if (end != null) {
             endDate = end.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         } else {
@@ -498,6 +509,7 @@ public class AppointmentForm {
                 endDateTime
         );
         currentTermin.setDescription(textFieldTerminbeschreibung.getText());
+        currentTermin.setTeilnehmerListFromString(teilnehmerString);
         appointments.addTermin(currentTermin);
         monthView.updateView(appointments);
     }
@@ -549,6 +561,7 @@ public class AppointmentForm {
         this.currentTermin.setStart(startDateTime);
         this.currentTermin.setEnd(endDateTime);
         this.currentTermin.setDescription(textFieldTerminbeschreibung.getText());
+        this.currentTermin.setTeilnehmerListFromString(textFieldTerminTeilnehmer.getText());
 
         monthView.updateView(appointments);
     }
