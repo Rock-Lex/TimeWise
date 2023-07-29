@@ -2,6 +2,8 @@ package Test;
 
 import static org.junit.Assert.*;
 import java.time.LocalDateTime;
+
+import Calendar.TeilnehmerList;
 import org.junit.Test;
 import Calendar.Termin;
 import Calendar.Teilnehmer;
@@ -19,33 +21,32 @@ import Calendar.TerminListe;
 public class TestIntegrations {
 
     @Test
-    public void testAddTerminWithTeilnehmer_TID0201_addTerminWithTeilnehmer() {
+    public void testAddTerminWithTeilnehmer() {
 
-        // Test ID: TID0201
-        // Name: addTerminWithTeilnehmer
-        // Input: gültiger Termin, Teilnehmer, und TerminListe
-        // erwartete Ausgabe: Termin und Teilnehmer Objekt erstellen und richtig verbinden
-        // Ergebnis: Positiv
-
-        // Erstelle Teilnehmer
+        // Create Teilnehmer
         Teilnehmer teilnehmer = new Teilnehmer("John Doe", "john@email.com");
 
-        // Erstelle Termin mit Teilnehmer
+        // Create TeilnehmerList and add Teilnehmer
+        TeilnehmerList teilnehmerList = new TeilnehmerList();
+        teilnehmerList.addTeilnehmer(teilnehmer);
+
+        // Create Termin with TeilnehmerList
         LocalDateTime start = LocalDateTime.of(2023, 2, 15, 9, 0);
         LocalDateTime end = LocalDateTime.of(2023, 2, 15, 10, 0);
-        Termin termin = new Termin("Meeting", "Meeting", false, start, end, teilnehmer);
+        Termin termin = new Termin("Meeting", "Meeting", false, start, end, teilnehmerList);
 
-        // Erstelle TerminListe und füge Termin hinzu
+        // Create TerminListe and add Termin
         TerminListe terminListe = new TerminListe();
         terminListe.addTermin(termin);
 
-        // Termin wurde erfolgreich hinzugefügt
+        // Verify Termin added successfully
         assertEquals(1, terminListe.getTermine().size());
         assertEquals(termin, terminListe.getTermine().get(0));
 
-        // Teilnehmer wurde erfolgreich zum Termin hinzugefügt
-        assertEquals(1, termin.getTeilnehmerList().size());
-        assertTrue(termin.getTeilnehmerList().contains(teilnehmer));
+        // Verify TeilnehmerList added successfully
+        assertEquals(1, termin.getTeilnehmerList().getTeilnehmerList().size());
+        assertTrue(termin.getTeilnehmerList().getTeilnehmerList().contains(teilnehmer));
+
     }
 
 }

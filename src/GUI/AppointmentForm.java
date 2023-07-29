@@ -2,8 +2,10 @@ package GUI;
 
 
 import Calendar.Teilnehmer;
+import Calendar.TeilnehmerList;
 import Calendar.Termin;
 import Calendar.TerminListe;
+import Calendar.Exceptions.*;
 
 import javax.swing.*;
 import java.text.SimpleDateFormat;
@@ -16,13 +18,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Date;
 
 import GUI.Exceptions.AppointmentMismatchMonthException;
 import GUI.Exceptions.AppointmentOutOfMonthRangeException;
 import GUI.Utilities.DateLabelFormatter;
+import GUI.Utilities.EmailValidator;
 import GUI.Views.CalendarView;
 import org.jdatepicker.DateModel;
 import org.jdatepicker.JDatePicker;
@@ -66,6 +68,7 @@ public class AppointmentForm {
     private JDatePickerImpl datePickerStart;
     private JDatePickerImpl datePickerEnd;
     private CalendarView monthView;
+    private TeilnehmerList teilnehmerList;
 
     /**
      * Konstruktor für die Erstellung einer neuen Termin-GUI ohne initialen Termin.
@@ -93,6 +96,7 @@ public class AppointmentForm {
         this.saveButton = new JButton("Speichern");
         deleteButton = new JButton("Termin löschen");
         this.monthView = monthView;
+        teilnehmerList = new TeilnehmerList();
 
 
         UtilDateModel modelStart = new UtilDateModel();
@@ -362,6 +366,8 @@ public class AppointmentForm {
                     } catch (AppointmentMismatchMonthException ex) {
                         JOptionPane.showMessageDialog(null, ex.getMessage());
                         errorOccurred = true;
+                    } catch (InvalidEmailException ex) {
+                        throw new RuntimeException(ex);
                     }
                     if(!errorOccurred) {
                         frame.dispose();
@@ -452,7 +458,7 @@ public class AppointmentForm {
         repeatFrequencyComboBox.setEnabled(isEditing);
         repeatAppointmentCheckBox.setEnabled(isEditing);
     }
-    private void saveAppointment() throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
+    private void saveAppointment() throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException, InvalidEmailException {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         LocalDateTime startDateTime;
         LocalDateTime endDateTime;
@@ -465,8 +471,7 @@ public class AppointmentForm {
         Date end = (Date) datePickerEnd.getModel().getValue();
         LocalDate endDate;
 
-        String teilnehmerString = textFieldTerminTeilnehmer.getText();
-
+        String[] parts = textFieldTerminTeilnehmer.getText().split(",");
 
         if (end != null) {
             endDate = end.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -499,6 +504,28 @@ public class AppointmentForm {
                 return;
             }
         }
+        for (String part : parts) {
+
+            // Trim
+            String trimmed = part.trim();
+
+            if (!trimmed.isEmpty()) {
+
+                // Split on first space to separate name and email
+                String[] nameEmail = trimmed.split(" ", 2);
+
+                // Get name and email parts
+                String name = nameEmail[0];
+                String email = nameEmail[1].substring(1, nameEmail[1].length() - 1);
+
+                // Validate and create Teilnehmer
+                if (EmailValidator.validate(email)) {
+                    teilnehmerList.addTeilnehmer(new Teilnehmer(name, email));
+                } else {
+                    throw new InvalidEmailException("Invalid email address");
+                }
+            }
+        }
 
         // Erstellen eines neuen Termins
         this.currentTermin = new Termin(
@@ -509,7 +536,7 @@ public class AppointmentForm {
                 endDateTime
         );
         currentTermin.setDescription(textFieldTerminbeschreibung.getText());
-        currentTermin.setTeilnehmerListFromString(teilnehmerString);
+        currentTermin.setTeilnehmerList(teilnehmerList);
         appointments.addTermin(currentTermin);
         monthView.updateView(appointments);
     }

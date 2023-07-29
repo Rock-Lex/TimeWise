@@ -25,18 +25,18 @@ public class Termin implements Comparable<Termin>{
     private LocalDateTime end;
     private String type;
     private String description;
-    private List<Teilnehmer> teilnehmerList;
+    private TeilnehmerList teilnehmerList;
 
-    public List<Teilnehmer> getTeilnehmerList() {
-        return teilnehmerList;
+    public TeilnehmerList getTeilnehmerList() {
+        return this.teilnehmerList;
     }
     public String getTeilnehmerListAsString() {
-        if (teilnehmerList == null || teilnehmerList.isEmpty()) {
+        if (teilnehmerList == null || teilnehmerList.getTeilnehmerList().isEmpty()) {
             return "No participants";
         }
 
         StringBuilder sb = new StringBuilder();
-        for (Teilnehmer teilnehmer : teilnehmerList) {
+        for (Teilnehmer teilnehmer : teilnehmerList.getTeilnehmerList()) {
             sb.append(teilnehmer.getName());
             sb.append(" (");
             sb.append(teilnehmer.getEmail());
@@ -50,12 +50,12 @@ public class Termin implements Comparable<Termin>{
 
         return sb.toString();
     }
-    public void setTeilnehmerList(List<Teilnehmer> teilnehmerList) {
+    public void setTeilnehmerList(TeilnehmerList teilnehmerList) {
         this.teilnehmerList = teilnehmerList;
     }
     public void setTeilnehmerListFromString(String teilnehmerListString) {
 
-        teilnehmerList = new ArrayList<>();
+        teilnehmerList = new TeilnehmerList();
 
         String[] parts = teilnehmerListString.split(", ");
         for(String part : parts) {
@@ -66,9 +66,8 @@ public class Termin implements Comparable<Termin>{
             String email = nameEmail[1].substring(emailStart);
 
             Teilnehmer teilnehmer = new Teilnehmer(name, email);
-            teilnehmerList.add(teilnehmer);
+            teilnehmerList.addTeilnehmer(teilnehmer);
         }
-
     }
 
 
@@ -132,18 +131,18 @@ public class Termin implements Comparable<Termin>{
     public Termin(String title, String type, boolean multiDay, LocalDateTime start, LocalDateTime end, Teilnehmer teilnehmer) {
         this(title, type, multiDay, start, end);
 
-        this.teilnehmerList = new ArrayList<>();
-        this.teilnehmerList.add(teilnehmer);
+        // Create TeilnehmerList
+        this.teilnehmerList = new TeilnehmerList();
+
+        // Add Teilnehmer to list
+        this.teilnehmerList.addTeilnehmer(teilnehmer);
     }
 
-    public Termin(String title, String type, boolean multiDay, LocalDateTime start, LocalDateTime end, List<Teilnehmer> teilnehmerList) {
+    public Termin(String title, String type, boolean multiDay, LocalDateTime start, LocalDateTime end, TeilnehmerList teilnehmerList) {
 
         this(title, type, multiDay, start, end);
 
-        teilnehmerList = new ArrayList<>();
-        for(Teilnehmer t : teilnehmerList) {
-            teilnehmerList.add(t);
-        }
+        this.teilnehmerList = teilnehmerList;
     }
     /**
      * Diese Methode formatiert das übergebende Datum in das LocalDateTime Format.
