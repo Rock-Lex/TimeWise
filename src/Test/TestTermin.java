@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 
 public class TestTermin {
     /**
-     * Bei dieser Klasse handelt es sich um die Testklasse mit Units für die Klasse Termin
+     * Bei dieser Klasse handelt es sich um die Testklasse mit Units für die Klasse Termin.
      *
      * Autor: Oleksandr Kamenskyi
      * Version: 1.0.0

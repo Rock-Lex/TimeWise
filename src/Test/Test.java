@@ -4,12 +4,12 @@ import Calendar.TerminListe;
 
 public class Test {
     /**
-     * Bei dieser Klasse handelt es sich um einen Test.
-     * *
-     * Autor: Oleksandr Kamenskyi
+     * Bei dieser Klasse handelt es sich um eine Testklasse, die alle Testklassen zusammenfasst.
+     *
+     * Autor: Tobias Rehm
      * Version: 1.1.0
      * Erstellt am: 23.05.2023
-     * Letzte Änderung: 19.06.2023
+     * Letzte Änderung: 29.07.2023
      */
 
     public static void main(String[] args) {

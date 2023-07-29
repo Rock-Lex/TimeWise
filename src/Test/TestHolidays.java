@@ -7,7 +7,7 @@ import Calendar.HolidaysList;
 import org.junit.Test;
 import static org.junit.Assert.*;
 /**
- * Bei dieser Klasse handelt es sich um die Testklasse mit Units für die Klasse Holidays
+ * Bei dieser Klasse handelt es sich um die Testklasse mit Units für die Klasse Holidays.
  *
  * Autor: Philipp Voß
  * Version: 1.0.0

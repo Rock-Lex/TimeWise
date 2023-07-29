@@ -8,7 +8,14 @@ import Calendar.Erinnerung;
 import org.junit.Test;
 
 public class TestErinnerung {
-
+    /**
+     * Bei dieser Klasse handelt es sich um die Testklasse mit Units für die Klasse Erinnerungen.
+     *
+     * Autor: Tobias Rehm
+     * Version: 1.0.0
+     * Erstellt am: 23.05.2023
+     * Letzte Änderung: 29.07.2023
+     */
     @Test
     public void testConstructor_TID0801_constructorWithValidInput_REQ08_createsErinnerung() {
         // Test ID: TID0801

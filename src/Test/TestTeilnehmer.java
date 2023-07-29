@@ -6,7 +6,7 @@ import Calendar.Teilnehmer;
 import org.junit.Test;
 
 /**
- * Bei dieser Klasse handelt es sich um die Testklasse mit Units für die Klasse Teilnehmer
+ * Bei dieser Klasse handelt es sich um die Testklasse mit Units für die Klasse Teilnehmer.
  *
  * Autor: Tobias Rehm
  * Version: 1.0.0

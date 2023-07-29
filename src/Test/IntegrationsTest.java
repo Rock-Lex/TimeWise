@@ -7,7 +7,8 @@ import Calendar.Termin;
 import Calendar.Teilnehmer;
 import Calendar.TerminListe;
 /**
- * Bei dieser Klasse handelt es sich um die Testklasse mit Units für die Klasse TerminListe
+ * Bei dieser Klasse handelt es sich um die Testklasse,
+ * die die Integration zwischen den Klassen Termin, TerminListe und Teilnehmer prüft.
  *
  * Autor: Tobias Rehm
  * Version: 1.0.0

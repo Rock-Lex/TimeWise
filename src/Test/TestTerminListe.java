@@ -7,7 +7,7 @@ import Calendar.TerminListe;
 
 import static org.junit.Assert.*;
 /**
- * Bei dieser Klasse handelt es sich um die Testklasse mit Units für die Klasse TerminListe
+ * Bei dieser Klasse handelt es sich um die Testklasse mit Units für die Klasse TerminListe.
  *
  * Autor: Tobias Rehm
  * Version: 1.0.0
