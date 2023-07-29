@@ -1,31 +1,68 @@
 package Test;
 
+import java.time.LocalDate;
+
 import Calendar.Holidays;
 import Calendar.HolidaysList;
-
-/**
- * @author tobiasrehm
- *Bei dieser Test-Klasse handelt es sich um die Test-Klasse für die Klasse Holidays.
- * *
- * Autor: Tobias Rehm
- * Version: 1.0.0
- * Erstellt am: 21.05.2023
- * Letzte Änderung: 23.05.2023
- */
-
-// Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
-// then press Enter. You can now see whitespace characters in your code.
-
-import java.util.ArrayList;
-import java.util.List;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class TestHolidays {
-	public static void main(String[] args) {
-		HolidaysList holidaysList = new HolidaysList(2023);
 
-		for (Holidays holidays1 : holidaysList.getHolidays()) { // Use getHolidays() to get the list of holidays
-			System.out.println(holidays1.getName());
-			System.out.println(holidays1.getDate());
-		}
+	@Test
+	public void testCalculateEasterSunday_TID0101_calculateEasterSunday_REQ01_input2020_returnsApril12() {
+		// Test ID: TID0101
+		// Name: calculateEasterSunday
+		// Requirement ID: REQ01
+		// Input: 2020
+		// Expected system behavior: Returns LocalDate for Easter Sunday April 12, 2020
+		// Result: Positive
+
+		LocalDate expected = LocalDate.of(2020, 4, 12);
+		LocalDate actual = Holidays.calculateEasterSunday(2020);
+		assertEquals(expected, actual);
 	}
+
+	@Test
+	public void testCalculateEasterSunday_TID0102_calculateEasterSunday_REQ01_input2023_returnsApril9() {
+		// Test ID: TID0102
+		// Name: calculateEasterSunday
+		// Requirement ID: REQ01
+		// Input: 2023
+		// Expected system behavior: Returns LocalDate for Easter Sunday April 9, 2023
+		// Result: Positive
+
+		LocalDate expected = LocalDate.of(2023, 4, 9);
+		LocalDate actual = Holidays.calculateEasterSunday(2023);
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void testCalculateBussUndBettag_TID0201_calculateBussUndBettag_REQ02_input2023_returnsNovember22() {
+		// Test ID: TID0201
+		// Name: calculateBussUndBettag
+		// Requirement ID: REQ02
+		// Input: 2023
+		// Expected system behavior: Returns LocalDate for BussUndBettag November 22, 2023
+		// Result: Positive
+
+		LocalDate expected = LocalDate.of(2023, 11, 22);
+		LocalDate actual = Holidays.BussUndBettag(2023);
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void testHolidaysList_TID0301_getHolidays_REQ03_input2023_returnsHolidaysList() {
+		// Test ID: TID0301
+		// Name: getHolidays
+		// Requirement ID: REQ03
+		// Input: 2023
+		// Expected system behavior: Returns list of holidays for 2023
+		// Result: Positive
+
+		HolidaysList holidaysList = new HolidaysList(2023);
+		assertFalse(holidaysList.getHolidays().isEmpty());
+		assertEquals(2023, holidaysList.getHolidays().get(0).getYear());
+	}
+
 }

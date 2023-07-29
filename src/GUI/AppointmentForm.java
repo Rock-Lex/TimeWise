@@ -413,8 +413,17 @@ public class AppointmentForm {
         LocalDateTime endDateTime;
 
         // Umwandlung von java.util.Date in java.time.LocalDate
-        LocalDate startDate = ((java.util.Date) datePickerStart.getModel().getValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        LocalDate endDate = ((java.util.Date) datePickerEnd.getModel().getValue()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        Date start = (Date) datePickerStart.getModel().getValue();
+        LocalDate startDate = start.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        Date end = (Date) datePickerEnd.getModel().getValue();
+        LocalDate endDate;
+
+        if (end != null) {
+            endDate = end.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        } else {
+            endDate = startDate; // Set end date to start date if end is null
+        }
 
         try {
             startDateTime = LocalDateTime.of(
