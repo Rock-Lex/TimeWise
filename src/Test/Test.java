@@ -1,5 +1,7 @@
 package Test;
 
+import Calendar.TerminListe;
+
 public class Test {
     /**
      * Bei dieser Klasse handelt es sich um einen Test.

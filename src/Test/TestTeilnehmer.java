@@ -1,5 +1,8 @@
+package Test;
+
 import static org.junit.Assert.*;
 
+import Calendar.Teilnehmer;
 import org.junit.Test;
 
 /**
