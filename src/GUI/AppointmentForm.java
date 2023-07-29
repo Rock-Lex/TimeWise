@@ -5,8 +5,6 @@ import Calendar.Termin;
 import Calendar.TerminListe;
 
 import javax.swing.*;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -19,9 +17,10 @@ import java.awt.event.ActionListener;
 import java.time.format.DateTimeParseException;
 import java.util.Properties;
 import java.util.Date;
-import java.time.ZoneId;
 
 import GUI.Utilities.DateLabelFormatter;
+import org.jdatepicker.DateModel;
+import org.jdatepicker.JDatePicker;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
@@ -36,7 +35,7 @@ import org.jdatepicker.impl.UtilDateModel;
  * Erstellt am: 18.07.2023
  * Letzte Änderung: 22.07.2023
  */
-public class Appointment {
+public class AppointmentForm {
     private TerminListe appointments;
     private JFrame frame;
     private JPanel mainPanel;
@@ -45,16 +44,18 @@ public class Appointment {
     private JButton saveButton;
     private JCheckBox checkBoxMehrtagig;
     private JTextField textFieldTitel;
-    private JTextField textFieldStartdatum;
     private JTextField textFieldStartzeit;
-    private JTextField textFieldEnddatum;
     private JTextField textFieldEndzeit;
     private JTextField textFieldTyp;
     private JTextField textFieldTerminbeschreibung;
+    private JButton deleteButton;
     private String[] columnNames = {"Titel", "Mehrtägig", "Startdatum", "Startzeit", "Enddatum", "Endzeit", "Typ", "Terminbeschreibung"};
     private boolean running = true;
     private boolean isEditing = false;
     private Termin currentTermin;
+    private JCheckBox repeatAppointmentCheckBox;
+    private JComboBox repeatFrequencyComboBox;
+    private JDatePicker repeatEndDatePicker;
 
     private JDatePickerImpl datePickerStart;
     private JDatePickerImpl datePickerEnd;
@@ -64,7 +65,7 @@ public class Appointment {
      * Erzeugt ein neues Appointment-Objekt ohne einen initialen Termin.
      * Ruft den anderen Konstruktor auf und setzt die Bearbeitung auf den deaktivierten Zustand.
      */
-    public Appointment(TerminListe terminListe) {
+    public AppointmentForm(TerminListe terminListe) {
         this(null, terminListe);  // Ruft den anderen Konstruktor mit null und terminListe als Argument auf
     }
 
@@ -75,13 +76,14 @@ public class Appointment {
      *
      * @param termin Der Termin, der angezeigt und bearbeitet werden soll.
      */
-    public Appointment(Termin termin, TerminListe terminListe) {
+    public AppointmentForm(Termin termin, TerminListe terminListe) {
         this.appointments = terminListe;
         this.frame = new JFrame("Termin App");
         this.mainPanel = new JPanel(new BorderLayout());
         this.editButton = new JButton("Bearbeiten");
         this.cancelButton = new JButton("Abbrechen");
         this.saveButton = new JButton("Speichern");
+        deleteButton = new JButton("Termin löschen");
 
         UtilDateModel modelStart = new UtilDateModel();
         UtilDateModel modelEnd = new UtilDateModel();
@@ -101,6 +103,71 @@ public class Appointment {
         this.textFieldTyp = new JTextField(15);
         this.textFieldTerminbeschreibung = new JTextField(15);
 
+        // Create combo box with repeat options
+        String[] repeatOptions = {"Daily", "Weekly", "Monthly"};
+        repeatFrequencyComboBox = new JComboBox(repeatOptions);
+
+        // Create date picker for repeat end date
+        repeatEndDatePicker = new JDatePicker() {
+            @Override
+            public DateModel<?> getModel() {
+                return null;
+            }
+
+            @Override
+            public void addActionListener(ActionListener actionListener) {
+
+            }
+
+            @Override
+            public void removeActionListener(ActionListener actionListener) {
+
+            }
+
+            @Override
+            public void setShowYearButtons(boolean b) {
+
+            }
+
+            @Override
+            public boolean isShowYearButtons() {
+                return false;
+            }
+
+            @Override
+            public void setDoubleClickAction(boolean b) {
+
+            }
+
+            @Override
+            public boolean isDoubleClickAction() {
+                return false;
+            }
+
+            @Override
+            public void setTextEditable(boolean b) {
+
+            }
+
+            @Override
+            public boolean isTextEditable() {
+                return false;
+            }
+
+            @Override
+            public void setButtonFocusable(boolean b) {
+
+            }
+
+            @Override
+            public boolean getButtonFocusable() {
+                return false;
+            }
+        };
+
+        // Create repeat checkbox
+        repeatAppointmentCheckBox = new JCheckBox("Wiederholung");
+
         // Wenn ein Termin übergeben wurde, die Textfelder und die Checkbox entsprechend vorbelegen
         if (termin != null) {
             this.currentTermin = termin;
@@ -118,6 +185,22 @@ public class Appointment {
         } else {
             this.currentTermin = null;
         }
+
+        deleteButton.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if(termin != null) {
+
+                    // Call method to delete appointment
+                    terminListe.removeTermin(termin);
+
+                    // Close window
+                    frame.dispose();
+                }
+            }
+        });
 
         setupUI();
         toggleEditing(false);
@@ -150,6 +233,24 @@ public class Appointment {
         gbc.gridy = GridBagConstraints.RELATIVE;
         gbc.anchor = GridBagConstraints.WEST;
         gbc.insets = new Insets(5, 5, 5, 15); // Ändere die rechte Padding der Labels
+
+        // Create date model
+        UtilDateModel model = new UtilDateModel();
+
+        // Properties for date picker
+        Properties properties = new Properties();
+        properties.put("text.today", "Today");
+        properties.put("text.month", "Month");
+        properties.put("text.year", "Year");
+
+        // Create date panel
+        JDatePanelImpl datePanel = new JDatePanelImpl(model, properties);
+
+        // Create picker impl
+        JDatePickerImpl repeatEndDatePickerImpl = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+
+        // Add to panel
+        panel.add(repeatEndDatePickerImpl);
 
         panel.add(new JLabel("Titel:"), gbc);
         gbc.gridx = 1;
@@ -184,8 +285,31 @@ public class Appointment {
         gbc.gridx = 1;
         panel.add(textFieldTerminbeschreibung, gbc);
         gbc.gridx = 0;
+        panel.add(new JLabel("Wiederholung:"), gbc);
+        gbc.gridx = 1;
+        panel.add(repeatAppointmentCheckBox, gbc);
+        gbc.gridx = 0;
+        panel.add(new JLabel("Häufigkeit:"), gbc);
+        gbc.gridx = 1;
+        panel.add(repeatFrequencyComboBox, gbc);
+        gbc.gridx = 0;
+        panel.add(new JLabel("Ende:"), gbc);
+        gbc.gridx = 1;
+        panel.add(repeatEndDatePickerImpl, gbc);
+
+        // Initially disable repeat fields
+        toggleRepeatFields(false, repeatEndDatePickerImpl);
+
+        // Add action listener to enable/disable repeat fields
+        repeatAppointmentCheckBox.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+                toggleRepeatFields(repeatAppointmentCheckBox.isSelected(), repeatEndDatePickerImpl);
+            }
+        });
+
 
         JScrollPane scrollPane = new JScrollPane(panel);
+
 
         // ActionListener für den "Bearbeiten"-Knopf
         editButton.addActionListener(new ActionListener() {
@@ -213,11 +337,35 @@ public class Appointment {
                 frame.dispose(); // Schließt das Fenster
             }
         });
+        deleteButton.addActionListener(new ActionListener() {
 
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Delete logic here
+            }
+
+        });
         // Panel für die Knöpfe "Abbrechen" und "Speichern"
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        buttonPanel.add(cancelButton);
-        buttonPanel.add(saveButton);
+        JPanel leftBox = new JPanel();
+        JPanel rightBox = new JPanel();
+
+        leftBox.add(deleteButton);
+
+
+        // Left align components
+
+        // Add buttons
+        rightBox.add(cancelButton);
+        rightBox.add(saveButton);
+
+        leftBox.setLayout(new FlowLayout(FlowLayout.LEFT));
+        rightBox.setLayout(new FlowLayout(FlowLayout.RIGHT));
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
+
+        buttonPanel.add(leftBox);
+        buttonPanel.add(rightBox);
 
         mainPanel.add(editPanel, BorderLayout.NORTH);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
@@ -231,6 +379,15 @@ public class Appointment {
         frame.setSize(width, height);
         frame.setLocationRelativeTo(null); // Fenster in der Bildschirmmitte öffnen
         frame.setVisible(true);
+    }
+
+    private void toggleRepeatFields(boolean enabled, JDatePickerImpl endDatePicker) {
+
+        repeatFrequencyComboBox.setEnabled(enabled);
+
+        // Use passed in end date picker
+        endDatePicker.setEnabled(enabled);
+
     }
 
     /**
@@ -247,6 +404,8 @@ public class Appointment {
         textFieldEndzeit.setEnabled(isEditing);
         textFieldTyp.setEnabled(isEditing);
         textFieldTerminbeschreibung.setEnabled(isEditing);
+        repeatFrequencyComboBox.setEnabled(isEditing);
+        repeatAppointmentCheckBox.setEnabled(isEditing);
     }
     private void saveAppointment() {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");

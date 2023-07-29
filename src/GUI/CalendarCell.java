@@ -99,7 +99,7 @@ public class CalendarCell extends JPanel {
                         Termin appointment = appointmentMap.get(selectedText);
                         if (appointment != null) {
                             // Rufe die Appointment Klasse auf und übergebe den ausgewählten Termin
-                            new Appointment(appointment, terminListe).showUI();
+                            new AppointmentForm(appointment, terminListe).showUI();
                         }
                         textArea.getHighlighter().removeAllHighlights();
                         textArea.getHighlighter().addHighlight(rowStart, rowEnd, DefaultHighlighter.DefaultPainter);
