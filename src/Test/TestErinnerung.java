@@ -1,7 +1,10 @@
+package Test;
+
 import static org.junit.Assert.*;
 
 import java.time.LocalDateTime;
 
+import Calendar.Erinnerung;
 import org.junit.Test;
 
 public class TestErinnerung {
