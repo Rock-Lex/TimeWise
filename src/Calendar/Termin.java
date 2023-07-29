@@ -4,6 +4,7 @@ import Calendar.Exceptions.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import IDgen.IDGenerator;
@@ -24,6 +25,7 @@ public class Termin implements Comparable<Termin>{
     private LocalDateTime end;
     private String type;
     private String description;
+
 
     public List<Teilnehmer> getTeilnehmerList() {
         return teilnehmerList;
@@ -81,6 +83,23 @@ public class Termin implements Comparable<Termin>{
         if(this.start.isAfter(this.end)){
             throw new InvalidDateException("Startdatum muss vor dem Enddatum liegen.");
         }
+    }
+
+    /**
+     * Constructor to create a Termin with a Teilnehmer
+     *
+     * @param title The title of the Termin
+     * @param type The type of the Termin
+     * @param multiDay Whether it is a multi-day Termin
+     * @param start The start date/time
+     * @param end The end date/time
+     * @param teilnehmer The Teilnehmer for the Termin
+     */
+    public Termin(String title, String type, boolean multiDay, LocalDateTime start, LocalDateTime end, Teilnehmer teilnehmer) {
+        this(title, type, multiDay, start, end);
+
+        this.teilnehmerList = new ArrayList<>();
+        this.teilnehmerList.add(teilnehmer);
     }
 
     /**
