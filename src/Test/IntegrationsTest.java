@@ -15,6 +15,15 @@ import Calendar.TerminListe;
  * Erstellt am: 23.05.2023
  * Letzte Änderung: 29.07.2023
  */
+
+/**
+ * Bei dieser Klasse handelt es sich um eine Testklasse, die alle Testklassen zusammenfasst.
+ *
+ * Autor: Tobias Rehm
+ * Version: 1.1.0
+ * Erstellt am: 23.05.2023
+ * Letzte Änderung: 29.07.2023
+ */
 import static org.junit.Assert.*;
 
 import java.time.LocalDateTime;
