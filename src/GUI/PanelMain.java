@@ -29,7 +29,6 @@ import java.util.Random;
  * Version: 1.5
  * Erstellt am: 02.06.2023
  * Letzte Änderung: 19.07.2023
- *
  */
 public class PanelMain extends JPanel {
     // Deklaration der Variablen
@@ -47,6 +46,8 @@ public class PanelMain extends JPanel {
      * Erstellt ein neues PanelMain-Objekt mit der angegebenen Terminliste.
      *
      * @param terminListe Die Terminliste für den Kalender
+     * @throws AppointmentOutOfMonthRangeException the appointment out of month range exception
+     * @throws AppointmentMismatchMonthException   the appointment mismatch month exception
      */
     public PanelMain(TerminListe terminListe) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         YearMonth currentYearMonth = YearMonth.now();
@@ -114,7 +115,10 @@ public class PanelMain extends JPanel {
      * Die Hauptmethode der Anwendung.
      *
      * @param args Kommandozeilenargumente (werden ignoriert)
-     *
+     * @throws SQLPackageException                 the sql package exception
+     * @throws WrongPathException                  the wrong path exception
+     * @throws AppointmentOutOfMonthRangeException the appointment out of month range exception
+     * @throws AppointmentMismatchMonthException   the appointment mismatch month exception
      */
     public static void main(String[] args) throws SQLPackageException, WrongPathException, AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         TerminListe terminListe = new TerminListe();
@@ -140,6 +144,7 @@ public class PanelMain extends JPanel {
         revalidate();
         repaint();
     }
+
     /**
      * Gibt die MonthView zurück.
      *
@@ -154,7 +159,8 @@ public class PanelMain extends JPanel {
      * Erstellt zufällige Termine und fügt sie der Terminliste hinzu.
      *
      * @param terminListe Die Terminliste, zu der die Termine hinzugefügt werden sollen
-     *
+     * @throws SQLPackageException the sql package exception
+     * @throws WrongPathException  the wrong path exception
      */
     public static void erstelleZufaelligeTermine(TerminListe terminListe) throws SQLPackageException, WrongPathException {
         YearMonth currentYearMonth = YearMonth.now();
