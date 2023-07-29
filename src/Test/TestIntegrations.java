@@ -16,24 +16,13 @@ import Calendar.TerminListe;
  * Letzte Änderung: 29.07.2023
  */
 
-import static org.junit.Assert.*;
-
-import java.time.LocalDateTime;
-
-import org.junit.Test;
-
-import Calendar.Termin;
-import Calendar.Teilnehmer;
-import Calendar.TerminListe;
-
-public class IntegrationsTest {
+public class TestIntegrations {
 
     @Test
     public void testAddTerminWithTeilnehmer_TID0201_addTerminWithTeilnehmer() {
 
         // Test ID: TID0201
         // Name: addTerminWithTeilnehmer
-
         // Input: gültiger Termin, Teilnehmer, und TerminListe
         // erwartete Ausgabe: Termin und Teilnehmer Objekt erstellen und richtig verbinden
         // Ergebnis: Positiv
@@ -58,4 +47,5 @@ public class IntegrationsTest {
         assertEquals(1, termin.getTeilnehmerList().size());
         assertTrue(termin.getTeilnehmerList().contains(teilnehmer));
     }
+
 }
