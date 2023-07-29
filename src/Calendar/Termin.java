@@ -4,6 +4,8 @@ import Calendar.Exceptions.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+
 import IDgen.IDGenerator;
 
 /**
@@ -22,6 +24,17 @@ public class Termin implements Comparable<Termin>{
     private LocalDateTime end;
     private String type;
     private String description;
+
+    public List<Teilnehmer> getTeilnehmerList() {
+        return teilnehmerList;
+    }
+
+    public void setTeilnehmerList(List<Teilnehmer> teilnehmerList) {
+        this.teilnehmerList = teilnehmerList;
+    }
+
+    private List<Teilnehmer> teilnehmerList;
+
 
     /**
      * Konstruktor für die Erstellung eines Termins.
