@@ -43,11 +43,10 @@ public class IntegrationsTest {
         assertEquals(termin, terminListe.getTermine().get(0));
 
         // Add Teilnehmer to Termin
-        termin.getTeilnehmer().add(teilnehmer);
+        termin.getTeilnehmerList().add(teilnehmer);
 
         // Assert Teilnehmer was added to Termin
-        assertEquals(1, termin.getTeilnehmer().size());
-        assertTrue(termin.getTeilnehmer().contains(teilnehmer));
+        assertEquals(1, termin.getTeilnehmerList().size());
+        assertTrue(termin.getTeilnehmerList().contains(teilnehmer));
     }
-
 }
