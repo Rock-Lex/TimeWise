@@ -32,7 +32,7 @@ public class Termin implements Comparable<Termin>{
     }
     public String getTeilnehmerListAsString() {
         if (teilnehmerList == null || teilnehmerList.getTeilnehmerList().isEmpty()) {
-            return "No participants";
+            return "";
         }
 
         StringBuilder sb = new StringBuilder();
@@ -58,16 +58,34 @@ public class Termin implements Comparable<Termin>{
         teilnehmerList = new TeilnehmerList();
 
         String[] parts = teilnehmerListString.split(", ");
+
         for(String part : parts) {
-            String[] nameEmail = part.split("\\(");
-            String name = nameEmail[0];
 
-            int emailStart = nameEmail[1].indexOf(")") + 1;
-            String email = nameEmail[1].substring(emailStart);
+            part = part.trim();
 
-            Teilnehmer teilnehmer = new Teilnehmer(name, email);
-            teilnehmerList.addTeilnehmer(teilnehmer);
+            if(!part.isEmpty()) {
+
+                String[] nameEmail = part.split("\\(");
+
+                if(nameEmail.length >= 2) {
+
+                    String name = nameEmail[0];
+
+                    int emailStart = nameEmail[1].indexOf(")") + 1;
+                    String email = nameEmail[1].substring(emailStart);
+
+                    Teilnehmer teilnehmer = new Teilnehmer(name, email);
+                    teilnehmerList.addTeilnehmer(teilnehmer);
+
+                } else {
+                    // Handle case of only name entered
+
+                }
+
+            }
+
         }
+
     }
 
 
