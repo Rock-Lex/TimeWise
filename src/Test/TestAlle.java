@@ -125,7 +125,7 @@ public class TestAlle {
         // Name: invalide email
     }
 
-    // Test Datum String
+    // Test Datum String (DateLabelFormatter)
 
     @Test
     public void testValidDateString_TID0901() throws ParseException {
