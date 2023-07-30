@@ -2,6 +2,7 @@ package GUI;
 
 import Calendar.Termin;
 import Calendar.TerminListe;
+import GUI.Appointment.AppointmentForm;
 import GUI.Exceptions.AppointmentMismatchMonthException;
 import GUI.Exceptions.AppointmentOutOfMonthRangeException;
 import GUI.Views.CalendarView;
