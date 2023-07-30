@@ -1,11 +1,3 @@
-# Text
-1. egeg
-2. 2fgeg
-
-
-- egeg
-
-- [x] fefeegeg
 
 ## Wer ist Nutzer des Programms?
 Nutzer des Programms sind Personen einer Organisation, die bei der Organisation von 
