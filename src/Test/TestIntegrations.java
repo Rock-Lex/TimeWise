@@ -22,6 +22,11 @@ public class TestIntegrations {
 
     @Test
     public void testAddTerminWithTeilnehmer() {
+        // Test ID: TID0201
+        // Name: addTerminWithTeilnehmer
+        // Input: valider Teilnehmer, Termin und Termin-Liste
+        // erwartete Ausgabe: Teilnehmer, Termin erstellen und zusammenführen
+        // Ergebnis: Positiv
 
         // Erstelle Teilnehmer
         Teilnehmer teilnehmer = new Teilnehmer("John Doe", "john@email.com");

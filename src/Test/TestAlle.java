@@ -1,5 +1,7 @@
 package Test;
 import static org.junit.Assert.*;
+
+import java.text.ParseException;
 import java.time.LocalDateTime;
 import org.junit.Test;
 
@@ -10,72 +12,119 @@ import Calendar.*;
  * @author Tobias Rehm
  * @version 1.1.0
  * @since 23.05.2023
- * Letzte Änderung: 29.07.2023
+ * Letzte Änderung: 30.07.2023
  */
 public class TestAlle {
 
-    // Tests für Termin
+    // Integration test
 
     @Test
-    public void testTerminConstructor_TID0101() {
-        // Test ID: TID0101
-        // Test Termin constructor
-    }
-
-    @Test
-    public void testTerminCompareTo_TID0102() {
-        // Test ID: TID0102
-        // Test Termin compareTo method
-    }
-
-    // Tests für Teilnehmer
-
-    @Test
-    public void testTeilnehmerConstructor_TID0103() {
-        // Test ID: TID0103
-        // Test Teilnehmer constructor
-    }
-
-    @Test
-    public void testTeilnehmerCompareTo_TID0104() {
-        // Test ID: TID0104
-        // Test Teilnehmer compareTo method
-    }
-
-    // Tests für TerminListe
-
-    @Test
-    public void testTerminListeConstructor_TID0105() {
-        // Test ID: TID0105
-        // Test TerminListe constructor
-    }
-
-    @Test
-    public void testTerminListeAddTermin_TID0106() {
-        // Test ID: TID0106
-        // Test TerminListe addTermin method
+    public void testAddTerminWithTeilnehmer() {
+        // Test ID: TID0201
+        // Name: addTerminWithTeilnehmer
     }
 
     // Tests für Erinnerung
 
     @Test
-    public void testErinnerungConstructor_TID0107() {
-        // Test ID: TID0107
-        // Test Erinnerung constructor
+    public void testConstructor_TID0301_constructorWithValidInput_createsErinnerung() {
+        // Test ID: TID0301
+        // Name: constructorWithValidInput
     }
 
     @Test
-    public void testErinnerungCompareTo_TID0108() {
-        // Test ID: TID0108
-        // Test Erinnerung compareTo method
+    public void testCompareTo_TID0302_compareTo_differentTimes_returnsCorrectValue() {
+        // Test ID: TID0302
+        // Name: compareTo
     }
 
-    // Integration test
+    // Test zur Berechnung Ostersonntag
 
     @Test
-    public void testIntegration_TID0109() {
-        // Test ID: TID0109
-        // Integration test
+    public void testCalculateEasterSunday_TID0401_calculateEasterSunday_input2020_returnsApril12() {
+        // Test ID: TID0401
+        // Name: calculateEasterSunday
+    }
+
+    @Test
+    public void testCalculateEasterSunday_TID0402_calculateEasterSunday_input2023_returnsApril9() {
+        // Test ID: TID0402
+        // Name: calculateEasterSunday
+    }
+
+    @Test
+    public void testCalculateBussUndBettag_TID0403_calculateBussUndBettag_input2023_returnsNovember22() {
+        // Test ID: TID0403
+        // Name: calculateBussUndBettag
+    }
+
+    @Test
+    public void testHolidaysList_TID0404_getHolidays_input2023_returnsHolidaysList() {
+        // Test ID: TID0404
+        // Name: getHolidays
+    }
+
+    // Tests für Teilnehmer
+
+    @Test
+    public void testConstructor_TID0501_constructorWithValidInput_createsTeilnehmer() {
+        // Test ID: TID0501
+        // Name: constructorWithValidInput
+    }
+
+    @Test
+    public void testCompareTo_TID0502_compareTo_differentNames_returnsCorrectValue() {
+        // Test ID: TID0502
+        // Name: compareTo
+    }
+
+    // Tests für Termin
+
+    @Test
+    public void testConstructor_TID0601_constructorWithValidInputs_inputMeeting20200101to20200102_createsTermin() {
+        // Test ID: TID0601
+        // Name: constructorWithValidInputs
+    }
+
+    @Test
+    public void testConstructor_TID0602_constructorWithInvalidInputs_emptyTitleAndType_throwsException() {
+        // Test ID: TID0602
+        // Name: constructorWithInvalidInputs
+    }
+
+    // Tests für TerminListe
+
+    @Test
+    public void testConstructor_TID0701_constructor_createsTerminListe() {
+        // Test ID: TID0701
+        // Name: constructor
+    }
+
+    // Test E-Mail Überprüfung
+
+    @Test
+    public void testValidEmail_TID0801() {
+        // Test ID: TID0801
+        // Name: valide email
+    }
+    @Test
+    public void testInvalidEmail_TID0802() {
+        // Test ID: TID0802
+        // Name: invalide email
+    }
+
+    // Test Datum String
+
+    @Test
+    public void testValidDateString_TID0901() throws ParseException {
+        // Test ID: TID0901
+        // Name: valide date String
+    }
+
+    @Test
+    public void testInvalidDateString_TID0902() {
+        // Test ID: TID0902
+        // Name: invalide date String
     }
 
 }
