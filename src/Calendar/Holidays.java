@@ -1,27 +1,22 @@
 package Calendar;
 
-
+/**
+ * Bei dieser Klasse handelt es sich um die Holidays Class zur Berechnung und Festlegung der Feiertage in Berlin.
+ *
+ * @author Tobias Rehm
+ * @version 1.0.0
+ * @since 21.05.2023
+ * Letzte Änderung: 23.07.2023
+ */
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-/**
- * Eine Klasse zur Berechnung und Verwaltung der Feiertage in Berlin.
- *
- * Autor: Tobias Rehm
- * Version: 1.0.0
- * Erstellt am: 21.05.2023
- * Letzte Änderung: 23.05.2023
- */
+
 public class Holidays {
 	private String name;
 	private int year;
 	private LocalDate date;
-	/**
-	 * Konstruktor für die Erstellung eines Feiertags.
-	 *
-	 * @param name Der Name des Feiertags.
-	 * @param date Das Datum des Feiertags als LocalDate.
-	 */
+
 	public Holidays(String name, LocalDate date) {
 		this.name = name;
 		//	this.year = year;
@@ -29,10 +24,10 @@ public class Holidays {
 		// verwaltungsklasse integrieren -> Array
 	}
 	/**
-	 * Berechnet den Ostersonntag für ein bestimmtes Jahr.
+	 * Berechnet das Datum des Ostersonntags für ein gegebenes Jahr.
 	 *
 	 * @param year Das Jahr, für das der Ostersonntag berechnet werden soll.
-	 * @return Das Datum des Ostersonntags als LocalDate.
+	 * @return Das Datum des Ostersonntags.
 	 */
 	public static LocalDate calculateEasterSunday(int year) {
 		int a = year % 19;
@@ -58,10 +53,10 @@ public class Holidays {
 		return LocalDate.of(year, month, day); // Gib den Ostersonntag im Format MMTT zurück
 	}
 	/**
-	 * Berechnet den Buß- und Bettag für ein bestimmtes Jahr.
+	 * Berechnet das Datum des Buß- und Bettags für ein gegebenes Jahr.
 	 *
-	 * @param year Das Jahr, für das der Buß- und Bettag berechnet werden soll.
-	 * @return Das Datum des Buß- und Bettags als LocalDate.
+	 * @param year Das Jahr, für das der Buß- und Betttag berechnet werden soll.
+	 * @return Das Datum des Buß- und Bettags.
 	 */
 	public static LocalDate BussUndBettag(int year){
 		LocalDate nov23 = LocalDate.of(year, 11, 23);
@@ -71,22 +66,15 @@ public class Holidays {
 		}
 		return nov23;
 	}
-	/**
-	 * @return Der Name des Feiertags.
-	 */
+
 	public String getName() {
 		return name;
 	}
-	/**
-	 * @return Das Jahr des Feiertags.
-	 */
+
 	public int getYear() {
 		return year;
 	}
 
-	/**
-	 * @return Das Datum des Feiertags als LocalDate.
-	 */
 	public LocalDate getDate() {
 		return date;
 	}

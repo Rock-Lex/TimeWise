@@ -1,74 +1,59 @@
 package Test;
 
+import Calendar.Exceptions.EmptyFieldException;
 import Calendar.Termin;
 import IOManager.Database;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.time.LocalDateTime;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 public class TestTermin {
-
     /**
-     * Bei dieser Klasse handelt es sich um einen Test fur Termin .
-     * *
-     * Autor: Oleksandr Kamenskyi
-     * Version: 1.0.0
-     * Erstellt am: 23.05.2023
-     * Letzte Änderung: 23.05.2023
+     * Bei dieser Klasse handelt es sich um die Testklasse mit Units für die Klasse Termin.
+     *
+     * @author Oleksandr Kamenskyi
+     * version  1.0.0
+     * @since 23.05.2023
+     * Letzte Änderung: 29.07.2023
      */
+        @Test
+        public void testConstructor_TID0601_constructorWithValidInputs_inputMeeting20200101to20200102_createsTermin() {
+            // Test ID: TID0601
+            // Name: constructorWithValidInputs
+            // Input: Meeting from 2020-01-01 to 2020-01-02
+            // erwartete Ausgabe: Erstellt erfolgreich ein Objekt Termin
+            // Ergebnis: Positiv
 
-    public TestTermin() {
+            LocalDateTime start = LocalDateTime.of(2020, 1, 1, 9, 0);
+            LocalDateTime end = LocalDateTime.of(2020, 1, 2, 12, 0);
+            Termin meeting = new Termin("Daily Standup", "Meeting", true, start, end);
+
+            assertNotNull(meeting);
+            assertEquals("Daily Standup", meeting.getTitle());
+            assertTrue(meeting.isMultiDay());
+            assertEquals(start, meeting.getStart());
+            assertEquals(end, meeting.getEnd());
+        }
+
+        @Test
+        public void testConstructor_TID0602_constructorWithInvalidInputs_emptyTitleAndType_throwsException() {
+            // Test ID: TID0602
+            // Name: constructorWithInvalidInputs
+            // Input: Leerer title und type; nur Start und Ende
+            // erwartete Ausgabe: Ausgabe einer EmptyFieldException
+            // Ergebnis: Negativ
+
+            Exception exception = assertThrows(EmptyFieldException.class, () -> {
+                new Termin("", "", false, "2020-01-01", "2020-01-02", "09:00", "12:00");
+            });
+
+            String expectedMessage = "Title und Typ dürfen nicht leer sein.";
+            String actualMessage = exception.getMessage();
+
+            assertTrue(actualMessage.contains(expectedMessage));
+        }
 
     }
-
-    private static void testTerminClass() {
-        System.out.println("TEST CASES FOR TERMIN CLASS");
-
-        System.out.println("TEST 1");
-        Termin eintaegigerTermin = new Termin("Ein Tag","MT",true,"2022-12-21", "2022-12-21", "12:00","13:00");
-        LocalDateTime lt = LocalDateTime.now();
-
-        eintaegigerTermin.setStart(lt);
-        eintaegigerTermin.setMultiDay(true);
-        eintaegigerTermin.setEnd(lt);
-        eintaegigerTermin.setTitle("Test Title");
-        eintaegigerTermin.setType("MT");
-
-        System.out.println();
-
-        System.out.println(eintaegigerTermin.getId());
-        System.out.println(eintaegigerTermin.getStart());
-        System.out.println(eintaegigerTermin.getEnd());
-        System.out.println(eintaegigerTermin.getTitle());
-        System.out.println(eintaegigerTermin.getType());
-        System.out.println(eintaegigerTermin.isMultiDay());
-
-        System.out.println("TEST 2");
-        Termin mehrtaegigerTermin = new Termin("Mehrere Tage", "AT", true,"2022-12-21", "2022-12-22", "12:00","13:00");
-
-        System.out.println();
-
-        LocalDateTime lt2 = LocalDateTime.now();
-
-        mehrtaegigerTermin.setStart(lt2);
-        mehrtaegigerTermin.setMultiDay(true);
-        mehrtaegigerTermin.setEnd(lt2);
-        mehrtaegigerTermin.setTitle("Test Title 22");
-        mehrtaegigerTermin.setType("AT");
-
-        System.out.println();
-
-        System.out.println(mehrtaegigerTermin.getId());
-        System.out.println(mehrtaegigerTermin.getStart());
-        System.out.println(mehrtaegigerTermin.getEnd());
-        System.out.println(mehrtaegigerTermin.getTitle());
-        System.out.println(mehrtaegigerTermin.getType());
-        System.out.println(mehrtaegigerTermin.isMultiDay());
-    }
-
-    public void test() {
-        System.out.println("Test started");
-        testTerminClass();
-        System.out.println("Test ended");
-    }
-}

@@ -3,7 +3,7 @@ package GUI;
 import Calendar.TerminListe;
 import GUI.Exceptions.AppointmentMismatchMonthException;
 import GUI.Exceptions.AppointmentOutOfMonthRangeException;
-import GUI.Utilities.DateLabelFormatter;
+import Utilities.DateLabelFormatter;
 import GUI.Views.CalendarView;
 import GUI.Views.CalendarViewManager;
 
@@ -13,24 +13,20 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.Properties;
 
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
-import org.jdatepicker.impl.UtilCalendarModel;
-import org.jdatepicker.util.JDatePickerUtil;
-import org.jdatepicker.JDateComponentFactory;
 
 /**
  * Diese Klasse repräsentiert das Panel für die Änderung von Ansichten und
  * weiter- bzw. zurückblättern im Kalender.
  *
- * Autor: Philipp Voß
- * Version: 1.2
- * Erstellt am: 03.06.2023
+ * @author  Philipp Voß
+ * @version 1.2
+ * @since 03.06.2023
  * Letzte Änderung: 19.07.2023
  */
 public class PanelChange extends JPanel {

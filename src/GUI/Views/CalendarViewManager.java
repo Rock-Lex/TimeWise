@@ -4,6 +4,7 @@ import Calendar.Termin;
 import Calendar.TerminListe;
 import GUI.Exceptions.AppointmentMismatchMonthException;
 import GUI.Exceptions.AppointmentOutOfMonthRangeException;
+import IOManager.Database;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -13,9 +14,9 @@ import java.util.Map;
 /**
  * Verwaltungsklasse für die verschiedenen Kalenderansichten.
  *
- * Autor: Philipp Voß
- * Version: 1.3
- * Erstellt am: 16.07.2023
+ * @author  Philipp Voß
+ * @version 1.3
+ * @since 16.07.2023
  * Letzte Änderung: 19.07.2023
  */
 public class CalendarViewManager {
@@ -23,6 +24,7 @@ public class CalendarViewManager {
     private CalendarView currentView;
     private YearMonth currentYearMonth;
     private TerminListe terminListe;
+    private Database db;
 
     // --------------------------- Konstruktor -------------------------------------------
     /**
@@ -30,15 +32,15 @@ public class CalendarViewManager {
      *
      * @param terminListe Eine Liste von Terminen.
      */
-    public CalendarViewManager(TerminListe terminListe) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
+    public CalendarViewManager(TerminListe terminListe, Database db) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         views = new HashMap<>();
         this.currentYearMonth = YearMonth.now();
         this.terminListe = terminListe;
-
+        this.db = db;
         // Initialisiere die verschiedenen Views
         int currentYear = YearMonth.now().getYear();
         int currentMonth = YearMonth.now().getMonthValue();
-        views.put("month", new MonthView(currentYear, currentMonth, this.terminListe));
+        views.put("month", new MonthView(currentYear, currentMonth, this.terminListe, db));
         // Hier weitere Views hinzufügen
 
         // Monatsansicht als Standard gesetzt

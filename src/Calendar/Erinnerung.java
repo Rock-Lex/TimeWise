@@ -8,10 +8,10 @@ import java.time.LocalDateTime;
  * Eine Klasse, die eine Erinnerung repräsentiert und verwaltet.
  * Die Erinnerung enthält Informationen wie Zeitpunkt, Nachricht und Aktivierungsstatus.
  *
- * Autor: Oleksandr Kamenskyi
- * Version: 1.0.0
- * Erstellt am: 23.05.2023
- * Letzte Änderung: 23.05.2023
+ * @author Oleksandr Kamenskyi
+ * @version 1.0.0
+ * @since 23.05.2023
+ * Letzte_Änderung: 23.05.2023
  */
 public class Erinnerung implements Comparable<Erinnerung> {
 
@@ -120,7 +120,7 @@ public class Erinnerung implements Comparable<Erinnerung> {
      * Vergleicht die Erinnerung mit einer anderen Erinnerung anhand ihres Zeitpunkts.
      * Diese Methode wird für die Sortierung von Erinnerungen verwendet.
      *
-     * @param erinnerung Die andere Erinnerung, mit der verglichen werden soll.
+     * @param erinnerung Die andere Erinnerung, mit der verglichen werden soll. Wenn diese null ist, wird eine NullPointerException ausgelöst.
      * @return Ein Wert kleiner als 0, wenn diese Erinnerung vor der anderen liegt;
      *         ein Wert größer als 0, wenn diese Erinnerung nach der anderen liegt;
      *         andernfalls 0, wenn beide Erinnerungen den gleichen Zeitpunkt haben.
@@ -129,4 +129,5 @@ public class Erinnerung implements Comparable<Erinnerung> {
     public int compareTo(Erinnerung erinnerung) {
         return this.time.compareTo(erinnerung.time);
     }
+
 }

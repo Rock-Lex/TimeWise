@@ -7,6 +7,7 @@ import Calendar.TerminListe;
 import GUI.CalendarCell;
 import GUI.Exceptions.AppointmentMismatchMonthException;
 import GUI.Exceptions.AppointmentOutOfMonthRangeException;
+import IOManager.Database;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,9 +21,9 @@ import java.util.Locale;
 /**
  * Eine benutzerdefinierte Swing-Komponente zur Darstellung einer Monatsansicht im Kalender.
  *
- * Autor: Philipp Voß
- * Version: 1.6
- * Erstellt am: 16.17.2023
+ * @author  Philipp Voß
+ * @version  1.6
+ * @since 16.17.2023
  * Letzte Änderung: 19.07.2023
  */
 public class MonthView extends CalendarView {
@@ -31,6 +32,7 @@ public class MonthView extends CalendarView {
     private YearMonth yearMonth;
     private CalendarCell[] calendarCells;
     private JLabel[] daysLabels;
+    private Database db;
 
 // ----------- Konstruktoren -----------
     /**
@@ -40,8 +42,9 @@ public class MonthView extends CalendarView {
      * @param month Der aktuelle Monat als int.
      * @param terminListe Eine Liste von Terminen
      */
-    public MonthView(int year, int month, TerminListe terminListe) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
+    public MonthView(int year, int month, TerminListe terminListe, Database db) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         super(year, month, terminListe);
+        this.db = db;
         this.terminListe = terminListe;
         yearMonth = YearMonth.of(year, month);
         int numberOfDays = yearMonth.lengthOfMonth();
@@ -64,7 +67,7 @@ public class MonthView extends CalendarView {
         }
 
         for (int i = 1; i <= numberOfDays; i++) {
-            CalendarCell cell = new CalendarCell(Integer.toString(i), terminListe);
+            CalendarCell cell = new CalendarCell(Integer.toString(i), terminListe, this, db);
             calendarCells[i - 1] = cell;
             add(cell);
         }
@@ -154,7 +157,7 @@ public class MonthView extends CalendarView {
         }
 
         for (int i = 1; i <= numberOfDays; i++) {
-            CalendarCell cell = new CalendarCell(Integer.toString(i), terminListe);
+            CalendarCell cell = new CalendarCell(Integer.toString(i), terminListe, this, db);
             calendarCells[i - 1] = cell;
             add(cell);
         }
@@ -218,31 +221,5 @@ public class MonthView extends CalendarView {
     @Override
     public void todaysPeriod() {
         this.yearMonth=YearMonth.now();
-    }
-
-    /**
-     * Beispielanwendung zum Testen der Klasse.
-     *
-     * @param args Kommandozeilenargumente (werden ignoriert).
-     */
-    public static void main(String[] args) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
-        JFrame frame = new JFrame("Month View Example");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        Termin termin1 = new Termin("Terminname 1", "Typ 1", false, "2023-06-02", "2023-06-02", "10:00", "11:30");
-        Termin termin2 = new Termin("Terminname 2", "Typ 2", false, "2023-06-01", "2023-06-01", "13:00", "14:30");
-        TerminListe terminListe = new TerminListe();
-        terminListe.addTermin(termin1);
-        terminListe.addTermin(termin2);
-
-        MonthView monthView = new MonthView(2023, 6, terminListe);
-        monthView.addAppointment(termin1);
-        monthView.addAppointment(termin2);
-
-        monthView.setToday(18);
-
-        frame.getContentPane().add(monthView);
-        frame.pack();
-        frame.setVisible(true);
     }
 }
