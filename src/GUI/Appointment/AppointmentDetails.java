@@ -12,7 +12,16 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 import javax.swing.*;
-
+/**
+ * Eine Klasse, die ein Detailfenster für Termine darstellt. Soll zukünftig als Erweiterung für AppointmentForm.java fungieren.
+ * Es ermöglicht das Hinzufügen von Teilnehmern zu einem Termin,
+ * die Festlegung einer Wiederholungsfrequenz und das Setzen eines Enddatums für die Wiederholung.
+ *
+ * Autor: Philipp Voß
+ * Version: 0.0.1
+ * Erstellt am: 30.05.2023
+ * Letzte Änderung: 30.07.2023
+ */
 public class AppointmentDetails {
     private JPanel details;
     private TerminListe terminListe;
@@ -28,7 +37,12 @@ public class AppointmentDetails {
     private JTextField textFieldTerminTeilnehmer;
     private JButton addParticipantBtn;
     private int currentRow = 0;
-
+    /**
+     * Konstruktor für die Klasse AppointmentDetails.
+     * Initialisiert eine neue Instanz der Klasse mit einer vorgegebenen Liste von Terminen.
+     *
+     * @param terminListe Eine Liste von Terminen, die in der GUI angezeigt werden soll.
+     */
     public AppointmentDetails(TerminListe terminListe) {
         this.terminListe = terminListe;
 
@@ -39,7 +53,11 @@ public class AppointmentDetails {
         setupUI();
     }
 
-
+    /**
+     * Liefert eine Liste der Teilnehmernamen aus den Eingabefeldern.
+     *
+     * @return Eine Liste der Teilnehmernamen.
+     */
     public List<String> getParticipants() {
         List<String> participants = new ArrayList<>();
         for (JTextField field : participantFields) {
@@ -47,7 +65,9 @@ public class AppointmentDetails {
         }
         return participants;
     }
-
+    /**
+     * Initialisiert und erstellt die Benutzeroberfläche für die Detailansicht.
+     */
     private void setupUI() {
         details = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -100,6 +120,9 @@ public class AppointmentDetails {
 
 
 
+    /**
+     * Fügt ein neues Textfeld zur Eingabe von Teilnehmernamen hinzu.
+     */
     private void addParticipantField() {
         JTextField newTextField = new JTextField(15);
         participantFields.add(newTextField);
@@ -113,14 +136,28 @@ public class AppointmentDetails {
         details.revalidate();
         details.repaint();
     }
-
+    /**
+     * Aktiviert oder deaktiviert die Eingabefelder für die Wiederholung.
+     *
+     * @param b Ein boolescher Wert, der angibt, ob die Eingabefelder aktiviert (true) oder deaktiviert (false) sein sollen.
+     */
     private void setRepeatFieldsEnabled(boolean b) {
     }
-
+    /**
+     * Fügt einen neuen Termin zur Liste der Termine hinzu.
+     *
+     * @param termin Der Termin, der hinzugefügt werden soll.
+     */
     public void addTermin(Termin termin) {
         terminListe.addTermin(termin);
     }
-
+    /**
+     * Legt fest, ob der Termin wiederholt wird, sowie die Frequenz und das Enddatum der Wiederholung.
+     *
+     * @param enabled Ein boolescher Wert, der angibt, ob der Termin wiederholt wird.
+     * @param frequency Die Frequenz der Wiederholung ("Daily", "Weekly", "Monthly").
+     * @param endDate Das Enddatum der Wiederholung.
+     */
     public void setRepeat(boolean enabled, String frequency, LocalDate endDate) {
         this.repeatEnabled = enabled;
         this.repeatFrequency = frequency;
@@ -138,7 +175,11 @@ public class AppointmentDetails {
     public LocalDate getRepeatEndDate() {
         return repeatEndDate;
     }
-
+    /**
+     * Liefert eine Zeichenkette, die alle Termine als kommaseparierte Liste enthält.
+     *
+     * @return Eine Zeichenkette, die alle Termintitel enthält, getrennt durch Kommata.
+     */
     public String getTermineAsString() {
         StringBuilder sb = new StringBuilder();
         for (Termin t : terminListe.getTermine()) {
@@ -146,7 +187,11 @@ public class AppointmentDetails {
         }
         return sb.toString();
     }
-
+    /**
+     * Setzt die Termine der Terminliste basierend auf einer kommaseparierten Zeichenkette von Termintiteln.
+     *
+     * @param terminTitles Eine kommaseparierte Zeichenkette von Termintiteln.
+     */
     public void setTermineFromString(String terminTitles) {
         String[] parts = terminTitles.split(",");
         for (String title : parts) {
@@ -154,9 +199,19 @@ public class AppointmentDetails {
             terminListe.addTermin(t);
         }
     }
+    /**
+     * Liefert das Detail-Panel, das zur Darstellung in einem Frame oder Panel verwendet werden kann.
+     *
+     * @return Das Detail-Panel.
+     */
     public JPanel getDetailsPanel() {
         return details;
     }
+    /**
+     * Der Einstiegspunkt des Programms.
+     *
+     * @param args Ein Array von Zeichenketten, das die Befehlszeilenargumente darstellt.
+     */
     public static void main(String[] args) {
         TerminListe terminListe = new TerminListe();
         AppointmentDetails details = new AppointmentDetails(terminListe);

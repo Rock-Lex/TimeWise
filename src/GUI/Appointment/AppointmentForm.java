@@ -32,6 +32,7 @@ import org.jdatepicker.JDatePicker;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 /**
  * Eine GUI zur Erstellung von Terminen.
@@ -129,6 +130,8 @@ public class AppointmentForm {
 
         // Populate combo box
         TerminTypeSorter sorter = new TerminTypeSorter();
+
+        AutoCompleteDecorator.decorate(typeComboBox);
         typeComboBox.setModel(new DefaultComboBoxModel(sorter.getSortedTerminTypes(appointments).toArray()));
 
         // Create date picker for repeat end date

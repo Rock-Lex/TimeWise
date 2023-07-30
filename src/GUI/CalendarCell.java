@@ -15,7 +15,8 @@ import GUI.Appointment.AppointmentForm;
 import GUI.Views.CalendarView;
 
 /**
- * Eine benutzerdefinierte Swing-Komponente zur Darstellung von Kalenderzellen.
+ * Diese Klasse repräsentiert eine benutzerdefinierte Swing-Komponente zur Darstellung von Kalenderzellen.
+ * Jede Zelle stellt einen Tag im Kalender dar und kann einen oder mehrere Termine enthalten.
  *
  * Autor: Philipp Voß
  * Version: 1.3
@@ -33,8 +34,9 @@ public class CalendarCell extends JPanel {
      * Erstellt eine neue Kalenderzelle mit dem angegebenen Tag.
      *
      * @param text Der Tag des Monats als String.
+     * @param terminListe Eine Instanz der TerminListe.
+     * @param monthView Eine Instanz der CalendarView.
      */
-
     public CalendarCell(String text, TerminListe terminListe, CalendarView monthView) {
         setLayout(new BorderLayout());
 
@@ -116,11 +118,9 @@ public class CalendarCell extends JPanel {
     }
 
     /**
-     * Setzt die Hintergrundfarbe des Labels auf gelb,
-     * wenn der Tag der aktuelle Tag ist.
+     * Markiert die Zelle als "heute", indem sie die Hintergrundfarbe des Labels auf gelb setzt.
      *
-     * @param isToday true, wenn der Tag der aktuelle Tag ist,
-     *                false sonst.
+     * @param isToday true, wenn der Tag der aktuelle Tag ist, false sonst.
      */
     public void setToday(boolean isToday) {
         if (isToday) {
@@ -131,9 +131,10 @@ public class CalendarCell extends JPanel {
     }
 
     /**
-     * Fügt einen Termin zum Textfeld hinzu.
+     * Fügt einen Termin zum Textfeld der Kalenderzelle hinzu.
      *
-     * @param appointment Der Termin als String.
+     * @param appointmentText Der Text des Termins, der angezeigt werden soll.
+     * @param appointment Der Termin, der hinzugefügt werden soll.
      */
     public void addAppointment(String appointmentText, Termin appointment) {
         // Füge Termin zur TreeMap hinzu
@@ -147,7 +148,7 @@ public class CalendarCell extends JPanel {
     }
 
     /**
-     * Löscht alle Termine und leert das Textfeld.
+     * Entfernt alle Termine aus der Zelle und löscht das Textfeld.
      */
     public void clearAppointments() {
         appointmentMap.clear();

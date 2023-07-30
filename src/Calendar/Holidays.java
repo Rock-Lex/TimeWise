@@ -1,13 +1,12 @@
 package Calendar;
 
 /**
- * @author tobiasrehm
  * Bei dieser Klasse handelt es sich um die Holidays Class zur Berechnung und Festlegung der Feiertage in Berlin.
  *
  * Autor: Tobias Rehm
  * Version: 1.0.0
  * Erstellt am: 21.05.2023
- * Letzte Änderung: 23.05.2023
+ * Letzte Änderung: 23.07.2023
  */
 
 import java.time.DayOfWeek;
@@ -24,7 +23,12 @@ public class Holidays {
 		this.date = date;
 		// verwaltungsklasse integrieren -> Array
 	}
-
+	/**
+	 * Berechnet das Datum des Ostersonntags für ein gegebenes Jahr.
+	 *
+	 * @param year Das Jahr, für das der Ostersonntag berechnet werden soll.
+	 * @return Das Datum des Ostersonntags.
+	 */
 	public static LocalDate calculateEasterSunday(int year) {
 		int a = year % 19;
 		int b = year / 100;
@@ -48,7 +52,12 @@ public class Holidays {
 
 		return LocalDate.of(year, month, day); // Gib den Ostersonntag im Format MMTT zurück
 	}
-
+	/**
+	 * Berechnet das Datum des Buß- und Bettags für ein gegebenes Jahr.
+	 *
+	 * @param year Das Jahr, für das der Buß- und Betttag berechnet werden soll.
+	 * @return Das Datum des Buß- und Bettags.
+	 */
 	public static LocalDate BussUndBettag(int year){
 		LocalDate nov23 = LocalDate.of(year, 11, 23);
 
