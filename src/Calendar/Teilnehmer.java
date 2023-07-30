@@ -3,9 +3,9 @@ package Calendar;
 /**
  * Eine Klasse, die einen Teilnehmer repräsentiert.
  *
- * Autor: Oleksandr Kamenskyi
- * Version: 1.0.0
- * Erstellt am: 23.05.2023
+ * @author: Oleksandr Kamenskyi
+ * @version: 1.0.0
+ * @since am: 23.05.2023
  * Letzte Änderung: 23.05.2023
  */
 public class Teilnehmer implements Comparable<Teilnehmer>{
