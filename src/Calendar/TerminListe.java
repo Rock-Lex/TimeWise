@@ -21,10 +21,11 @@ public class TerminListe implements Comparable<TerminListe>{
     private Database database;
     private List<Termin> termine;
     /**
-     * Erstellt eine neue TerminListe mit einer gegebenen Datenbank und einer Liste von Terminen.
+     * Erstellt eine neue TerminListe basierend auf einer gegebenen Datenbank und einer Liste von Terminen.
      *
      * @param database Die Datenbank, auf der der Kalender basiert.
      * @param termine  Die Liste von Terminen.
+     * @throws RuntimeException Falls beim Erstellen der Datenbank eine Exception ausgelöst wird.
      */
     public TerminListe(Database database, List<Termin> termine) {
 
@@ -45,8 +46,9 @@ public class TerminListe implements Comparable<TerminListe>{
     }
 
     /**
+     * Gibt eine textuelle Repräsentation der TerminListe zurück.
      *
-     * @return sb Daten in Kalender gespeichert
+     * @return String-Repräsentation der TerminListe.
      */
     @Override
     public String toString() {
@@ -65,7 +67,7 @@ public class TerminListe implements Comparable<TerminListe>{
     }
 
     /**
-     * Fügt einen Termin der TerminListe hinzu.
+     * Fügt einen neuen Termin zur TerminListe hinzu.
      *
      * @param termin Das Termin-Objekt, das hinzugefügt werden soll.
      */
@@ -86,7 +88,7 @@ public class TerminListe implements Comparable<TerminListe>{
     }
 
     /**
-     * Gibt die Datenbank zurück, auf der der Kalender basiert.
+     * Gibt die Datenbank zurück, auf der die TerminListe basiert.
      *
      * @return Die Datenbank der TerminListe.
      */
@@ -99,7 +101,7 @@ public class TerminListe implements Comparable<TerminListe>{
 //    }
 
     /**
-     * Setzt die Liste der Termine für den Kalender.
+     * Setzt die Liste der Termine für die TerminListe.
      *
      * @param termine Die Liste von Terminen.
      */
@@ -109,7 +111,7 @@ public class TerminListe implements Comparable<TerminListe>{
 
 
     /**
-     * Gibt die Liste von Terminen zurück.
+     * Gibt die Liste der Termine zurück.
      *
      * @return Die Liste von Terminen.
      */
@@ -119,6 +121,7 @@ public class TerminListe implements Comparable<TerminListe>{
 
     /**
      * Vergleicht diese TerminListe mit einer anderen TerminListe.
+     * Die genaue Implementierung hängt von den spezifischen Anforderungen ab.
      *
      * @param other Die andere TerminListe, die verglichen werden soll.
      * @return Eine Ganzzahl, die angibt, ob diese TerminListe größer, kleiner oder gleich der anderen TerminListe ist.

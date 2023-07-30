@@ -1,6 +1,6 @@
 package Test;
 
-import GUI.Utilities.DateLabelFormatter;
+import Utilities.DateLabelFormatter;
 import org.junit.Test;
 import java.text.ParseException;
 import static org.junit.Assert.*;

@@ -10,7 +10,9 @@ import java.util.List;
 import IDgen.IDGenerator;
 
 /**
- * Bei dieser Klasse handelt es sich um einen Termin.
+ * Die Klasse Termin repräsentiert einen einzelnen Termin. Jeder Termin enthält eine ID, einen Titel, einen Typ und
+ * Informationen zum Zeitpunkt des Starts und Endes. Darüber hinaus kann ein Termin mehrere Teilnehmer und
+ * eine Beschreibung enthalten.
  *
  * Autor: Philipp Voß
  * Version: 1.2
@@ -30,6 +32,12 @@ public class Termin implements Comparable<Termin>{
     public TeilnehmerList getTeilnehmerList() {
         return this.teilnehmerList;
     }
+    /**
+     * Gibt die Teilnehmerliste als String zurück.
+     * Jeder Teilnehmer wird als "Name (E-Mail)" formatiert und die Teilnehmer sind durch Kommas getrennt.
+     *
+     * @return Die formatierte Teilnehmerliste als String.
+     */
     public String getTeilnehmerListAsString() {
         if (teilnehmerList == null || teilnehmerList.getTeilnehmerList().isEmpty()) {
             return "";
@@ -50,9 +58,15 @@ public class Termin implements Comparable<Termin>{
 
         return sb.toString();
     }
+
     public void setTeilnehmerList(TeilnehmerList teilnehmerList) {
         this.teilnehmerList = teilnehmerList;
     }
+    /**
+     * Setzt die Teilnehmerliste aus einem String, der die Namen und E-Mail-Adressen der Teilnehmer enthält.
+     *
+     * @param teilnehmerListString Der String, der die Teilnehmerliste repräsentiert.
+     */
     public void setTeilnehmerListFromString(String teilnehmerListString) {
 
         teilnehmerList = new TeilnehmerList();
@@ -163,11 +177,11 @@ public class Termin implements Comparable<Termin>{
         this.teilnehmerList = teilnehmerList;
     }
     /**
-     * Diese Methode formatiert das übergebende Datum in das LocalDateTime Format.
+     * Diese Methode formatiert das übergebene Datum und die Uhrzeit in das LocalDateTime-Format.
      *
-     * @param date Tag des zu formatierenden Termins
-     * @param time Zeit des zu formatierenden Termins
-     * @return Formatiertes Datum
+     * @param date Datum des Termins, das formatiert werden soll.
+     * @param time Uhrzeit des Termins, die formatiert werden soll.
+     * @return Das formatierte LocalDateTime-Objekt.
      */
     private LocalDateTime dateTimeFormatter(String date, String time){
         String dateTimeString = date + "T" + time;
@@ -176,8 +190,11 @@ public class Termin implements Comparable<Termin>{
         return LocalDateTime.parse(dateTimeString, formatter);
     }
 
+
     /**
-     * @return String mit allen Daten zu einem Termin.
+     * Erzeugt eine textuelle Darstellung dieses Termins, die die wichtigsten Eigenschaften des Termins enthält.
+     *
+     * @return Eine textuelle Darstellung dieses Termins.
      */
     @Override
     public String toString() {
@@ -193,8 +210,13 @@ public class Termin implements Comparable<Termin>{
     }
 
     /**
-     * @param other the object to be compared.
-     * @return Integer, welcher den Zustand widerspiegelt.
+     * Vergleicht diesen Termin mit einem anderen Termin.
+     * Ein Termin gilt als vor einem anderen, wenn sowohl sein Start- als auch sein Endzeitpunkt vor dem Start des anderen Termins liegt.
+     * Ein Termin gilt als nach einem anderen, wenn sowohl sein Start- als auch sein Endzeitpunkt nach dem Ende des anderen Termins liegt.
+     * Wenn sich zwei Termine überlappen oder den gleichen Zeitraum haben, gelten sie als gleich.
+     *
+     * @param other Das andere Termin-Objekt zum Vergleichen mit diesem Termin.
+     * @return Ein negativer Integer, Null oder ein positiver Integer, wenn dieser Termin vor, gleich oder nach dem angegebenen Termin liegt.
      */
     @Override
     public int compareTo(Termin other) {

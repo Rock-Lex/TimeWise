@@ -1,6 +1,6 @@
 package Test;
 
-import GUI.Utilities.EmailValidator;
+import Utilities.EmailValidator;
 import org.junit.Test;
 import static org.junit.Assert.*;
 public class TestEmailValidator {

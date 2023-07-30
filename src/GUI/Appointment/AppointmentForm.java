@@ -1,4 +1,4 @@
-package GUI;
+package GUI.Appointment;
 
 
 import Calendar.Teilnehmer;
@@ -23,20 +23,23 @@ import java.util.Date;
 
 import GUI.Exceptions.AppointmentMismatchMonthException;
 import GUI.Exceptions.AppointmentOutOfMonthRangeException;
-import GUI.Utilities.DateLabelFormatter;
-import GUI.Utilities.EmailValidator;
+import IOManager.Database;
+import Utilities.DateLabelFormatter;
+import Utilities.EmailValidator;
 import GUI.Views.CalendarView;
+import Utilities.TerminTypeSorter;
 import org.jdatepicker.DateModel;
 import org.jdatepicker.JDatePicker;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 /**
  * Eine GUI zur Erstellung von Terminen.
  * Diese Klasse ermöglicht das Hinzufügen, Bearbeiten und Speichern von Terminen
  * durch die Benutzeroberfläche.
- *
+ * <p>
  * Autor: Simon Degmair
  * Version: 1.3
  * Erstellt am: 18.07.2023
@@ -54,8 +57,10 @@ public class AppointmentForm {
     private JTextField textFieldStartzeit;
     private JTextField textFieldEndzeit;
     private JTextField textFieldTyp;
-    private JTextField textFieldTerminbeschreibung;
     private JTextField textFieldTerminTeilnehmer;
+    private JComboBox typeComboBox;
+    private JTextField textFieldTerminbeschreibung;
+    private JComboBox participantComboBox;
     private JButton deleteButton;
     private String[] columnNames = {"Titel", "Mehrtägig", "Startdatum", "Startzeit", "Enddatum", "Endzeit", "Typ", "Terminbeschreibung"};
     private boolean running = true;
@@ -69,15 +74,22 @@ public class AppointmentForm {
     private JDatePickerImpl datePickerEnd;
     private CalendarView monthView;
     private TeilnehmerList teilnehmerList;
+    private Database db;
 
     /**
      * Konstruktor für die Erstellung einer neuen Termin-GUI ohne initialen Termin.
      * Erzeugt ein neues Appointment-Objekt ohne einen initialen Termin.
      * Ruft den anderen Konstruktor auf und setzt die Bearbeitung auf den deaktivierten Zustand.
+     *
+     * @param terminListe the termin liste
+     * @param monthView   the month view
+     * @param db          the db
      */
-    public AppointmentForm(TerminListe terminListe, CalendarView monthView) {
-        this(null, terminListe, monthView);  // Ruft den anderen Konstruktor mit null und terminListe als Argument auf
+    public AppointmentForm(TerminListe terminListe, CalendarView monthView, Database db) {
+        this(null, terminListe, monthView, db); // Ruft den anderen Konstruktor mit null und terminListe als Argument auf
+
         this.monthView = monthView;
+        this.db = db;
     }
 
     /**
@@ -85,9 +97,12 @@ public class AppointmentForm {
      * Erzeugt ein neues Appointment-Objekt mit einem initialen Termin, falls vorhanden.
      * Der Konstruktor ruft den anderen Konstruktor auf und setzt die Bearbeitung auf den deaktivierten Zustand.
      *
-     * @param termin Der Termin, der angezeigt und bearbeitet werden soll.
+     * @param termin      Der Termin, der angezeigt und bearbeitet werden soll.
+     * @param terminListe the termin liste
+     * @param monthView   the month view
+     * @param db          the db
      */
-    public AppointmentForm(Termin termin, TerminListe terminListe, CalendarView monthView) {
+    public AppointmentForm(Termin termin, TerminListe terminListe, CalendarView monthView, Database db) {
         this.appointments = terminListe;
         this.frame = new JFrame("Termin App");
         this.mainPanel = new JPanel(new BorderLayout());
@@ -97,7 +112,8 @@ public class AppointmentForm {
         deleteButton = new JButton("Termin löschen");
         this.monthView = monthView;
         teilnehmerList = new TeilnehmerList();
-
+        typeComboBox = new JComboBox();
+        this.db = db;
 
         UtilDateModel modelStart = new UtilDateModel();
         UtilDateModel modelEnd = new UtilDateModel();
@@ -120,6 +136,15 @@ public class AppointmentForm {
         // Create combo box with repeat options
         String[] repeatOptions = {"Daily", "Weekly", "Monthly"};
         repeatFrequencyComboBox = new JComboBox(repeatOptions);
+
+        typeComboBox = new JComboBox();
+        typeComboBox.setEditable(true);
+
+        // Populate combo box
+        TerminTypeSorter sorter = new TerminTypeSorter();
+
+        AutoCompleteDecorator.decorate(typeComboBox);
+        typeComboBox.setModel(new DefaultComboBoxModel(sorter.getSortedTerminTypes(appointments).toArray()));
 
         // Create date picker for repeat end date
         repeatEndDatePicker = new JDatePicker() {
@@ -194,7 +219,7 @@ public class AppointmentForm {
             datePickerEnd.getModel().setDate(termin.getEnd().getYear(), month, termin.getEnd().getDayOfMonth());
             datePickerEnd.getModel().setSelected(true);
             textFieldEndzeit.setText(termin.getEndTime());
-            textFieldTyp.setText(termin.getType());
+            typeComboBox.setSelectedItem(currentTermin.getType());
             textFieldTerminbeschreibung.setText(termin.getDescription());
             textFieldTerminTeilnehmer.setText(termin.getTeilnehmerListAsString());
         } else {
@@ -229,11 +254,12 @@ public class AppointmentForm {
 
         errorOccurred = false;
     }
+
     /**
      * Zeigt die GUI zur Terminerstellung an.
      * Stellt das Fenster der GUI sichtbar dar.
      *
-     * @return
+     * @return j frame
      */
     public JFrame showUI() {
         frame.setVisible(true);  // Stellt nur die Sichtbarkeit des Fensters ein
@@ -303,7 +329,7 @@ public class AppointmentForm {
         gbc.gridx = 0;
         panel.add(new JLabel("Typ:"), gbc);
         gbc.gridx = 1;
-        panel.add(textFieldTyp, gbc);
+        panel.add(typeComboBox, gbc);
         gbc.gridx = 0;
         panel.add(new JLabel("Teilnehmer:"), gbc);
         gbc.gridx = 1;
@@ -374,7 +400,7 @@ public class AppointmentForm {
                     }
                 } else {
                     try {
-                        updateAppointment(); // Aktualisierung eines bestehenden Termins
+                        updateAppointment(db); // Aktualisierung eines bestehenden Termins
                     } catch (AppointmentOutOfMonthRangeException ex) {
                         JOptionPane.showMessageDialog(null, ex.getMessage());
                         errorOccurred = true;
@@ -454,9 +480,10 @@ public class AppointmentForm {
         datePickerEnd.setEnabled(isEditing);
         textFieldEndzeit.setEnabled(isEditing);
         textFieldTyp.setEnabled(isEditing);
+        textFieldTerminTeilnehmer.setEnabled(isEditing);
         textFieldTerminbeschreibung.setEnabled(isEditing);
-        repeatFrequencyComboBox.setEnabled(isEditing);
-        repeatAppointmentCheckBox.setEnabled(isEditing);
+        repeatFrequencyComboBox.setEnabled(false);
+        repeatAppointmentCheckBox.setEnabled(false);
     }
     private void saveAppointment() throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException, InvalidEmailException {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -530,7 +557,7 @@ public class AppointmentForm {
         // Erstellen eines neuen Termins
         this.currentTermin = new Termin(
                 textFieldTitel.getText(),
-                textFieldTyp.getText(),
+                (String)typeComboBox.getSelectedItem(),
                 checkBoxMehrtagig.isSelected(),
                 startDateTime,
                 endDateTime
@@ -538,13 +565,15 @@ public class AppointmentForm {
         currentTermin.setDescription(textFieldTerminbeschreibung.getText());
         currentTermin.setTeilnehmerList(teilnehmerList);
         appointments.addTermin(currentTermin);
+
         monthView.updateView(appointments);
+        db.addTermin(currentTermin);
     }
 
     /**
      * Aktualisiert einen vorhandenen Termin basierend auf den Daten in den Textfeldern und der Checkbox.
      */
-    private void updateAppointment() throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
+    private void updateAppointment(Database db) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         LocalDateTime startDateTime;
         LocalDateTime endDateTime;
@@ -583,7 +612,7 @@ public class AppointmentForm {
 
         // Aktualisieren eines bestehenden Termins
         this.currentTermin.setTitle(textFieldTitel.getText());
-        this.currentTermin.setType(textFieldTyp.getText());
+        currentTermin.setType((String)typeComboBox.getSelectedItem());
         this.currentTermin.setMultiDay(checkBoxMehrtagig.isSelected());
         this.currentTermin.setStart(startDateTime);
         this.currentTermin.setEnd(endDateTime);
@@ -591,5 +620,7 @@ public class AppointmentForm {
         this.currentTermin.setTeilnehmerListFromString(textFieldTerminTeilnehmer.getText());
 
         monthView.updateView(appointments);
+        db.deleteTermin(currentTermin.getId());
+        db.addTermin(currentTermin);
     }
 }

@@ -4,7 +4,7 @@ import java.security.SecureRandom;
 import java.util.Locale;
 
 /**
- * Bei dieser Klasse handelt es sich um einen ID Generator für die Erstellung von Termin IDs.
+ * Diese Klasse bietet Methoden zur Erstellung von eindeutigen Identifikationsnummern (IDs) für Termine.
  *
  * Autor: Philipp Voß
  * Version: 1.0
@@ -17,10 +17,10 @@ public class IDGenerator {
     private static final SecureRandom RANDOM = new SecureRandom();
 
     /**
-     * Generiert eine ID, welche mit dem Termintyp anfängt.
+     * Generiert eine eindeutige ID für einen Termin, die aus dem Termintyp und einer fortlaufenden Zählervariable besteht.
      *
-     * @param type Typ des Termins
-     * @return
+     * @param type Typ des Termins, der als Präfix für die ID verwendet wird
+     * @return Eine eindeutige ID, die aus dem Termintyp und einer fortlaufenden Zählervariable besteht
      */
     public static String generateID(String type) {
         counter++;
@@ -29,9 +29,11 @@ public class IDGenerator {
     }
 
     /**
-     * Für die Erstellung komplexer IDs. Vermutlich überflüssig und zu einem späteren Zeitpunkt gelöscht.
-     * @param length Länge der ID
-     * @return
+     * Generiert eine komplexere, potenziell eindeutige ID, die aus einer zufälligen Zeichenkette besteht.
+     * Dies ist möglicherweise überflüssig und könnte in der Zukunft entfernt werden.
+     *
+     * @param length Die gewünschte Länge der generierten ID
+     * @return Eine zufällige Zeichenkette der angegebenen Länge, die als ID verwendet werden kann
      */
     public static String generateID(int length) {
         StringBuilder sb = new StringBuilder(length);

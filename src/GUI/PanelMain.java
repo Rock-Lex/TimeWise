@@ -2,6 +2,7 @@ package GUI;
 
 import Calendar.Termin;
 import Calendar.TerminListe;
+import GUI.Appointment.AppointmentForm;
 import GUI.Exceptions.AppointmentMismatchMonthException;
 import GUI.Exceptions.AppointmentOutOfMonthRangeException;
 import GUI.Views.CalendarView;
@@ -23,7 +24,8 @@ import java.time.YearMonth;
 import java.util.Random;
 
 /**
- * Diese Klasse repräsentiert das Hauptpanel der Anwendung.
+ * Diese Klasse repräsentiert das Hauptpanel der Anwendung. Sie dient als Container für die verschiedenen GUI-Elemente,
+ * einschließlich des CalendarViews, der Tab-Steuerung und der Schaltflächen.
  *
  * Autor: Philipp Voß
  * Version: 1.5
@@ -39,6 +41,18 @@ public class PanelMain extends JPanel {
     private CalendarView monthView;
     private JButton btn_createAppointment;
     private JPanel upperPanel;
+    static Database db;
+
+    static {
+        try {
+            db = new Database();
+        } catch (WrongPathException e) {
+            throw new RuntimeException(e);
+        } catch (SQLPackageException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     // --------------------------- Konstruktor und Hauptmethode -------------------------------------------
 
@@ -46,12 +60,13 @@ public class PanelMain extends JPanel {
      * Erstellt ein neues PanelMain-Objekt mit der angegebenen Terminliste.
      *
      * @param terminListe Die Terminliste für den Kalender
-     * @throws AppointmentOutOfMonthRangeException the appointment out of month range exception
-     * @throws AppointmentMismatchMonthException   the appointment mismatch month exception
+     * @throws AppointmentOutOfMonthRangeException Wenn ein Termin außerhalb des aktuellen Monatsbereichs liegt
+     * @throws AppointmentMismatchMonthException   Wenn ein Termin nicht mit dem aktuellen Monat übereinstimmt
      */
-    public PanelMain(TerminListe terminListe) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
+    public PanelMain(TerminListe terminListe, Database db) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
+        this.db = db;
         YearMonth currentYearMonth = YearMonth.now();
-        viewManager = new CalendarViewManager(terminListe);
+        viewManager = new CalendarViewManager(terminListe, db);
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -79,7 +94,7 @@ public class PanelMain extends JPanel {
         btn_createAppointment.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AppointmentForm newAppointmentForm = new AppointmentForm(terminListe, monthView);
+                AppointmentForm newAppointmentForm = new AppointmentForm(terminListe, monthView, db);
                 JFrame appointmentFrame = newAppointmentForm.showUI();
                 newAppointmentForm.toggleEditing(true);
                 appointmentFrame.addWindowListener(new WindowAdapter() {
@@ -115,10 +130,10 @@ public class PanelMain extends JPanel {
      * Die Hauptmethode der Anwendung.
      *
      * @param args Kommandozeilenargumente (werden ignoriert)
-     * @throws SQLPackageException                 the sql package exception
-     * @throws WrongPathException                  the wrong path exception
-     * @throws AppointmentOutOfMonthRangeException the appointment out of month range exception
-     * @throws AppointmentMismatchMonthException   the appointment mismatch month exception
+     * @throws SQLPackageException Wenn es Probleme mit SQL-Paket gibt
+     * @throws WrongPathException Wenn der angegebene Pfad falsch ist
+     * @throws AppointmentOutOfMonthRangeException Wenn ein Termin außerhalb des aktuellen Monatsbereichs liegt
+     * @throws AppointmentMismatchMonthException Wenn ein Termin nicht mit dem aktuellen Monat übereinstimmt
      */
     public static void main(String[] args) throws SQLPackageException, WrongPathException, AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         TerminListe terminListe = new TerminListe();
@@ -131,7 +146,7 @@ public class PanelMain extends JPanel {
 
         System.out.println("Anzahl der Termine in terminListe (Main Methode): " + terminListe.getTermine().size());
 
-        PanelMain panelMain = new GUI.PanelMain(terminListe);
+        PanelMain panelMain = new GUI.PanelMain(terminListe, db);
     }
     // --------------------------- Methoden zur Manipulation der GUI -------------------------------------------
 
@@ -146,9 +161,9 @@ public class PanelMain extends JPanel {
     }
 
     /**
-     * Gibt die MonthView zurück.
+     * Gibt die aktuelle Monatsansicht zurück.
      *
-     * @return Die MonthView
+     * @return Die aktuelle Monatsansicht
      */
     public MonthView getMonthView() {
         return (MonthView) monthView;
@@ -156,11 +171,11 @@ public class PanelMain extends JPanel {
     // --------------------------- Methoden zur Bearbeitung der Daten -------------------------------------------
 
     /**
-     * Erstellt zufällige Termine und fügt sie der Terminliste hinzu.
+     * Erstellt zufällige Termine und fügt sie der angegebenen Terminliste hinzu.
      *
      * @param terminListe Die Terminliste, zu der die Termine hinzugefügt werden sollen
-     * @throws SQLPackageException the sql package exception
-     * @throws WrongPathException  the wrong path exception
+     * @throws SQLPackageException Wenn es Probleme mit SQL-Paket gibt
+     * @throws WrongPathException Wenn der angegebene Pfad falsch ist
      */
     public static void erstelleZufaelligeTermine(TerminListe terminListe) throws SQLPackageException, WrongPathException {
         YearMonth currentYearMonth = YearMonth.now();
