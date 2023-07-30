@@ -26,6 +26,12 @@ public class TestDatenbank {
     }
 
     public void test() {
+        // Test ID: TID1001
+        // Name:
+        // Input:
+        // erwartete Ausgabe:
+        // Ergebnis:
+
         printTestStart("Database Class");
 
         LocalDateTime lt = LocalDateTime.now();
@@ -47,6 +53,12 @@ public class TestDatenbank {
     }
 
     private Database testDeleteTermine(Database database) {
+        // Test ID: TID1002
+        // Name:
+        // Input:
+        // erwartete Ausgabe:
+        // Ergebnis:
+
         printTestStart("Delete termins function");
 
         printTestCase(1, "Delete existing Termin by ID");
@@ -61,6 +73,12 @@ public class TestDatenbank {
     }
 
     private Database testGetTermine(Database database) {
+        // Test ID: TID1003
+        // Name:
+        // Input:
+        // erwartete Ausgabe:
+        // Ergebnis:
+
         printTestStart("Get termins function");
 
         printTestCase(1, "Get Termins");
@@ -91,6 +109,12 @@ public class TestDatenbank {
     }
 
     private Database testAddTermine(Database database) {
+        // Test ID: TID1004
+        // Name:
+        // Input:
+        // erwartete Ausgabe:
+        // Ergebnis:
+
         printTestStart("Add termins function");
         LocalDateTime lt = LocalDateTime.now();
 
@@ -109,6 +133,12 @@ public class TestDatenbank {
     }
 
     private Database testCreateDatabase() {
+        // Test ID: TID1005
+        // Name:
+        // Input:
+        // erwartete Ausgabe:
+        // Ergebnis:
+
         printTestStart("Database creation/connection");
 
         Database database = null;
@@ -122,6 +152,12 @@ public class TestDatenbank {
     }
 
     private Database testCreateDatabaseWithPath(String projectPath, String databaseName) {
+        // Test ID: TID1006
+        // Name:
+        // Input:
+        // erwartete Ausgabe:
+        // Ergebnis:
+
         printTestStart("Database creation/connection");
 
         Database database = null;
@@ -135,6 +171,12 @@ public class TestDatenbank {
     }
 
     public void printTestStart(String msg) {
+        // Test ID: TID1007
+        // Name:
+        // Input:
+        // erwartete Ausgabe:
+        // Ergebnis:
+
         printTestLine();
         printTestLine();
         System.out.println("Test started: " + msg);
@@ -144,6 +186,12 @@ public class TestDatenbank {
     }
 
     public void printTestEnd(String msg) {
+        // Test ID: TID1008
+        // Name:
+        // Input:
+        // erwartete Ausgabe:
+        // Ergebnis:
+
         printTestLine();
         printTestLine();
         System.out.println("Test ended: " + msg);
@@ -153,6 +201,12 @@ public class TestDatenbank {
     }
 
     public void printTestCase(Integer num, String description) {
+        // Test ID: TID1009
+        // Name:
+        // Input:
+        // erwartete Ausgabe:
+        // Ergebnis:
+
         printTestLine();
         System.out.println("Test case " + num + ": " + description);
         printTestLine();
@@ -162,5 +216,11 @@ public class TestDatenbank {
     public void printTestLine() {
         System.out.print("-------------------\n");
     }
+    // Test ID: TID1010
+    // Name:
+    // Input:
+    // erwartete Ausgabe:
+    // Ergebnis:
+
 }
 
