@@ -1,4 +1,4 @@
-/*
+
 package GUI.Views;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -10,16 +10,21 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-
-public class DayView {
-}
-
-public class CalendarDayViewGUI extends JFrame {
+/**
+ * Die Klasse DayView stellt eine JFrame-Ansicht für einen einzelnen Tag im Kalender dar.
+ * Sie zeigt Termine für den Tag an und ermöglicht das Hinzufügen und Entfernen von Terminen.
+ *
+ * @author Leif Maluck
+ * @version 1.0
+ * Erstellt am: 2023-07-01
+ * Letzte Bearbeitung: 2023-07-30
+ */
+public class DayView extends JFrame {
     private Kalender kalender;
     private DefaultTableModel tableModel;
     private JTable table;
 
-    public CalendarDayViewGUI() {
+    public DayView() {
         kalender = new Kalender();
 
         setTitle("Tagesansicht Kalender");
@@ -45,7 +50,7 @@ public class CalendarDayViewGUI extends JFrame {
         addTerminButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                TerminDialog dialog = new TerminDialog(CalendarDayViewGUI.this);
+                TerminDialog dialog = new TerminDialog(DayView.this);
                 dialog.setVisible(true);
             }
         });
@@ -68,20 +73,36 @@ public class CalendarDayViewGUI extends JFrame {
 
         setVisible(true);
     }
-
+    /**
+     * Fügt einen Termin zur Ansicht hinzu und aktualisiert die Tabelle.
+     *
+     * @param termin Der Termin, der hinzugefügt werden soll.
+     */
     public void addTermin(Termin termin) {
         kalender.addTermin(termin);
         tableModel.addRow(new Object[]{termin.getId(), termin.getStart(), termin.getEnde(), termin.getErinnerungen()});
     }
-
+    /**
+     * Die main-Methode startet die Anwendung, indem sie die GUI im Event Dispatch Thread erstellt.
+     *
+     * @param args Die Befehlszeilenargumente (werden hier nicht verwendet).
+     */
     public static void main(String[] args) {
         // GUI im Event Dispatch Thread erstellen
         javax.swing.SwingUtilities.invokeLater(() -> {
-            new CalendarDayViewGUI();
+            new DayView();
         });
     }
 }
-
+/**
+ * Die Klasse TerminDialog stellt einen Dialog zum Hinzufügen von Terminen dar.
+ * Der Dialog wird von der DayView verwendet, um neue Termine einzugeben.
+ *
+ * @author Leif Maluck
+ * @version 1.0
+ * Erstellt am 09.07.2023
+ * Zuletzt bearbeitet am 30.07.2023
+ */
 class TerminDialog extends JDialog {
     private JTextField idField, startField, endeField, erinnerungenField;
 
@@ -126,7 +147,7 @@ class TerminDialog extends JDialog {
                     erinnerungen.add(new Erinnerung(erinnerungName.trim()));
                 }
                 Termin termin = new Termin(id, start, ende, erinnerungen);
-                ((CalendarDayViewGUI) parent).addTermin(termin);
+                ((DayView) parent).addTermin(termin);
                 dispose();
             }
         });
@@ -203,4 +224,3 @@ class Erinnerung {
         return name;
     }
 }
-*/
