@@ -39,7 +39,7 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
  * Eine GUI zur Erstellung von Terminen.
  * Diese Klasse ermöglicht das Hinzufügen, Bearbeiten und Speichern von Terminen
  * durch die Benutzeroberfläche.
- *
+ * <p>
  * Autor: Simon Degmair
  * Version: 1.3
  * Erstellt am: 18.07.2023
@@ -80,6 +80,10 @@ public class AppointmentForm {
      * Konstruktor für die Erstellung einer neuen Termin-GUI ohne initialen Termin.
      * Erzeugt ein neues Appointment-Objekt ohne einen initialen Termin.
      * Ruft den anderen Konstruktor auf und setzt die Bearbeitung auf den deaktivierten Zustand.
+     *
+     * @param terminListe the termin liste
+     * @param monthView   the month view
+     * @param db          the db
      */
     public AppointmentForm(TerminListe terminListe, CalendarView monthView, Database db) {
         this(null, terminListe, monthView, db); // Ruft den anderen Konstruktor mit null und terminListe als Argument auf
@@ -93,7 +97,10 @@ public class AppointmentForm {
      * Erzeugt ein neues Appointment-Objekt mit einem initialen Termin, falls vorhanden.
      * Der Konstruktor ruft den anderen Konstruktor auf und setzt die Bearbeitung auf den deaktivierten Zustand.
      *
-     * @param termin Der Termin, der angezeigt und bearbeitet werden soll.
+     * @param termin      Der Termin, der angezeigt und bearbeitet werden soll.
+     * @param terminListe the termin liste
+     * @param monthView   the month view
+     * @param db          the db
      */
     public AppointmentForm(Termin termin, TerminListe terminListe, CalendarView monthView, Database db) {
         this.appointments = terminListe;
@@ -247,11 +254,12 @@ public class AppointmentForm {
 
         errorOccurred = false;
     }
+
     /**
      * Zeigt die GUI zur Terminerstellung an.
      * Stellt das Fenster der GUI sichtbar dar.
      *
-     * @return
+     * @return j frame
      */
     public JFrame showUI() {
         frame.setVisible(true);  // Stellt nur die Sichtbarkeit des Fensters ein
