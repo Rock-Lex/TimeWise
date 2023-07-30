@@ -12,9 +12,9 @@ import java.time.YearMonth;
 /**
  * Abstrakte Basisklasse für eine Kalenderansicht.
  *
- * Autor: Philipp Voß
- * Version: 1.2
- * Erstellt am: 16.07.2023
+ * @author Philipp Voß
+ * @version 1.2
+ * @since 16.07.2023
  * Letzte Änderung: 19.07.2023
  */
 public abstract class CalendarView extends JPanel {

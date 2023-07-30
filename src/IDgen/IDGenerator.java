@@ -6,9 +6,9 @@ import java.util.Locale;
 /**
  * Diese Klasse bietet Methoden zur Erstellung von eindeutigen Identifikationsnummern (IDs) für Termine.
  *
- * Autor: Philipp Voß
- * Version: 1.0
- * Erstellt am: 14.05.2023
+ * @author  Philipp Voß
+ * @version  1.0
+ * @since 14.05.2023
  * Letzte Änderung: 14.05.2023
  */
 public class IDGenerator {

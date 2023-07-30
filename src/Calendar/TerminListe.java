@@ -12,8 +12,8 @@ import java.util.List;
  * Die Klasse TerminListe repräsentiert den Kalender. Die Daten im Kalender sollen auf einer Datenbank basieren und
  * stellen eine Liste von Terminen zur Verfügung. Sie ermöglicht das Verwalten von Terminen.
  *
- * @author: Simon Degmair
- * @version: 1.1.2
+ * @author Simon Degmair
+ * @version 1.1.2
  * @since am: 23.05.2023
  *
  */

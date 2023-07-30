@@ -24,9 +24,9 @@ import org.jdatepicker.impl.UtilDateModel;
  * Diese Klasse repräsentiert das Panel für die Änderung von Ansichten und
  * weiter- bzw. zurückblättern im Kalender.
  *
- * Autor: Philipp Voß
- * Version: 1.2
- * Erstellt am: 03.06.2023
+ * @author  Philipp Voß
+ * @version 1.2
+ * @since 03.06.2023
  * Letzte Änderung: 19.07.2023
  */
 public class PanelChange extends JPanel {

@@ -14,9 +14,9 @@ import java.util.Map;
 /**
  * Verwaltungsklasse für die verschiedenen Kalenderansichten.
  *
- * Autor: Philipp Voß
- * Version: 1.3
- * Erstellt am: 16.07.2023
+ * @author  Philipp Voß
+ * @version 1.3
+ * @since 16.07.2023
  * Letzte Änderung: 19.07.2023
  */
 public class CalendarViewManager {

@@ -17,9 +17,9 @@ import javax.swing.*;
  * Es ermöglicht das Hinzufügen von Teilnehmern zu einem Termin,
  * die Festlegung einer Wiederholungsfrequenz und das Setzen eines Enddatums für die Wiederholung.
  *
- * Autor: Philipp Voß
- * Version: 0.0.1
- * Erstellt am: 30.05.2023
+ * @author Philipp Voß
+ * @version 0.0.1
+ * @since 30.05.2023
  * Letzte Änderung: 30.07.2023
  */
 public class AppointmentDetails {

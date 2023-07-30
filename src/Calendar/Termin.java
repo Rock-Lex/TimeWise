@@ -14,8 +14,8 @@ import IDgen.IDGenerator;
  * Informationen zum Zeitpunkt des Starts und Endes. Darüber hinaus kann ein Termin mehrere Teilnehmer und
  * eine Beschreibung enthalten.
  *
- * @author: Philipp Voß
- * @version: 1.2
+ * @author Philipp Voß
+ * @version 1.2
  * @since am: 14.05.2023
  * Letzte Änderung: 21.06.2023
  */

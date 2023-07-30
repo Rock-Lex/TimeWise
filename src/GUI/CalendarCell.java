@@ -19,9 +19,9 @@ import IOManager.Database;
  * Diese Klasse repräsentiert eine benutzerdefinierte Swing-Komponente zur Darstellung von Kalenderzellen.
  * Jede Zelle stellt einen Tag im Kalender dar und kann einen oder mehrere Termine enthalten.
  *
- * Autor: Philipp Voß
- * Version: 1.3
- * Erstellt am: 08.06.2023
+ * @author  Philipp Voß
+ * @version 1.3
+ * @since 08.06.2023
  * Letzte Änderung: 16.07.2023
  */
 public class CalendarCell extends JPanel {

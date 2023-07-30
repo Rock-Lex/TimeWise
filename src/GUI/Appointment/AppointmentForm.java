@@ -39,10 +39,10 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
  * Eine GUI zur Erstellung von Terminen.
  * Diese Klasse ermöglicht das Hinzufügen, Bearbeiten und Speichern von Terminen
  * durch die Benutzeroberfläche.
- * <p>
- * Autor: Simon Degmair
- * Version: 1.3
- * Erstellt am: 18.07.2023
+ *
+ * @author  Simon Degmair
+ * @version 1.3
+ * @since 18.07.2023
  * Letzte Änderung: 22.07.2023
  */
 public class AppointmentForm {

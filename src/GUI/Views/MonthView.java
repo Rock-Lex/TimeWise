@@ -21,9 +21,9 @@ import java.util.Locale;
 /**
  * Eine benutzerdefinierte Swing-Komponente zur Darstellung einer Monatsansicht im Kalender.
  *
- * Autor: Philipp Voß
- * Version: 1.6
- * Erstellt am: 16.17.2023
+ * @author  Philipp Voß
+ * @version  1.6
+ * @since 16.17.2023
  * Letzte Änderung: 19.07.2023
  */
 public class MonthView extends CalendarView {
