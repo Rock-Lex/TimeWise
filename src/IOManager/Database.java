@@ -19,9 +19,9 @@ import java.util.List;
 /**
  * Bei dieser Klasse handelt es sich um einen Database Manager.
  * *
- * Autor: Oleksandr Kamenskyi
- * Version: 1.1.2
- * Erstellt am: 14.05.2023
+ * @author Oleksandr Kamenskyi
+ * @version 1.1.2
+ * @since 14.05.2023
  * Letzte Änderung: 19.06.2023
  */
 

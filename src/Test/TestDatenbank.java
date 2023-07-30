@@ -15,9 +15,9 @@ public class TestDatenbank {
     /**
      * Bei dieser Klasse handelt es sich um eine Testklasse für die Datenbank.
      *
-     * Autor: Oleksandr Kamenskyi
-     * Version: 1.2.3
-     * Erstellt am: 23.05.2023
+     * @author Oleksandr Kamenskyi
+     * version 1.2.3
+     * @since 23.05.2023
      * Letzte Änderung: 19.06.2023
      */
 

@@ -8,9 +8,9 @@ import org.junit.Test;
 /**
  * Bei dieser Klasse handelt es sich um die Testklasse mit Units für die Klasse Teilnehmer.
  *
- * Autor: Tobias Rehm
- * Version: 1.0.0
- * Erstellt am: 23.05.2023
+ * @author Tobias Rehm
+ * @version 1.0.0
+ * @since  23.05.2023
  * Letzte Änderung: 29.07.2023
  */
 public class TestTeilnehmer {

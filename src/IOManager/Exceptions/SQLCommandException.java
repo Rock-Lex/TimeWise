@@ -3,9 +3,9 @@ package IOManager.Exceptions;
 /**
  * Bei dieser Klasse handelt es sich um einen IO Manager Class.
  * *
- * Autor: Oleksandr Kamenskyi
- * Version: 1.0.0
- * Erstellt am: 19.06.2023
+ * @author Oleksandr Kamenskyi
+ * @version 1.0.0
+ * @since 19.06.2023
  * Letzte Änderung: 19.06.2023
  */
 public class SQLCommandException extends Exception {
