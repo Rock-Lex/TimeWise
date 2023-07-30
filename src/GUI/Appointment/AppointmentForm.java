@@ -1,4 +1,4 @@
-package GUI;
+package GUI.Appointment;
 
 
 import Calendar.Teilnehmer;
@@ -454,9 +454,10 @@ public class AppointmentForm {
         datePickerEnd.setEnabled(isEditing);
         textFieldEndzeit.setEnabled(isEditing);
         textFieldTyp.setEnabled(isEditing);
+        textFieldTerminTeilnehmer.setEnabled(isEditing);
         textFieldTerminbeschreibung.setEnabled(isEditing);
-        repeatFrequencyComboBox.setEnabled(isEditing);
-        repeatAppointmentCheckBox.setEnabled(isEditing);
+        repeatFrequencyComboBox.setEnabled(false);
+        repeatAppointmentCheckBox.setEnabled(false);
     }
     private void saveAppointment() throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException, InvalidEmailException {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
