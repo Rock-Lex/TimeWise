@@ -23,9 +23,10 @@ import java.util.Date;
 
 import GUI.Exceptions.AppointmentMismatchMonthException;
 import GUI.Exceptions.AppointmentOutOfMonthRangeException;
-import GUI.Utilities.DateLabelFormatter;
-import GUI.Utilities.EmailValidator;
+import Utilities.DateLabelFormatter;
+import Utilities.EmailValidator;
 import GUI.Views.CalendarView;
+import Utilities.TerminTypeSorter;
 import org.jdatepicker.DateModel;
 import org.jdatepicker.JDatePicker;
 import org.jdatepicker.impl.JDatePanelImpl;
@@ -54,8 +55,10 @@ public class AppointmentForm {
     private JTextField textFieldStartzeit;
     private JTextField textFieldEndzeit;
     private JTextField textFieldTyp;
-    private JTextField textFieldTerminbeschreibung;
     private JTextField textFieldTerminTeilnehmer;
+    private JComboBox typeComboBox;
+    private JTextField textFieldTerminbeschreibung;
+    private JComboBox participantComboBox;
     private JButton deleteButton;
     private String[] columnNames = {"Titel", "Mehrtägig", "Startdatum", "Startzeit", "Enddatum", "Endzeit", "Typ", "Terminbeschreibung"};
     private boolean running = true;
@@ -97,7 +100,7 @@ public class AppointmentForm {
         deleteButton = new JButton("Termin löschen");
         this.monthView = monthView;
         teilnehmerList = new TeilnehmerList();
-
+        typeComboBox = new JComboBox();
 
         UtilDateModel modelStart = new UtilDateModel();
         UtilDateModel modelEnd = new UtilDateModel();
@@ -120,6 +123,13 @@ public class AppointmentForm {
         // Create combo box with repeat options
         String[] repeatOptions = {"Daily", "Weekly", "Monthly"};
         repeatFrequencyComboBox = new JComboBox(repeatOptions);
+
+        typeComboBox = new JComboBox();
+        typeComboBox.setEditable(true);
+
+        // Populate combo box
+        TerminTypeSorter sorter = new TerminTypeSorter();
+        typeComboBox.setModel(new DefaultComboBoxModel(sorter.getSortedTerminTypes(appointments).toArray()));
 
         // Create date picker for repeat end date
         repeatEndDatePicker = new JDatePicker() {
@@ -194,7 +204,7 @@ public class AppointmentForm {
             datePickerEnd.getModel().setDate(termin.getEnd().getYear(), month, termin.getEnd().getDayOfMonth());
             datePickerEnd.getModel().setSelected(true);
             textFieldEndzeit.setText(termin.getEndTime());
-            textFieldTyp.setText(termin.getType());
+            typeComboBox.setSelectedItem(currentTermin.getType());
             textFieldTerminbeschreibung.setText(termin.getDescription());
             textFieldTerminTeilnehmer.setText(termin.getTeilnehmerListAsString());
         } else {
@@ -303,7 +313,7 @@ public class AppointmentForm {
         gbc.gridx = 0;
         panel.add(new JLabel("Typ:"), gbc);
         gbc.gridx = 1;
-        panel.add(textFieldTyp, gbc);
+        panel.add(typeComboBox, gbc);
         gbc.gridx = 0;
         panel.add(new JLabel("Teilnehmer:"), gbc);
         gbc.gridx = 1;
@@ -531,7 +541,7 @@ public class AppointmentForm {
         // Erstellen eines neuen Termins
         this.currentTermin = new Termin(
                 textFieldTitel.getText(),
-                textFieldTyp.getText(),
+                (String)typeComboBox.getSelectedItem(),
                 checkBoxMehrtagig.isSelected(),
                 startDateTime,
                 endDateTime
@@ -584,7 +594,7 @@ public class AppointmentForm {
 
         // Aktualisieren eines bestehenden Termins
         this.currentTermin.setTitle(textFieldTitel.getText());
-        this.currentTermin.setType(textFieldTyp.getText());
+        currentTermin.setType((String)typeComboBox.getSelectedItem());
         this.currentTermin.setMultiDay(checkBoxMehrtagig.isSelected());
         this.currentTermin.setStart(startDateTime);
         this.currentTermin.setEnd(endDateTime);

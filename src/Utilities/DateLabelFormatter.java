@@ -1,4 +1,4 @@
-package GUI.Utilities;
+package Utilities;
 
 import javax.swing.*;
 import javax.swing.text.DateFormatter;

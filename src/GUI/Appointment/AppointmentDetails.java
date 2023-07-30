@@ -1,19 +1,12 @@
 package GUI.Appointment;
 
-import Calendar.Exceptions.InvalidEmailException;
 import Calendar.Termin;
 import Calendar.TerminListe;
-import GUI.Utilities.DateLabelFormatter;
-import org.jdatepicker.DateModel;
 import org.jdatepicker.JDatePicker;
-import org.jdatepicker.impl.JDatePanelImpl;
-import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Properties;
