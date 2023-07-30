@@ -11,7 +11,7 @@ https://docs.google.com/presentation/d/1o14nj9JoCEzDtRwy_EUMDBEOhWsHK5kt2VxeRyTw
 Code Documentation </br>
 https://docs.google.com/document/d/1GzKEuF-oGrIzAXytkbldzV5KrtFXuA5tFOQuXJVAb-Q/edit#heading=h.ywez88uynesu
 
-OOP Bericht </br>
+OOP Dokumentation </br>
 https://docs.google.com/document/d/1h9b9RS4W1wL_wqGjnXpCT27hNDAi09KE453WhxIPCek/edit
 
 #### Zielbestimmung: 
