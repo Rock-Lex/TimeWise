@@ -4,8 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 /**
- * @author tobiasrehm
- * Bei dieser Klasse handelt es sich um die Holidays Class zur Berechnung und Festlegung der Feiertage.
+ * Bei dieser Klasse handelt es sich um die Holidays Class zur Berechnung und Festlegung der Feiertage in Berlin.
  *
  * Autor: Tobias Rehm
  * Version: 1.0.0
@@ -20,7 +19,11 @@ public class HolidaysList {
         //hier der Constructor, in der die Klasse erstellt wird
         addAllHolidays(year);
     }
-
+    /**
+     * Fügt alle Feiertage für das gegebene Jahr zur Liste hinzu.
+     *
+     * @param year das Jahr, für das die Feiertage hinzugefügt werden sollen.
+     */
     private void addAllHolidays(int year) {
         holidaysList.add(new Holidays("Neujahr", LocalDate.of(year, 1, 1)));
         holidaysList.add(new Holidays("Heilige drei Könige", LocalDate.of(year, 1, 6)));
@@ -55,6 +58,11 @@ public class HolidaysList {
         holidaysList.add(new Holidays("3. Advent", Holidays.BussUndBettag(year).plusDays(32)));
         holidaysList.add(new Holidays("4. Advent", Holidays.BussUndBettag(year).plusDays(39)));
     }
+    /**
+     * Gibt die Liste der Feiertage zurück.
+     *
+     * @return die Liste der Feiertage.
+     */
     public List<Holidays> getHolidays() {
         return this.holidaysList;
     }

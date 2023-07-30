@@ -34,7 +34,11 @@ public class Database {
     private String databaseName;
 
     /**
-     * Konstruktor für die Erstellung eines Database Connections.
+     * Standardkonstruktor für die Erstellung einer Datenbankverbindung.
+     * Die Datenbank wird im Projektverzeichnis unter dem Namen "TimeWise.db" erwartet.
+     *
+     * @throws WrongPathException wenn der Pfad zur Datenbank nicht korrekt ist
+     * @throws SQLPackageException wenn das SQL-Paket nicht gefunden wird
      */
     public Database() throws WrongPathException, SQLPackageException {
         try {
@@ -66,10 +70,13 @@ public class Database {
     }
 
     /**
-     * Konstruktor für die Erstellung eines Database Connections.
+     * Konstruktor für die Erstellung einer Datenbankverbindung mit einem angegebenen Pfad und Datenbanknamen.
      *
-     * @param projectPath Path bis zum Datenbank
-     * @param databaseName Name der Datenbank mit Datentyp
+     * @param projectPath Pfad zur Datenbank
+     * @param databaseName Name der Datenbank (inklusive Dateiendung)
+     *
+     * @throws WrongPathException wenn der Pfad zur Datenbank nicht korrekt ist
+     * @throws SQLPackageException wenn das SQL-Paket nicht gefunden wird
      */
     public Database(String projectPath, String databaseName) throws WrongPathException, SQLPackageException {
         this.projectPath = projectPath;
@@ -101,7 +108,17 @@ public class Database {
     /**
      *  DB Interface
      */
-
+    /**
+     * Fügt einen Termin zur Datenbank hinzu. Generiert eine ID für den Termin, falls keine angegeben ist.
+     *
+     * @param id ID des Termins, leerer String wenn automatisch generiert
+     * @param title Titel des Termins
+     * @param start Startzeitpunkt des Termins
+     * @param end Endzeitpunkt des Termins
+     * @param type Typ des Termins
+     * @param multiday Anzahl der Tage, über die sich der Termin erstreckt
+     * @param participants Teilnehmer des Termins
+     */
     public void addTermin(String id, String title, LocalDateTime start, LocalDateTime end, String type, Integer multiday, String participants) {
         String startStr = convertToSQLiteDateTime(start);
         String endStr = convertToSQLiteDateTime(end);
@@ -118,6 +135,12 @@ public class Database {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
+    /**
+     * Fügt einen neuen Termin zur Datenbank hinzu. Wenn die ID des Termins leer ist,
+     * wird eine neue ID automatisch generiert.
+     *
+     * @param termin Das Terminobjekt, das hinzugefügt werden soll.
+     */
     public void addTermin(Termin termin) {
         String startStr = convertToSQLiteDateTime(termin.getStart());
         String endStr = convertToSQLiteDateTime(termin.getEnd());
@@ -139,7 +162,11 @@ public class Database {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
         }
     }
-
+    /**
+     * Löscht einen Termin aus der Datenbank anhand seiner ID.
+     *
+     * @param id Die ID des Termins, der gelöscht werden soll.
+     */
     public void deleteTermin(String id) {
 
         String sql = String.format("DELETE FROM termine WHERE id='%s';", id);
@@ -151,7 +178,11 @@ public class Database {
         }
 
     }
-
+    /**
+     * Gibt eine Liste aller Termine in der Datenbank zurück.
+     *
+     * @return Eine TerminListe mit allen Terminen. Gibt null zurück, wenn ein Fehler auftritt.
+     */
     public TerminListe getTermine() {
         String sql = "SELECT * FROM termine;";
         try {
@@ -168,6 +199,12 @@ public class Database {
      *  DB Utils
      */
 
+    /**
+     * Erstellt die Tabelle "termine" in der Datenbank, falls diese noch nicht existiert.
+     *
+     * @param connection Eine Verbindung zu der Datenbank.
+     * @throws SQLCommandException Wenn ein SQL-Fehler auftritt.
+     */
     private void createTables(Connection connection) throws SQLCommandException {
         Statement statement =  null;
 
@@ -186,7 +223,11 @@ public class Database {
         }
         System.out.println("Table Termine successfully");
     }
-
+    /**
+     * Gibt den SQL-Befehl als String zurück, um die Tabelle "termine" zu erstellen.
+     *
+     * @return SQL-Befehl als String.
+     */
     private String getTableTermine()
     {
         String sql = "CREATE TABLE IF NOT EXISTS termine" +
@@ -199,7 +240,12 @@ public class Database {
                 " Participants      TEXT)";
         return sql;
     }
-
+    /**
+     * Führt ein SQL-Update aus. Ein Update umfasst die Befehle INSERT, UPDATE und DELETE.
+     *
+     * @param sql Der SQL-Befehl, der ausgeführt werden soll.
+     * @throws SQLCommandException Wenn ein SQL-Fehler auftritt.
+     */
     private void executeUpdateSQL(String sql) throws SQLCommandException {
 
         try {
@@ -243,7 +289,14 @@ public class Database {
 //        }
 //        return null;
 //    }
-
+    /**
+     * Führt eine SQL-Abfrage aus und gibt die resultierenden Termine als eine TerminListe zurück.
+     *
+     * @param sql Der SQL-Befehl, der ausgeführt werden soll.
+     * @throws NullConnectionException Wenn die Verbindung zur Datenbank null ist.
+     * @throws SQLCommandException Wenn ein SQL-Fehler auftritt.
+     * @return Eine Liste von Terminen, die die Ergebnisse der SQL-Abfrage darstellt.
+     */
     private TerminListe executeQueryTermine(String sql) throws NullConnectionException, SQLCommandException {
         ResultSet resultSet = null;
         TerminListe termins = new TerminListe();
@@ -285,6 +338,12 @@ public class Database {
      *  Format converters
      */
 
+    /**
+     * Konvertiert ein LocalDateTime-Objekt in einen SQLite DateTime String.
+     *
+     * @param dateTime Das LocalDateTime-Objekt, das konvertiert werden soll.
+     * @return Ein String, der das formatierte Datum und die Uhrzeit für SQLite darstellt.
+     */
     public static String convertToSQLiteDateTime(LocalDateTime dateTime) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -294,7 +353,12 @@ public class Database {
         }
         return null;
     }
-
+    /**
+     * Konvertiert einen SQLite DateTime String in ein LocalDateTime-Objekt.
+     *
+     * @param sqliteDateTime Der SQLite DateTime String, der konvertiert werden soll.
+     * @return Ein LocalDateTime-Objekt, das das Datum und die Uhrzeit aus dem SQLite String darstellt.
+     */
     public static LocalDateTime convertToJavaDateTime(String sqliteDateTime) {
         try {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -309,18 +373,35 @@ public class Database {
      *  Getters und Setters
      */
 
+    /**
+     * Gibt den Pfad des aktuellen Projekts zurück.
+     *
+     * @return Der Pfad des aktuellen Projekts.
+     */
     public String getProjectPath() {
         return this.projectPath;
     }
-
+    /**
+     * Gibt den Namen der Datenbank zurück.
+     *
+     * @return Der Name der Datenbank.
+     */
     public String getDatabaseName() {
         return this.databaseName;
     }
-
+    /**
+     * Setzt den Pfad des aktuellen Projekts.
+     *
+     * @param projectPath Der zu setzende Pfad.
+     */
     public void setProjectPath(String projectPath) {
         this.projectPath = projectPath;
     }
-
+    /**
+     * Setzt den Namen der Datenbank.
+     *
+     * @param databaseName Der zu setzende Name der Datenbank.
+     */
     public void setDatabaseName(String databaseName) {
         this.databaseName = databaseName;
     }

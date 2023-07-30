@@ -11,10 +11,13 @@ import java.util.TreeMap;
 
 import Calendar.Termin;
 import Calendar.TerminListe;
+import GUI.Appointment.AppointmentForm;
 import GUI.Views.CalendarView;
+import IOManager.Database;
 
 /**
- * Eine benutzerdefinierte Swing-Komponente zur Darstellung von Kalenderzellen.
+ * Diese Klasse repräsentiert eine benutzerdefinierte Swing-Komponente zur Darstellung von Kalenderzellen.
+ * Jede Zelle stellt einen Tag im Kalender dar und kann einen oder mehrere Termine enthalten.
  *
  * Autor: Philipp Voß
  * Version: 1.3
@@ -32,9 +35,11 @@ public class CalendarCell extends JPanel {
      * Erstellt eine neue Kalenderzelle mit dem angegebenen Tag.
      *
      * @param text Der Tag des Monats als String.
+     * @param terminListe Eine Instanz der TerminListe.
+     * @param monthView Eine Instanz der CalendarView.
+     * @param db Eine Instanz der Database Klasse, die für Datenzugriff und -manipulation benötigt wird.
      */
-
-    public CalendarCell(String text, TerminListe terminListe, CalendarView monthView) {
+    public CalendarCell(String text, TerminListe terminListe, CalendarView monthView, Database db) {
         setLayout(new BorderLayout());
 
         label = new JLabel(text);
@@ -100,7 +105,7 @@ public class CalendarCell extends JPanel {
                         Termin appointment = appointmentMap.get(selectedText);
                         if (appointment != null) {
                             // Rufe die Appointment Klasse auf und übergebe den ausgewählten Termin
-                            new AppointmentForm(appointment, terminListe, monthView).showUI();
+                            new AppointmentForm(appointment, terminListe, monthView, db).showUI();
                         }
                         textArea.getHighlighter().removeAllHighlights();
                         textArea.getHighlighter().addHighlight(rowStart, rowEnd, DefaultHighlighter.DefaultPainter);
@@ -115,11 +120,9 @@ public class CalendarCell extends JPanel {
     }
 
     /**
-     * Setzt die Hintergrundfarbe des Labels auf gelb,
-     * wenn der Tag der aktuelle Tag ist.
+     * Markiert die Zelle als "heute", indem sie die Hintergrundfarbe des Labels auf gelb setzt.
      *
-     * @param isToday true, wenn der Tag der aktuelle Tag ist,
-     *                false sonst.
+     * @param isToday true, wenn der Tag der aktuelle Tag ist, false sonst.
      */
     public void setToday(boolean isToday) {
         if (isToday) {
@@ -130,9 +133,10 @@ public class CalendarCell extends JPanel {
     }
 
     /**
-     * Fügt einen Termin zum Textfeld hinzu.
+     * Fügt einen Termin zum Textfeld der Kalenderzelle hinzu.
      *
-     * @param appointment Der Termin als String.
+     * @param appointmentText Der Text des Termins, der angezeigt werden soll.
+     * @param appointment Der Termin, der hinzugefügt werden soll.
      */
     public void addAppointment(String appointmentText, Termin appointment) {
         // Füge Termin zur TreeMap hinzu
@@ -146,7 +150,7 @@ public class CalendarCell extends JPanel {
     }
 
     /**
-     * Löscht alle Termine und leert das Textfeld.
+     * Entfernt alle Termine aus der Zelle und löscht das Textfeld.
      */
     public void clearAppointments() {
         appointmentMap.clear();
