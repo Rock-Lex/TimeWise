@@ -16,12 +16,14 @@ public class Test {
         TestDatenbank testDatenbank = new TestDatenbank();
         TestErinnerung testErinnerung = new TestErinnerung();
         TestTeilnehmer testTeilnehmer = new TestTeilnehmer();
+        TestIOInterface testIOInterface = new TestIOInterface();
 
 
-        //testCalendar.test();
-        //testTermin.test();
-        testDatenbank.test();
+//        testCalendar.test();
+//        testTermin.test();
+//        testDatenbank.test();
 //        testErinnerung.test();
 //        testTeilnehmer.test();
+        testIOInterface.test();
     }
 }
