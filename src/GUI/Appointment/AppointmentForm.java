@@ -23,6 +23,7 @@ import java.util.Date;
 
 import GUI.Exceptions.AppointmentMismatchMonthException;
 import GUI.Exceptions.AppointmentOutOfMonthRangeException;
+import IOManager.Database;
 import Utilities.DateLabelFormatter;
 import Utilities.EmailValidator;
 import GUI.Views.CalendarView;
@@ -73,15 +74,18 @@ public class AppointmentForm {
     private JDatePickerImpl datePickerEnd;
     private CalendarView monthView;
     private TeilnehmerList teilnehmerList;
+    private Database db;
 
     /**
      * Konstruktor für die Erstellung einer neuen Termin-GUI ohne initialen Termin.
      * Erzeugt ein neues Appointment-Objekt ohne einen initialen Termin.
      * Ruft den anderen Konstruktor auf und setzt die Bearbeitung auf den deaktivierten Zustand.
      */
-    public AppointmentForm(TerminListe terminListe, CalendarView monthView) {
-        this(null, terminListe, monthView);  // Ruft den anderen Konstruktor mit null und terminListe als Argument auf
+    public AppointmentForm(TerminListe terminListe, CalendarView monthView, Database db) {
+        this(null, terminListe, monthView, db); // Ruft den anderen Konstruktor mit null und terminListe als Argument auf
+
         this.monthView = monthView;
+        this.db = db;
     }
 
     /**
@@ -91,7 +95,7 @@ public class AppointmentForm {
      *
      * @param termin Der Termin, der angezeigt und bearbeitet werden soll.
      */
-    public AppointmentForm(Termin termin, TerminListe terminListe, CalendarView monthView) {
+    public AppointmentForm(Termin termin, TerminListe terminListe, CalendarView monthView, Database db) {
         this.appointments = terminListe;
         this.frame = new JFrame("Termin App");
         this.mainPanel = new JPanel(new BorderLayout());
@@ -102,6 +106,7 @@ public class AppointmentForm {
         this.monthView = monthView;
         teilnehmerList = new TeilnehmerList();
         typeComboBox = new JComboBox();
+        this.db = db;
 
         UtilDateModel modelStart = new UtilDateModel();
         UtilDateModel modelEnd = new UtilDateModel();
@@ -387,7 +392,7 @@ public class AppointmentForm {
                     }
                 } else {
                     try {
-                        updateAppointment(); // Aktualisierung eines bestehenden Termins
+                        updateAppointment(db); // Aktualisierung eines bestehenden Termins
                     } catch (AppointmentOutOfMonthRangeException ex) {
                         JOptionPane.showMessageDialog(null, ex.getMessage());
                         errorOccurred = true;
@@ -552,13 +557,15 @@ public class AppointmentForm {
         currentTermin.setDescription(textFieldTerminbeschreibung.getText());
         currentTermin.setTeilnehmerList(teilnehmerList);
         appointments.addTermin(currentTermin);
+
         monthView.updateView(appointments);
+        db.addTermin(currentTermin);
     }
 
     /**
      * Aktualisiert einen vorhandenen Termin basierend auf den Daten in den Textfeldern und der Checkbox.
      */
-    private void updateAppointment() throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
+    private void updateAppointment(Database db) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
         LocalDateTime startDateTime;
         LocalDateTime endDateTime;
@@ -605,5 +612,7 @@ public class AppointmentForm {
         this.currentTermin.setTeilnehmerListFromString(textFieldTerminTeilnehmer.getText());
 
         monthView.updateView(appointments);
+        db.deleteTermin(currentTermin.getId());
+        db.addTermin(currentTermin);
     }
 }

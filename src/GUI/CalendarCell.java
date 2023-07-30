@@ -13,6 +13,7 @@ import Calendar.Termin;
 import Calendar.TerminListe;
 import GUI.Appointment.AppointmentForm;
 import GUI.Views.CalendarView;
+import IOManager.Database;
 
 /**
  * Diese Klasse repräsentiert eine benutzerdefinierte Swing-Komponente zur Darstellung von Kalenderzellen.
@@ -36,8 +37,9 @@ public class CalendarCell extends JPanel {
      * @param text Der Tag des Monats als String.
      * @param terminListe Eine Instanz der TerminListe.
      * @param monthView Eine Instanz der CalendarView.
+     * @param db Eine Instanz der Database Klasse, die für Datenzugriff und -manipulation benötigt wird.
      */
-    public CalendarCell(String text, TerminListe terminListe, CalendarView monthView) {
+    public CalendarCell(String text, TerminListe terminListe, CalendarView monthView, Database db) {
         setLayout(new BorderLayout());
 
         label = new JLabel(text);
@@ -103,7 +105,7 @@ public class CalendarCell extends JPanel {
                         Termin appointment = appointmentMap.get(selectedText);
                         if (appointment != null) {
                             // Rufe die Appointment Klasse auf und übergebe den ausgewählten Termin
-                            new AppointmentForm(appointment, terminListe, monthView).showUI();
+                            new AppointmentForm(appointment, terminListe, monthView, db).showUI();
                         }
                         textArea.getHighlighter().removeAllHighlights();
                         textArea.getHighlighter().addHighlight(rowStart, rowEnd, DefaultHighlighter.DefaultPainter);

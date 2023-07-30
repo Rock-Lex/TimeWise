@@ -41,6 +41,18 @@ public class PanelMain extends JPanel {
     private CalendarView monthView;
     private JButton btn_createAppointment;
     private JPanel upperPanel;
+    static Database db;
+
+    static {
+        try {
+            db = new Database();
+        } catch (WrongPathException e) {
+            throw new RuntimeException(e);
+        } catch (SQLPackageException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     // --------------------------- Konstruktor und Hauptmethode -------------------------------------------
 
@@ -51,9 +63,10 @@ public class PanelMain extends JPanel {
      * @throws AppointmentOutOfMonthRangeException Wenn ein Termin außerhalb des aktuellen Monatsbereichs liegt
      * @throws AppointmentMismatchMonthException   Wenn ein Termin nicht mit dem aktuellen Monat übereinstimmt
      */
-    public PanelMain(TerminListe terminListe) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
+    public PanelMain(TerminListe terminListe, Database db) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
+        this.db = db;
         YearMonth currentYearMonth = YearMonth.now();
-        viewManager = new CalendarViewManager(terminListe);
+        viewManager = new CalendarViewManager(terminListe, db);
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
@@ -81,7 +94,7 @@ public class PanelMain extends JPanel {
         btn_createAppointment.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AppointmentForm newAppointmentForm = new AppointmentForm(terminListe, monthView);
+                AppointmentForm newAppointmentForm = new AppointmentForm(terminListe, monthView, db);
                 JFrame appointmentFrame = newAppointmentForm.showUI();
                 newAppointmentForm.toggleEditing(true);
                 appointmentFrame.addWindowListener(new WindowAdapter() {
@@ -133,7 +146,7 @@ public class PanelMain extends JPanel {
 
         System.out.println("Anzahl der Termine in terminListe (Main Methode): " + terminListe.getTermine().size());
 
-        PanelMain panelMain = new GUI.PanelMain(terminListe);
+        PanelMain panelMain = new GUI.PanelMain(terminListe, db);
     }
     // --------------------------- Methoden zur Manipulation der GUI -------------------------------------------
 
