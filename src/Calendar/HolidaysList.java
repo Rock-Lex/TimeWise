@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 /**
- * Bei dieser Klasse handelt es sich um die Holidays Class zur Berechnung und Festlegung der Feiertage in Berlin.
+ * Bei dieser Klasse handelt es sich um die Holidays Class zur Berechnung und Festlegung der Feiertage.
  *
  * @author Tobias Rehm
  * @version 1.0
