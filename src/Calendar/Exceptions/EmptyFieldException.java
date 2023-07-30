@@ -3,6 +3,10 @@ package Calendar.Exceptions;
 /**
  * Eine Ausnahmeklasse, die ausgelöst wird, wenn ein Feld, das einen Wert erfordert, leer gelassen wird.
  * Erbt von IllegalArgumentException.
+ *
+ * @author Philipp Voß
+ * @version 1.0
+ * @since 30.07.2023
  */
 public class EmptyFieldException extends IllegalArgumentException {
 

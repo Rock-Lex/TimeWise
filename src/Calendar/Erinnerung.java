@@ -8,10 +8,10 @@ import java.time.LocalDateTime;
  * Eine Klasse, die eine Erinnerung repräsentiert und verwaltet.
  * Die Erinnerung enthält Informationen wie Zeitpunkt, Nachricht und Aktivierungsstatus.
  *
- * Autor: Oleksandr Kamenskyi
- * Version: 1.0.0
- * Erstellt am: 23.05.2023
- * Letzte Änderung: 23.05.2023
+ * @author: Oleksandr Kamenskyi
+ * @version : 1.0.0
+ * @since 23.05.2023
+ * Letzte_Änderung: 23.05.2023
  */
 public class Erinnerung implements Comparable<Erinnerung> {
 

@@ -3,6 +3,10 @@ package Calendar.Exceptions;
 /**
  * Eine Ausnahmeklasse, die ausgelöst wird, wenn ein ungültiges Datum eingegeben wird.
  * Erbt von IllegalArgumentException.
+ *
+ * @author Philipp Voß
+ * @version 1.0
+ * @since 30.07.2023
  */
 public class InvalidDateException extends IllegalArgumentException {
 

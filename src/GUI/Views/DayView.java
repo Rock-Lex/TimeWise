@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author Leif Maluck
  * @version 1.0
- * Erstellt am: 2023-07-01
+ * @since 2023-07-01
  * Letzte Bearbeitung: 2023-07-30
  */
 public class DayView extends JFrame {

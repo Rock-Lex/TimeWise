@@ -27,9 +27,9 @@ import java.util.Random;
  * Diese Klasse repräsentiert das Hauptpanel der Anwendung. Sie dient als Container für die verschiedenen GUI-Elemente,
  * einschließlich des CalendarViews, der Tab-Steuerung und der Schaltflächen.
  *
- * Autor: Philipp Voß
- * Version: 1.5
- * Erstellt am: 02.06.2023
+ * @author: Philipp Voß
+ * @version: 1.5
+ * @since: 02.06.2023
  * Letzte Änderung: 19.07.2023
  */
 public class PanelMain extends JPanel {

@@ -3,6 +3,10 @@ package Calendar.Exceptions;
 /**
  * Eine Ausnahmeklasse, die ausgelöst wird, wenn eine ungültige E-Mail-Adresse eingegeben wird.
  * Erbt von der Java Exception Klasse.
+ *
+ * @author Philipp Voß
+ * @version 1.0
+ * @since 30.07.2023
  */
 public class InvalidEmailException extends Exception {
 

@@ -3,6 +3,10 @@ package Calendar.Exceptions;
 /**
  * Eine Ausnahmeklasse, die ausgelöst wird, wenn versucht wird, einen Teilnehmer hinzuzufügen, der bereits existiert.
  * Erbt von der Java Exception Klasse.
+ *
+ * @author Philipp Voß
+ * @version 1.0
+ * @since 30.07.2023
  */
 public class DuplicateTeilnehmerException extends Exception {
     /**
