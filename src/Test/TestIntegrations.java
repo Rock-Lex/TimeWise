@@ -21,7 +21,7 @@ import Calendar.TerminListe;
 public class TestIntegrations {
 
     @Test
-    public void testAddTerminWithTeilnehmer() {
+    public void testAddTerminWithTeilnehmer_TID0201() {
         // Test ID: TID0201
         // Name: addTerminWithTeilnehmer
         // Input: valider Teilnehmer, Termin und Termin-Liste

@@ -19,7 +19,7 @@ public class TestAlle {
     // Integration test
 
     @Test
-    public void testAddTerminWithTeilnehmer() {
+    public void testAddTerminWithTeilnehmer_TID0201() {
         // Test ID: TID0201
         // Name: addTerminWithTeilnehmer
     }
@@ -98,6 +98,18 @@ public class TestAlle {
     public void testConstructor_TID0701_constructor_createsTerminListe() {
         // Test ID: TID0701
         // Name: constructor
+    }
+
+    @Test
+    public void testAddTermin_TID0702_addTermin_validInput_addsTermin() {
+        // Test ID: TID0702
+        // Name: addTermin
+    }
+
+    @Test
+    public void testRemoveTermin_TID0703_removeTermin_validInput_removesTermin() {
+        // Test ID: TID0703
+        // Name: removeTermin
     }
 
     // Test E-Mail Überprüfung
