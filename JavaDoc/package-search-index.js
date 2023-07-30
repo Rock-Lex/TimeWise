@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"Alle Packages","u":"allpackages-index.html"},{"l":"Calendar"},{"l":"Calendar.Exceptions"},{"l":"GUI"},{"l":"GUI.Appointment"},{"l":"GUI.Exceptions"},{"l":"GUI.Views"},{"l":"IDgen"},{"l":"IOManager"},{"l":"IOManager.Exceptions"},{"l":"Test"},{"l":"Utilities"}];updateSearchResults();
