@@ -1,19 +1,18 @@
 package IOManager;
 
 import java.io.*;
-import java.util.ArrayList;
 
 
 /**
- * Bei dieser Klasse handelt es sich um einen Database Manager.
+ * Bei dieser Klasse handelt es sich um einen ICS Export/Import Interface.
  * *
  * Autor: Oleksandr Kamenskyi
  * Version: 1.0.0
- * Erstellt am: 30.07.2023
- * Letzte Änderung: 30.07.2023
+ * Erstellt am: 28.07.2023
+ * Letzte Änderung: 28.07.2023
  */
 
-public class IOinterface {
+public class ioICS {
 
     private String version =    "VERSION:1.0\n";
     private String prodid =     "PRODID://\n";
@@ -25,17 +24,24 @@ public class IOinterface {
     public void IOinterface(){
     }
 
-    public void exportICS( String name ){
+    public void exportICS( String fileName, String id, String dtStamp, String dtStart, String dtEnd, String teilnehmer, String summary){
         StringBuilder builder = new StringBuilder();
-        builder.append(name);
+        builder.append(fileName);
         builder.append(".ics");
 
-        String testExample = "UID:uid1@example.com\n" +
-                "DTSTAMP:19970714T170000Z\n" +
-                "ORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\n" +
-                "DTSTART:19970714T170000Z\n" +
-                "DTEND:19970715T035959Z\n" +
-                "SUMMARY:Bastille Day Party\n";
+//                String testExample = "UID:uid1@example.com\n" +
+//                "DTSTAMP:19970714T170000Z\n" +
+//                "ORGANIZER;CN=John Doe:MAILTO:john.doe@example.com\n" +
+//                "DTSTART:19970714T170000Z\n" +
+//                "DTEND:19970715T035959Z\n" +
+//                "SUMMARY:Bastille Day Party\n";
+
+        String terminTemplate = String.format("UID:%s\n" +
+                "DTSTAMP:%s\n" +
+                "ORGANIZER;CN=John Doe:MAILTO:john.doe@example.com%s\n" +
+                "DTSTART:%s\n" +
+                "DTEND:%s\n" +
+                "SUMMARY:%s\n", id, dtStamp, teilnehmer, dtStart, dtEnd, summary);
 
         try {
 
@@ -52,7 +58,7 @@ public class IOinterface {
             bw.write(version);
             bw.write(prodid);
             bw.write(eventBegin);
-            bw.write(testExample);
+            bw.write(terminTemplate);
             bw.write(eventEnd);
             bw.write(calEnd);
 

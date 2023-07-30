@@ -16,7 +16,7 @@ public class Test {
         TestDatenbank testDatenbank = new TestDatenbank();
         TestErinnerung testErinnerung = new TestErinnerung();
         TestTeilnehmer testTeilnehmer = new TestTeilnehmer();
-        TestIOInterface testIOInterface = new TestIOInterface();
+        TestioICS testioICS = new TestioICS();
 
 
 //        testCalendar.test();
@@ -24,6 +24,6 @@ public class Test {
 //        testDatenbank.test();
 //        testErinnerung.test();
 //        testTeilnehmer.test();
-        testIOInterface.test();
+        testioICS.test();
     }
 }
