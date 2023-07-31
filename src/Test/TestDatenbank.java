@@ -30,8 +30,7 @@ public class TestDatenbank {
     public void testDatenbank() {
         // Test ID: TID1001
         // Name: Funktion, alle Tests der Datenbank aufzurufen
-        // Input:
-        // erwartete Ausgabe:
+        // erwartete Ausgabe: Ergebnisse aller Test
         // Ergebnis: 1,2 Positiv, 3 Negativ
 
         printTestStart("Database Class");
@@ -59,7 +58,7 @@ public class TestDatenbank {
         // Test ID: TID1002
         // Name: delete Termine
         // Input: Löschen eines vorhandenen und nicht vorhandenen Termins
-        // erwartete Ausgabe:
+        // erwartete Ausgabe: 1 keine Ausgabe zeigt erfolgreichen Löschvorgang, 2 Ausgabe zeigt nicht durchgeführten Löschvorgang
         // Ergebnis: 1 Positiv, 2 Negativ
 
         printTestStart("Delete termins function");
@@ -144,7 +143,7 @@ public class TestDatenbank {
     private Database testCreateDatabase() {
         // Test ID: TID1005
         // Name: create Database
-        // Input:
+        // Input: rootfolder ausgehend des Codes
         // erwartete Ausgabe: Erstellt eine Datenbank für Termine, Teilnehmer und ID
         // Ergebnis: Positiv
 
@@ -164,8 +163,8 @@ public class TestDatenbank {
     private Database testCreateDatabaseWithPath(String projectPath, String databaseName) {
         // Test ID: TID1006
         // Name: create Database with path
-        // Input:
-        // erwartete Ausgabe:
+        // Input: angegebener path und name, unter dem die Datenbank angelegt werden soll
+        // erwartete Ausgabe: angelegte Datenbank mit vorgegebenem Namen und im angegebenen Path
         // Ergebnis: Positiv
 
         printTestStart("Database creation/connection");
