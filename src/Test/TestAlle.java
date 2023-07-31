@@ -115,6 +115,14 @@ public class TestAlle {
         //Test ID: TID0902
         // Name: invalide date String
         testDateLabelFormatter.testInvalidDateString_TID0902();
+
+        // Test Datenbank
+        TestDatenbank testDatenbank = new TestDatenbank();
+
+        // Test ID: TID1001
+        // Name: Funktion, alle Funktionen in der Test Klasse TestDatenbank aufzurufen
+        testDatenbank.testDatenbank();
+
     }
 
     public static void main(String[] args) throws ParseException {

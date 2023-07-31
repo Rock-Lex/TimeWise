@@ -5,6 +5,7 @@ import Calendar.TerminListe;
 import IOManager.Database;
 import IOManager.Exceptions.SQLPackageException;
 import IOManager.Exceptions.WrongPathException;
+import org.junit.Test;
 
 import javax.xml.crypto.Data;
 import java.time.LocalDateTime;
@@ -25,12 +26,13 @@ public class TestDatenbank {
 
     }
 
-    public void test() {
+    @Test
+    public void testDatenbank() {
         // Test ID: TID1001
-        // Name:
+        // Name: Funktion, alle Tests der Datenbank aufzurufen
         // Input:
         // erwartete Ausgabe:
-        // Ergebnis:
+        // Ergebnis: 1,2 Positiv, 3 Negativ
 
         printTestStart("Database Class");
 
@@ -52,12 +54,13 @@ public class TestDatenbank {
         printTestEnd("Database Class");
     }
 
+    @Test
     private Database testDeleteTermine(Database database) {
         // Test ID: TID1002
-        // Name:
-        // Input:
+        // Name: delete Termine
+        // Input: Löschen eines vorhandenen und nicht vorhandenen Termins
         // erwartete Ausgabe:
-        // Ergebnis:
+        // Ergebnis: 1 Positiv, 2 Negativ
 
         printTestStart("Delete termins function");
 
@@ -72,12 +75,13 @@ public class TestDatenbank {
         return database;
     }
 
+    @Test
     private Database testGetTermine(Database database) {
         // Test ID: TID1003
-        // Name:
-        // Input:
-        // erwartete Ausgabe:
-        // Ergebnis:
+        // Name: get Termine
+        // Input: Einfügen einer Liste mit Terminen
+        // erwartete Ausgabe: Ausgabe einer Liste von Terminen, die in der Datenbank angelegt sind
+        // Ergebnis: Positiv
 
         printTestStart("Get termins function");
 
@@ -108,12 +112,16 @@ public class TestDatenbank {
         return database;
     }
 
+    @Test
     private Database testAddTermine(Database database) {
         // Test ID: TID1004
-        // Name:
+        // Name: add Termine
         // Input:
+        // 1: Termin ohne ID hinzufügen, Titel, Type, Teilnehmer,
+        // 2: Termin mit neuer ID hinzufügen, Titel, Type, Teilnehmer,
+        // 3: 2: Termin mit in der Datenbank vorhandenen ID hinzufügen, Titel, Type, Teilnehmer,
         // erwartete Ausgabe:
-        // Ergebnis:
+        // Ergebnis: 1 & 2 Positiv, 3 Negativ
 
         printTestStart("Add termins function");
         LocalDateTime lt = LocalDateTime.now();
@@ -132,12 +140,13 @@ public class TestDatenbank {
         return database;
     }
 
+    @Test
     private Database testCreateDatabase() {
         // Test ID: TID1005
-        // Name:
+        // Name: create Database
         // Input:
-        // erwartete Ausgabe:
-        // Ergebnis:
+        // erwartete Ausgabe: Erstellt eine Datenbank für Termine, Teilnehmer und ID
+        // Ergebnis: Positiv
 
         printTestStart("Database creation/connection");
 
@@ -151,12 +160,13 @@ public class TestDatenbank {
         return database;
     }
 
+    @Test
     private Database testCreateDatabaseWithPath(String projectPath, String databaseName) {
         // Test ID: TID1006
-        // Name:
+        // Name: create Database with path
         // Input:
         // erwartete Ausgabe:
-        // Ergebnis:
+        // Ergebnis: Positiv
 
         printTestStart("Database creation/connection");
 
@@ -170,12 +180,9 @@ public class TestDatenbank {
         return database;
     }
 
+    @Test
     public void printTestStart(String msg) {
-        // Test ID: TID1007
-        // Name:
-        // Input:
-        // erwartete Ausgabe:
-        // Ergebnis:
+        // Print Funktion, um Ergebnisse der Tests auszugeben
 
         printTestLine();
         printTestLine();
@@ -186,11 +193,7 @@ public class TestDatenbank {
     }
 
     public void printTestEnd(String msg) {
-        // Test ID: TID1008
-        // Name:
-        // Input:
-        // erwartete Ausgabe:
-        // Ergebnis:
+        // Print Funktion, um Ergebnisse der Tests auszugeben
 
         printTestLine();
         printTestLine();
@@ -201,11 +204,7 @@ public class TestDatenbank {
     }
 
     public void printTestCase(Integer num, String description) {
-        // Test ID: TID1009
-        // Name:
-        // Input:
-        // erwartete Ausgabe:
-        // Ergebnis:
+        // Print Funktion, um Ergebnisse der Tests auszugeben
 
         printTestLine();
         System.out.println("Test case " + num + ": " + description);
@@ -216,11 +215,6 @@ public class TestDatenbank {
     public void printTestLine() {
         System.out.print("-------------------\n");
     }
-    // Test ID: TID1010
-    // Name:
-    // Input:
-    // erwartete Ausgabe:
-    // Ergebnis:
 
 }
 
