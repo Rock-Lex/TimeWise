@@ -123,6 +123,13 @@ public class TestAlle {
         // Name: Funktion, alle Funktionen in der Test Klasse TestDatenbank aufzurufen
         testDatenbank.testDatenbank();
 
+        // Test Export und Import
+        TestioICS testioICS = new TestioICS();
+
+        // Test ID TID1101
+        // Name: Export Kalender ICS
+        testioICS.testIOICS();
+
     }
 
     public static void main(String[] args) throws ParseException {
