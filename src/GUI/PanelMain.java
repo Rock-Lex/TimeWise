@@ -140,7 +140,7 @@ public class PanelMain extends JPanel {
         Database db = new Database();
 
 
-        //erstelleZufaelligeTermine(terminListe);
+        erstelleZufaelligeTermine(terminListe);
         terminListe = db.getTermine();
 
 
@@ -183,7 +183,7 @@ public class PanelMain extends JPanel {
         Database db = new Database();
         Random random = new Random();
 
-        for (int i = 1; i <= 1000; i++) {
+        for (int i = 1; i <= 100; i++) {
             int year = currentYear + random.nextInt(2);  // Wählt zufällig das aktuelle oder nächste Jahr
             int month = random.nextInt(12) + 1;
             YearMonth randomYearMonth = YearMonth.of(year, month);
