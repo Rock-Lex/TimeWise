@@ -413,14 +413,7 @@ public class AppointmentForm {
                 }
             }
         });
-        deleteButton.addActionListener(new ActionListener() {
 
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Delete logic here
-            }
-
-        });
         // Panel für die Knöpfe "Abbrechen" und "Speichern"
         JPanel leftBox = new JPanel();
         JPanel rightBox = new JPanel();
