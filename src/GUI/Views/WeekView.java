@@ -6,6 +6,9 @@ import Calendar.TerminListe;
 import GUI.CalendarCell;
 import GUI.Exceptions.AppointmentMismatchMonthException;
 import GUI.Exceptions.AppointmentOutOfMonthRangeException;
+import IOManager.Database;
+import IOManager.Exceptions.SQLPackageException;
+import IOManager.Exceptions.WrongPathException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,12 +27,12 @@ import java.util.Locale;
  * @since 20.07.2023
  * Letzte Änderung: 27.07.2023
  */
-public class WeekView extends JPanel {
+public class WeekView extends CalendarView {
     private TerminListe terminListe;
     private YearMonth yearMonth;
     private CalendarCell[] calendarCells;
     private JLabel[] daysLabels;
-
+    private Database db;
     /**
      * Erstellt eine neue Wochenansicht mit dem angegebenen Jahr, Monat und Terminliste.
      *
@@ -37,7 +40,8 @@ public class WeekView extends JPanel {
      * @param month Der aktuelle Monat als int.
      * @param terminListe Eine Liste von Terminen
      */
-    public WeekView(int year, int month, TerminListe terminListe) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
+    public WeekView(int year, int month, TerminListe terminListe, Database db) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
+        super(year, month, terminListe);
         this.terminListe = terminListe;
         yearMonth = YearMonth.of(year, month);
         int numberOfDays = 7; // Woche hat immer 7 Tage
@@ -47,42 +51,28 @@ public class WeekView extends JPanel {
         setLayout(new GridLayout(0, 7));
 
         for (int i = 0; i < 7; i++) {
-            DayOfWeek dayOfWeek = DayOfWeek.of((i + 1) % 7); // Start mit Montag
+            DayOfWeek dayOfWeek = DayOfWeek.of(i + 1); // Start mit Montag
             String dayName = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.GERMAN);
-            JLabel dayLabel = new JLabel(dayName, SwingConstants.CENTER);
+            JLabel dayLabel = new JLabel(dayName, SwingConstants.LEFT);
             daysLabels[i] = dayLabel;
             add(dayLabel);
         }
 
-        int currentDayOfMonth = LocalDate.now().getDayOfMonth(); // Aktueller Tag des Monats
-        int offset = (currentDayOfMonth + 6 - LocalDate.now().getDayOfWeek().getValue()) % 7; // Offset für den ersten Tag der Woche
-        LocalDate startDate = LocalDate.of(year, month, currentDayOfMonth - offset); // Anfang der Woche
-//        for (int i = 0; i < numberOfDays; i++) {
-//            CalendarCell cell = new CalendarCell(Integer.toString(startDate.getDayOfMonth()));
-//            calendarCells[i] = cell;
-//            add(cell);
-//            startDate = startDate.plusDays(1); // Nächster Tag
-//        }
 
+        for (int i = 1; i <= numberOfDays; i++) {
+            CalendarCell cell = new CalendarCell(Integer.toString(i), terminListe, this, db);
+            calendarCells[i - 1] = cell;
+            add(cell);
+        }
 
-        // Termine hinzufügen
+        // Add appointments from the list
         for (Termin termin : terminListe.getTermine()) {
             LocalDate terminDate = termin.getStart().toLocalDate();
-            if (terminDate.isAfter(startDate.minusDays(1)) && terminDate.isBefore(startDate.plusDays(7))) {
+            if(terminDate.getMonth() == yearMonth.getMonth() && terminDate.getYear() == yearMonth.getYear()){
                 addAppointment(termin);
             }
         }
     }
-
-//    public void nextWeek() {
-//        this.yearMonth = this.yearMonth.plusWeeks(1);
-//        updateView();
-//    }
-//
-//    public void previousWeek() {
-//        this.yearMonth = this.yearMonth.minusWeeks(1);
-//        updateView();
-//    }
 
     public void currentWeek() {
         this.yearMonth = YearMonth.now();
@@ -156,13 +146,17 @@ public class WeekView extends JPanel {
         JFrame frame = new JFrame("Week View Example");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        Termin termin1 = new Termin("Terminname 1", "Typ 1", false, "2023-06-02", "2023-06-02", "10:00", "11:30");
-        Termin termin2 = new Termin("Terminname 2", "Typ 2", false, "2023-06-01", "2023-06-01", "13:00", "14:30");
+        Termin termin1 = new Termin("Terminname 1", "Typ 1", false, "2023-12-02", "2023-12-02", "10:00", "11:30");
+        Termin termin2 = new Termin("Terminname 2", "Typ 2", false, "2023-12-01", "2023-12-01", "13:00", "14:30");
         TerminListe terminListe = new TerminListe();
         terminListe.addTermin(termin1);
         terminListe.addTermin(termin2);
 
-        WeekView weekView = new WeekView(2023, 6, terminListe);
+        Database db;
+        
+        db = null;
+
+        WeekView weekView = new WeekView(2023, 12, terminListe, db);
         weekView.addAppointment(termin1);
         weekView.addAppointment(termin2);
 
@@ -171,5 +165,24 @@ public class WeekView extends JPanel {
         frame.getContentPane().add(weekView);
         frame.pack();
         frame.setVisible(true);
+    }
+
+    @Override
+    public void updateView(TerminListe terminListe)
+            throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'updateView'");
+    }
+
+    @Override
+    public void nextPeriod() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'nextPeriod'");
+    }
+
+    @Override
+    public void previousPeriod() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'previousPeriod'");
     }
 }

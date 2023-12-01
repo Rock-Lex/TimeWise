@@ -140,7 +140,7 @@ public class PanelMain extends JPanel {
         Database db = new Database();
 
 
-        erstelleZufaelligeTermine(terminListe);
+        //erstelleZufaelligeTermine(terminListe);
         terminListe = db.getTermine();
 
 
