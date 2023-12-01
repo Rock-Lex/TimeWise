@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Period;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
@@ -29,10 +30,10 @@ import java.util.Locale;
 public class MonthView extends CalendarView {
     // ... Klassenvariablen ...
     private TerminListe terminListe;
-    private YearMonth yearMonth;
     private CalendarCell[] calendarCells;
     private JLabel[] daysLabels;
     private Database db;
+    private YearMonth yearMonth;
 
 // ----------- Konstruktoren -----------
     /**
@@ -42,11 +43,12 @@ public class MonthView extends CalendarView {
      * @param month Der aktuelle Monat als int.
      * @param terminListe Eine Liste von Terminen
      */
-    public MonthView(int year, int month, TerminListe terminListe, Database db) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
-        super(year, month, terminListe);
+    public MonthView(LocalDate shownDate, TerminListe terminListe, Database db) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
+        super(shownDate, terminListe);
         this.db = db;
         this.terminListe = terminListe;
-        yearMonth = YearMonth.of(year, month);
+        this.yearMonth = YearMonth.from(shownDate);
+        this.shownDate = shownDate;
         int numberOfDays = yearMonth.lengthOfMonth();
         calendarCells = new CalendarCell[numberOfDays];
         daysLabels = new JLabel[7];
@@ -61,7 +63,7 @@ public class MonthView extends CalendarView {
             add(dayLabel);
         }
 
-        int offset = (LocalDate.of(year, month, 1).getDayOfWeek().getValue() + 6) % 7;  // Erster Tag der ersten Woche im Monat
+        int offset = (shownDate.withDayOfMonth(1).getDayOfWeek().getValue() + 6) % 7;  // Erster Tag der ersten Woche im Monat
         for (int i = 0; i < offset; i++) {  // Hinzufügen leerer Zellen als Offset am Monatsanfang
             add(new JLabel());
         }
@@ -100,8 +102,8 @@ public class MonthView extends CalendarView {
      */
     public void addAppointment(Termin appointment) {
         try {
-            if (appointment.getStart().getMonth() != yearMonth.getMonth()) {
-                throw new AppointmentMismatchMonthException("Fehler: Der Termin (" + appointment.getTitle() + ", " + appointment.getStart().toString() + ") gehört nicht zum aktuellen Monat (" + yearMonth.getMonth() + ").");
+            if (appointment.getStart().getMonth() != shownDate.getMonth()) {
+                throw new AppointmentMismatchMonthException("Fehler: Der Termin (" + appointment.getTitle() + ", " + appointment.getStart().toString() + ") gehört nicht zum aktuellen Monat (" + shownDate.getMonth() + ").");
             }
             String formattedAppointment = appointment.getStart().format(DateTimeFormatter.ofPattern("HH:mm")) +
                     " - " +
@@ -111,7 +113,7 @@ public class MonthView extends CalendarView {
 
             int day = appointment.getStart().getDayOfMonth();
             if (day > calendarCells.length) {
-                throw new AppointmentOutOfMonthRangeException("Fehler: Der Tag des Termins ("+ appointment.getTitle() + ", " + appointment.getStart().toString() + ") liegt außerhalb des aktuellen Monats (" + yearMonth.getMonth() + ").");
+                throw new AppointmentOutOfMonthRangeException("Fehler: Der Tag des Termins ("+ appointment.getTitle() + ", " + appointment.getStart().toString() + ") liegt außerhalb des aktuellen Monats (" + shownDate.getMonth() + ").");
             }
             CalendarCell cell = calendarCells[day - 1];
             cell.addAppointment(formattedAppointment, appointment);
@@ -137,12 +139,10 @@ public class MonthView extends CalendarView {
 
         this.removeAll();
 
-        System.out.println(yearMonth);
-
-        int numberOfDays = yearMonth.lengthOfMonth();
+        int numberOfDays = shownDate.lengthOfMonth();
         calendarCells = new CalendarCell[numberOfDays];
         daysLabels = new JLabel[7];
-
+        System.out.println(shownDate.getMonth());
         for (int i = 0; i < 7; i++) {
             DayOfWeek dayOfWeek = DayOfWeek.of((i) % 7 + 1);
             String dayName = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.GERMAN);
@@ -151,7 +151,7 @@ public class MonthView extends CalendarView {
             add(dayLabel);
         }
 
-        int offset = (LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), 1).getDayOfWeek().getValue() + 6) % 7;
+        int offset = (shownDate.withDayOfMonth(1).getDayOfWeek().getValue() + 6) % 7;
         for (int i = 0; i < offset; i++) {
             add(new JLabel());
         }
@@ -165,32 +165,13 @@ public class MonthView extends CalendarView {
         // Add appointments from the list
         for (Termin termin : terminListe.getTermine()) {
             LocalDate terminDate = termin.getStart().toLocalDate();
-            if(terminDate.getMonth() == yearMonth.getMonth() && terminDate.getYear() == yearMonth.getYear()){
+            if(terminDate.getMonth() == shownDate.getMonth() && terminDate.getYear() == shownDate.getYear()){
                 addAppointment(termin);
             }
         }
 
         revalidate();
         repaint();
-    }
-
-    /**
-     * Setzt das aktuelle Jahr und den Monat.
-     *
-     * @param yearMonth Das YearMonth-Objekt, das das aktuelle Jahr und den Monat repräsentiert.
-     */
-    @Override
-    public void setYearMonth(YearMonth yearMonth) {
-        super.setYearMonth(yearMonth);
-        this.yearMonth = yearMonth;
-    }
-    /**
-     * Gibt das aktuelle Jahr und den Monat zurück.
-     *
-     * @return Ein YearMonth-Objekt, das das aktuelle Jahr und den Monat repräsentiert.
-     */
-    public YearMonth getYearMonth() {
-        return this.yearMonth;
     }
 
     /**
@@ -208,18 +189,25 @@ public class MonthView extends CalendarView {
         HolidaysList holidaysList = new HolidaysList(yearMonth.getYear());
     }
 
+    public YearMonth getYearMonth() {
+        return this.yearMonth;
+    }
+
     // ----------- Überschriebene Methoden -----------
 
     @Override
     public void nextPeriod() {
-        this.yearMonth = this.yearMonth.plusMonths(1);
+        this.shownDate = this.shownDate.plusMonths(1);
+        this.yearMonth = YearMonth.from(this.shownDate);
     }
     @Override
     public void previousPeriod() {
-        this.yearMonth = this.yearMonth.minusMonths(1);
+        this.shownDate = shownDate.minusMonths(1);
+        this.yearMonth = YearMonth.from(shownDate);
     }
     @Override
     public void todaysPeriod() {
         this.yearMonth=YearMonth.now();
     }
+
 }

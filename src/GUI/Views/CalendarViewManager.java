@@ -25,6 +25,7 @@ public class CalendarViewManager {
     private YearMonth currentYearMonth;
     private TerminListe terminListe;
     private Database db;
+    private LocalDate shownDate;
 
     // --------------------------- Konstruktor -------------------------------------------
     /**
@@ -34,13 +35,13 @@ public class CalendarViewManager {
      */
     public CalendarViewManager(TerminListe terminListe, Database db) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         views = new HashMap<>();
-        this.currentYearMonth = YearMonth.now();
+        this.shownDate = LocalDate.now();
         this.terminListe = terminListe;
         this.db = db;
         // Initialisiere die verschiedenen Views
         int currentYear = YearMonth.now().getYear();
         int currentMonth = YearMonth.now().getMonthValue();
-        views.put("month", new MonthView(currentYear, currentMonth, this.terminListe, db));
+        views.put("month", new MonthView(shownDate, this.terminListe, db));
         // Hier weitere Views hinzufügen
 
         // Monatsansicht als Standard gesetzt
@@ -81,8 +82,8 @@ public class CalendarViewManager {
             MonthView monthView = (MonthView) currentView;
             monthView.clearAppointments();
             for (Termin termin : terminListe.getTermine()) {
-                if (termin.getStart().getMonth() == monthView.getYearMonth().getMonth()
-                        && termin.getStart().getYear() == monthView.getYearMonth().getYear()) {
+                if (termin.getStart().getMonth() == monthView.getDate().getMonth()
+                        && termin.getStart().getYear() == monthView.getDate().getYear()) {
                     monthView.addAppointment(termin);
                 }
             }
@@ -122,7 +123,7 @@ public class CalendarViewManager {
         this.currentYearMonth = YearMonth.of(date.getYear(), date.getMonth());
 
         // Aktualisiert die Ansicht
-        this.currentView.setYearMonth(currentYearMonth);
+        this.currentView.setDate(date);
 
         // Wenn die aktuelle Ansicht eine MonthView ist, aktualisieren Sie die Termine
         if (this.currentView instanceof MonthView) {

@@ -40,10 +40,9 @@ public class WeekView extends CalendarView {
      * @param month Der aktuelle Monat als int.
      * @param terminListe Eine Liste von Terminen
      */
-    public WeekView(int year, int month, TerminListe terminListe, Database db) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
-        super(year, month, terminListe);
+    public WeekView(LocalDate shownDate, TerminListe terminListe, Database db) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
+        super(shownDate, terminListe);
         this.terminListe = terminListe;
-        yearMonth = YearMonth.of(year, month);
         int numberOfDays = 7; // Woche hat immer 7 Tage
         calendarCells = new CalendarCell[numberOfDays];
         daysLabels = new JLabel[7];
@@ -57,7 +56,6 @@ public class WeekView extends CalendarView {
             daysLabels[i] = dayLabel;
             add(dayLabel);
         }
-
 
         for (int i = 1; i <= numberOfDays; i++) {
             CalendarCell cell = new CalendarCell(Integer.toString(i), terminListe, this, db);
@@ -145,7 +143,7 @@ public class WeekView extends CalendarView {
     public static void main(String[] args) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         JFrame frame = new JFrame("Week View Example");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        LocalDate shownDate = LocalDate.of(2023, 12, 1);
         Termin termin1 = new Termin("Terminname 1", "Typ 1", false, "2023-12-02", "2023-12-02", "10:00", "11:30");
         Termin termin2 = new Termin("Terminname 2", "Typ 2", false, "2023-12-01", "2023-12-01", "13:00", "14:30");
         TerminListe terminListe = new TerminListe();
@@ -156,7 +154,7 @@ public class WeekView extends CalendarView {
         
         db = null;
 
-        WeekView weekView = new WeekView(2023, 12, terminListe, db);
+        WeekView weekView = new WeekView(shownDate, terminListe, db);
         weekView.addAppointment(termin1);
         weekView.addAppointment(termin2);
 
