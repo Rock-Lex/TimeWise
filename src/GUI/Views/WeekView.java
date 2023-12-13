@@ -42,7 +42,10 @@ public class WeekView extends CalendarView {
      */
     public WeekView(LocalDate shownDate, TerminListe terminListe, Database db) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         super(shownDate, terminListe);
+        this.db = db;
         this.terminListe = terminListe;
+
+        this.shownDate = shownDate;
         int numberOfDays = 7; // Woche hat immer 7 Tage
         calendarCells = new CalendarCell[numberOfDays];
         daysLabels = new JLabel[7];
@@ -57,24 +60,33 @@ public class WeekView extends CalendarView {
             add(dayLabel);
         }
 
-        for (int i = 1; i <= numberOfDays; i++) {
-            CalendarCell cell = new CalendarCell(Integer.toString(i), terminListe, this, db);
-            calendarCells[i - 1] = cell;
+        LocalDate today = LocalDate.now();
+        int currentDayOfMonth = today.getDayOfMonth();
+        int offset = (currentDayOfMonth + 6 - today.getDayOfWeek().getValue()) % 7;
+        LocalDate startDate = today.minusDays(offset);
+        for (int i = 0; i < 7; i++) {
+            LocalDate date = startDate.plusDays(i);
+            CalendarCell cell = new CalendarCell(Integer.toString(date.getDayOfMonth()), terminListe, this, db);
+            calendarCells[i] = cell;
             add(cell);
         }
 
         // Add appointments from the list
         for (Termin termin : terminListe.getTermine()) {
             LocalDate terminDate = termin.getStart().toLocalDate();
-            if(terminDate.getMonth() == yearMonth.getMonth() && terminDate.getYear() == yearMonth.getYear()){
+            if (terminDate.getMonth() == shownDate.getMonth() && terminDate.getYear() == shownDate.getYear()) {
                 addAppointment(termin);
             }
         }
     }
 
     public void currentWeek() {
-        this.yearMonth = YearMonth.now();
-        updateView();
+        LocalDate today = LocalDate.now();
+        int currentDayOfMonth = today.getDayOfMonth();
+        int offset = (currentDayOfMonth + 6 - today.getDayOfWeek().getValue()) % 7;
+        LocalDate startDate = today.minusDays(offset);
+        this.shownDate = startDate;
+        this.yearMonth = YearMonth.from(startDate);
     }
 
     public void updateView() {
@@ -82,11 +94,6 @@ public class WeekView extends CalendarView {
         int currentDayOfMonth = startDate.getDayOfMonth();
         int offset = (currentDayOfMonth + 6 - startDate.getDayOfWeek().getValue()) % 7;
         startDate = startDate.minusDays(offset);
-
-//        for (int i = 0; i < 7; i++) {
-//            calendarCells[i].setText(Integer.toString(startDate.getDayOfMonth()));
-//            startDate = startDate.plusDays(1);
-//        }
 
         // Termine aktualisieren
         clearAppointments();
@@ -144,8 +151,8 @@ public class WeekView extends CalendarView {
         JFrame frame = new JFrame("Week View Example");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         LocalDate shownDate = LocalDate.of(2023, 12, 1);
-        Termin termin1 = new Termin("Terminname 1", "Typ 1", false, "2023-12-02", "2023-12-02", "10:00", "11:30");
-        Termin termin2 = new Termin("Terminname 2", "Typ 2", false, "2023-12-01", "2023-12-01", "13:00", "14:30");
+        Termin termin1 = new Termin("Terminname 1", "Typ 1", false, "2023-12-13", "2023-12-13", "10:00", "11:30");
+        Termin termin2 = new Termin("Terminname 2", "Typ 2", false, "2023-12-14", "2023-12-14", "13:00", "14:30");
         TerminListe terminListe = new TerminListe();
         terminListe.addTermin(termin1);
         terminListe.addTermin(termin2);

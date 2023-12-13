@@ -223,6 +223,5 @@ public class PanelChange extends JPanel {
                 }
             }
         });
-
     }
 }

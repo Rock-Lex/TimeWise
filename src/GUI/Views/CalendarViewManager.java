@@ -43,7 +43,7 @@ public class CalendarViewManager {
         int currentMonth = YearMonth.now().getMonthValue();
         views.put("month", new MonthView(shownDate, this.terminListe, db));
         // Hier weitere Views hinzufügen
-
+        views.put("week", new WeekView(shownDate, this.terminListe, db));
         // Monatsansicht als Standard gesetzt
         currentView = views.get("month");
     }
