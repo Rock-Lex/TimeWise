@@ -90,6 +90,19 @@ public class CalendarViewManager {
             }
             monthView.updateView(terminListe);
         }
+        else if (currentView instanceof WeekView) {
+            WeekView weekView = (WeekView) currentView;
+            weekView.clearAppointments();
+            for (Termin termin : terminListe.getTermine()) {
+                
+                if (weekView.getWeekNumbers().contains(termin.getStart().getDayOfYear())
+                        && termin.getStart().getYear() == weekView.getDate().getYear()) {
+                    weekView.addAppointment(termin);
+                }
+            }
+            System.out.println(weekView.getWeekNumbers());
+            weekView.updateView(terminListe);
+        }
     }
 
     // --------------------------- Ansichts-Methoden -------------------------------------------
@@ -136,6 +149,19 @@ public class CalendarViewManager {
                 }
             }
             ((MonthView) this.currentView).updateView(this.terminListe);
+        }
+        else if (currentView instanceof WeekView) {
+            WeekView weekView = (WeekView) currentView;
+            weekView.clearAppointments();
+            for (Termin termin : terminListe.getTermine()) {
+                
+                if (weekView.getWeekNumbers().contains(termin.getStart().getDayOfYear())
+                        && termin.getStart().getYear() == weekView.getDate().getYear()) {
+                    weekView.addAppointment(termin);
+                }
+            }
+            System.out.println(weekView.getWeekNumbers());
+            weekView.updateView(terminListe);
         }
     }
     public void changeCurrentView(String category) {

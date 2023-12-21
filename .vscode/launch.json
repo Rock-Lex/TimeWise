@@ -1,0 +1,56 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "AppointmentDetails",
+            "request": "launch",
+            "mainClass": "GUI.Appointment.AppointmentDetails",
+            "projectName": "TimeWise_be030cf5"
+        },
+        {
+            "type": "java",
+            "name": "EditableComboBoxExample",
+            "request": "launch",
+            "mainClass": "GUI.EditableComboBoxExample",
+            "projectName": "TimeWise_be030cf5"
+        },
+        {
+            "type": "java",
+            "name": "PanelMain",
+            "request": "launch",
+            "mainClass": "GUI.PanelMain",
+            "projectName": "TimeWise_be030cf5"
+        },
+        {
+            "type": "java",
+            "name": "DayView",
+            "request": "launch",
+            "mainClass": "GUI.Views.DayView",
+            "projectName": "TimeWise_be030cf5"
+        },
+        {
+            "type": "java",
+            "name": "WeekView",
+            "request": "launch",
+            "mainClass": "GUI.Views.WeekView",
+            "projectName": "TimeWise_be030cf5"
+        },
+        {
+            "type": "java",
+            "name": "TestAlle",
+            "request": "launch",
+            "mainClass": "Test.TestAlle",
+            "projectName": "TimeWise_be030cf5"
+        }
+    ]
+}

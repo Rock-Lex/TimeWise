@@ -34,11 +34,11 @@ import java.util.Random;
  */
 public class PanelMain extends JPanel {
     // Deklaration der Variablen
-    public JTabbedPane tabbedPane;
+    private JTabbedPane tabbedPane;
     private PanelChange panelChange;
     private JFrame mainFrame;
     private CalendarViewManager viewManager;
-    private CalendarView monthView;
+    private CalendarView calendarView;
     private JButton btn_createAppointment;
     private JPanel upperPanel;
     static Database db;
@@ -84,9 +84,9 @@ public class PanelMain extends JPanel {
         upperPanel.add(panelChange, BorderLayout.CENTER);
 
         // Hole die monthView von viewManager
-        monthView = viewManager.getCurrentView();
+        calendarView = viewManager.getCurrentView();
         tabbedPane = new JTabbedPane();
-        tabbedPane.addTab(String.valueOf(currentYearMonth), monthView);
+        tabbedPane.addTab(String.valueOf(currentYearMonth), calendarView);
         System.out.println("Anzahl der Termine in terminListe in PanelMain (Konstruktor): " + terminListe.getTermine().size());
 
         add(upperPanel, BorderLayout.NORTH);
@@ -94,7 +94,7 @@ public class PanelMain extends JPanel {
         btn_createAppointment.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                AppointmentForm newAppointmentForm = new AppointmentForm(terminListe, monthView, db);
+                AppointmentForm newAppointmentForm = new AppointmentForm(terminListe, calendarView, db);
                 JFrame appointmentFrame = newAppointmentForm.showUI();
                 newAppointmentForm.toggleEditing(true);
                 appointmentFrame.addWindowListener(new WindowAdapter() {
@@ -104,7 +104,7 @@ public class PanelMain extends JPanel {
                         // Hier der Code zum Aktualisieren des Hauptfensters
                         mainFrame.repaint();  // Angenommen, mainFrame ist eine Referenz auf Ihr Hauptfenster
                         try {
-                            monthView.updateView(terminListe);
+                            calendarView.updateView(terminListe);
                         } catch (AppointmentOutOfMonthRangeException ex) {
                             throw new RuntimeException(ex);
                         } catch (AppointmentMismatchMonthException ex) {
@@ -142,7 +142,7 @@ public class PanelMain extends JPanel {
 
         //erstelleZufaelligeTermine(terminListe);
         terminListe = db.getTermine();
-        erstelleZufaelligeTermine(terminListe);
+        //erstelleZufaelligeTermine(terminListe);
 
 
         System.out.println("Anzahl der Termine in terminListe (Main Methode): " + terminListe.getTermine().size());
@@ -155,10 +155,18 @@ public class PanelMain extends JPanel {
      * Aktualisiert den Titel des Tabs mit dem aktuellen Monat und Jahr.
      */
     public void updateTabTitle() {
-        String currentMonthAndYear = String.valueOf(monthView.getYearMonth());
+        String currentMonthAndYear = String.valueOf(calendarView.getYearMonth());
         tabbedPane.setTitleAt(0, currentMonthAndYear);
         revalidate();
         repaint();
+    }
+
+    public void switchView(CalendarView view) {
+        this.tabbedPane.removeTabAt(0);
+        String currentYearMonth = String.valueOf(calendarView.getYearMonth());
+        this.tabbedPane.addTab(currentYearMonth, view);
+        this.calendarView = view;
+        updateTabTitle();
     }
 
     /**
@@ -166,9 +174,14 @@ public class PanelMain extends JPanel {
      *
      * @return Die aktuelle Monatsansicht
      */
-    public MonthView getMonthView() {
-        return (MonthView) monthView;
+    public CalendarView getCalendarView() {
+        return calendarView;
     }
+
+    public void setCalenderView(CalendarView calendarView) {
+        this.calendarView = calendarView;
+    }
+
     // --------------------------- Methoden zur Bearbeitung der Daten -------------------------------------------
 
     /**

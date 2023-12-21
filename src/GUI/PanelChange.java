@@ -12,7 +12,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
-import java.time.YearMonth;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Properties;
@@ -32,7 +31,6 @@ import org.jdatepicker.impl.UtilDateModel;
  */
 public class PanelChange extends JPanel {
     // Deklaration der UI-Elemente und Variablen
-    private JPanel panelChange;
     private JPanel bottomPanel;
     private JButton btn_week;
     private JButton btn_month;
@@ -44,12 +42,8 @@ public class PanelChange extends JPanel {
     private JButton nextButton;
     private JButton prevButton;
     private CalendarViewManager viewManager;
-    private CalendarView calendarView;
     private PanelMain mainPanel;
     private TerminListe terminListe;
-    private UtilDateModel model;
-    private JDatePickerImpl datePicker;
-    private JDialog datePickerDialog;
 
 
     /**
@@ -227,23 +221,17 @@ public class PanelChange extends JPanel {
 
         btn_month.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                YearMonth currentYearMonth = YearMonth.now();
-
                 viewManager.changeCurrentView("month");
-                mainPanel.tabbedPane.removeTabAt(0);
                 CalendarView view = viewManager.getCurrentView();
-                mainPanel.tabbedPane.addTab(String.valueOf(currentYearMonth), view);
+                mainPanel.switchView(view);
             }
         });
         
         btn_week.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                YearMonth currentYearMonth = YearMonth.now();
-
                 viewManager.changeCurrentView("week");
-                mainPanel.tabbedPane.removeTabAt(0);
                 CalendarView view = viewManager.getCurrentView();
-                mainPanel.tabbedPane.addTab(String.valueOf(currentYearMonth), view);
+                mainPanel.switchView(view);
             }
         });
     }

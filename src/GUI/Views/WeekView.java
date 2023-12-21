@@ -195,19 +195,61 @@ public class WeekView extends CalendarView {
     @Override
     public void updateView(TerminListe terminListe)
             throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateView'");
+        System.out.println("Update");
+
+        weekNumbers.clear();
+        this.removeAll();
+
+        for (int i = 0; i < 7; i++) {
+            DayOfWeek dayOfWeek = DayOfWeek.of(i + 1); // Start mit Montag
+            String dayName = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.GERMAN);
+            JLabel dayLabel = new JLabel(dayName, SwingConstants.LEFT);
+            daysLabels[i] = dayLabel;
+            add(dayLabel);
+        }
+
+        int currentDayOfMonth = shownDate.getDayOfMonth();
+        int offset = (currentDayOfMonth + 6 - shownDate.getDayOfWeek().getValue()) % 7;
+        LocalDate startDate = shownDate.minusDays(offset);
+        for (int i = 0; i < 7; i++) {
+            LocalDate date = startDate.plusDays(i);
+            System.out.println(date.getDayOfMonth());
+            weekNumbers.add(date.getDayOfMonth());
+            CalendarCell cell = new CalendarCell(Integer.toString(date.getDayOfMonth()), terminListe, this, db);
+            calendarCells[i] = cell;
+            add(cell);
+        }
+
+        // Add appointments from the list
+        for (Termin termin : terminListe.getTermine()) {
+            LocalDate terminDate = termin.getStart().toLocalDate();
+            if (terminDate.getMonth() == shownDate.getMonth() && terminDate.getYear() == shownDate.getYear()) {
+                addAppointment(termin);
+            }
+        }
+
+        revalidate();
+        repaint();
     }
 
     @Override
     public void nextPeriod() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'nextPeriod'");
+        System.out.println(shownDate);
+        this.shownDate = this.shownDate.plusDays(7);
+        System.out.println(shownDate);
     }
 
     @Override
     public void previousPeriod() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'previousPeriod'");
+        this.shownDate = this.shownDate.minusDays(7);
+    }
+
+    @Override
+    public void todaysPeriod() {
+        this.shownDate= LocalDate.now();
+    }
+
+    public ArrayList<Integer> getWeekNumbers() {
+        return weekNumbers;
     }
 }
