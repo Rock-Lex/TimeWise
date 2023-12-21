@@ -8,6 +8,7 @@ import IOManager.Database;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -135,6 +136,11 @@ public class CalendarViewManager {
                 }
             }
             ((MonthView) this.currentView).updateView(this.terminListe);
+        }
+    }
+    public void changeCurrentView(String category) {
+        if (Arrays.asList("month", "week", "day").contains(category)) {
+            currentView = views.get(category);
         }
     }
 }

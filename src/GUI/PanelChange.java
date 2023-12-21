@@ -12,6 +12,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Properties;
@@ -221,6 +222,28 @@ public class PanelChange extends JPanel {
                         throw new RuntimeException(ex);
                     }
                 }
+            }
+        });
+
+        btn_month.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                YearMonth currentYearMonth = YearMonth.now();
+
+                viewManager.changeCurrentView("month");
+                mainPanel.tabbedPane.removeTabAt(0);
+                CalendarView view = viewManager.getCurrentView();
+                mainPanel.tabbedPane.addTab(String.valueOf(currentYearMonth), view);
+            }
+        });
+        
+        btn_week.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                YearMonth currentYearMonth = YearMonth.now();
+
+                viewManager.changeCurrentView("week");
+                mainPanel.tabbedPane.removeTabAt(0);
+                CalendarView view = viewManager.getCurrentView();
+                mainPanel.tabbedPane.addTab(String.valueOf(currentYearMonth), view);
             }
         });
     }

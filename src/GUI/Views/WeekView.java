@@ -12,11 +12,16 @@ import IOManager.Exceptions.WrongPathException;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Date;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Locale;
 
 /**
@@ -29,10 +34,11 @@ import java.util.Locale;
  */
 public class WeekView extends CalendarView {
     private TerminListe terminListe;
-    private YearMonth yearMonth;
     private CalendarCell[] calendarCells;
     private JLabel[] daysLabels;
     private Database db;
+    private YearMonth yearMonth;
+    private ArrayList<Integer> weekNumbers = new ArrayList<>();;
     /**
      * Erstellt eine neue Wochenansicht mit dem angegebenen Jahr, Monat und Terminliste.
      *
@@ -66,6 +72,8 @@ public class WeekView extends CalendarView {
         LocalDate startDate = today.minusDays(offset);
         for (int i = 0; i < 7; i++) {
             LocalDate date = startDate.plusDays(i);
+            System.out.println(date.getDayOfMonth());
+            weekNumbers.add(date.getDayOfMonth());
             CalendarCell cell = new CalendarCell(Integer.toString(date.getDayOfMonth()), terminListe, this, db);
             calendarCells[i] = cell;
             add(cell);
@@ -78,15 +86,6 @@ public class WeekView extends CalendarView {
                 addAppointment(termin);
             }
         }
-    }
-
-    public void currentWeek() {
-        LocalDate today = LocalDate.now();
-        int currentDayOfMonth = today.getDayOfMonth();
-        int offset = (currentDayOfMonth + 6 - today.getDayOfWeek().getValue()) % 7;
-        LocalDate startDate = today.minusDays(offset);
-        this.shownDate = startDate;
-        this.yearMonth = YearMonth.from(startDate);
     }
 
     public void updateView() {
@@ -127,10 +126,29 @@ public class WeekView extends CalendarView {
      */
 
     public void addAppointment(Termin appointment) {
-        LocalDate terminDate = appointment.getStart().toLocalDate();
-        int dayOfWeek = terminDate.getDayOfWeek().getValue();
-        int index = (dayOfWeek + 5) % 7;
-//        calendarCells[index].addAppointment(appointment.getTitle());
+        try {
+        if (!appointment.getStart().getMonth().equals(shownDate.getMonth())) {
+                throw new AppointmentMismatchMonthException("Fehler: Der Termin (" + appointment.getTitle() + ", " + appointment.getStart().toString() + ") gehört nicht zum aktuellen Monat (" + shownDate.getMonth() + ").");
+        }
+        String formattedAppointment = appointment.getStart().format(DateTimeFormatter.ofPattern("HH:mm")) +
+                " - " +
+                appointment.getEnd().format(DateTimeFormatter.ofPattern("HH:mm")) +
+                " " +
+                appointment.getTitle();
+
+                int day = appointment.getStart().getDayOfMonth();
+                if (!weekNumbers.contains(day)) {
+                    throw new AppointmentOutOfMonthRangeException("Fehler: Der Tag des Termins ("+ appointment.getTitle() + ", " + appointment.getStart().toString() + ") liegt außerhalb des aktuellen Monats (" + shownDate.getMonth() + ").");
+                }
+                CalendarCell cell = calendarCells[weekNumbers.indexOf(day)];
+                cell.addAppointment(formattedAppointment, appointment);
+            } catch (AppointmentOutOfMonthRangeException e) {
+                // Hier können Sie definieren, was passieren soll, wenn eine AppointmentOutOfMonthRangeException auftritt.
+                System.err.println(e.getMessage());
+            } catch (AppointmentMismatchMonthException e) {
+                // Hier können Sie definieren, was passieren soll, wenn eine AppointmentMismatchMonthException auftritt.
+                System.err.println(e.getMessage());
+            }
     }
 
     /**
@@ -153,9 +171,11 @@ public class WeekView extends CalendarView {
         LocalDate shownDate = LocalDate.of(2023, 12, 1);
         Termin termin1 = new Termin("Terminname 1", "Typ 1", false, "2023-12-13", "2023-12-13", "10:00", "11:30");
         Termin termin2 = new Termin("Terminname 2", "Typ 2", false, "2023-12-14", "2023-12-14", "13:00", "14:30");
+        Termin termin3 = new Termin("Terminname 2", "Typ 2", false, "2023-12-24", "2023-12-24", "13:00", "14:30");
         TerminListe terminListe = new TerminListe();
         terminListe.addTermin(termin1);
         terminListe.addTermin(termin2);
+        terminListe.addTermin(termin3);
 
         Database db;
         

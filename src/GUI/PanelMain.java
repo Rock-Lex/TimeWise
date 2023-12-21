@@ -34,7 +34,7 @@ import java.util.Random;
  */
 public class PanelMain extends JPanel {
     // Deklaration der Variablen
-    private JTabbedPane tabbedPane;
+    public JTabbedPane tabbedPane;
     private PanelChange panelChange;
     private JFrame mainFrame;
     private CalendarViewManager viewManager;
@@ -142,6 +142,7 @@ public class PanelMain extends JPanel {
 
         //erstelleZufaelligeTermine(terminListe);
         terminListe = db.getTermine();
+        erstelleZufaelligeTermine(terminListe);
 
 
         System.out.println("Anzahl der Termine in terminListe (Main Methode): " + terminListe.getTermine().size());
