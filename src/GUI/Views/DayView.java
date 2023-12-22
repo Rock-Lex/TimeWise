@@ -54,7 +54,7 @@ public class DayView extends CalendarView {
         this.shownDate = shownDate;
         dayLabel = new JLabel();
 
-        setLayout(new GridLayout(0, 2));
+        setLayout(new GridLayout(0, 1));
 
         DayOfWeek dayOfWeek = shownDate.getDayOfWeek();
         String dayName = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.GERMAN);
