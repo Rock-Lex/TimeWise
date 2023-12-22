@@ -176,6 +176,17 @@ public class CalendarViewManager {
             }
             System.out.println(weekView.getWeekNumbers());
             weekView.updateView(terminListe);
+        }        else if (currentView instanceof DayView) {
+            DayView dayView = (DayView) currentView;
+            dayView.clearAppointments();
+            for (Termin termin : terminListe.getTermine()) {
+                if (termin.getStart().getDayOfMonth() == dayView.getDate().getDayOfMonth() &&
+                    termin.getStart().getMonth() == dayView.getDate().getMonth() &&
+                    termin.getStart().getYear() == dayView.getDate().getYear()) {
+                    dayView.addAppointment(termin);
+                }
+            }
+            dayView.updateView(terminListe);
         }
     }
     public void changeCurrentView(String category) {
