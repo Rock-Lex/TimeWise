@@ -234,5 +234,13 @@ public class PanelChange extends JPanel {
                 mainPanel.switchView(view);
             }
         });
+
+        btn_day.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                viewManager.changeCurrentView("day");
+                CalendarView view = viewManager.getCurrentView();
+                mainPanel.switchView(view);
+            }
+        });
     }
 }

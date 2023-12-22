@@ -38,7 +38,7 @@ public class WeekView extends CalendarView {
     private JLabel[] daysLabels;
     private Database db;
     private YearMonth yearMonth;
-    private ArrayList<Integer> weekNumbers = new ArrayList<>();;
+    private ArrayList<Integer> weekNumbers = new ArrayList<>();
     /**
      * Erstellt eine neue Wochenansicht mit dem angegebenen Jahr, Monat und Terminliste.
      *
@@ -86,25 +86,6 @@ public class WeekView extends CalendarView {
                 addAppointment(termin);
             }
         }
-    }
-
-    public void updateView() {
-        LocalDate startDate = LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), 1);
-        int currentDayOfMonth = startDate.getDayOfMonth();
-        int offset = (currentDayOfMonth + 6 - startDate.getDayOfWeek().getValue()) % 7;
-        startDate = startDate.minusDays(offset);
-
-        // Termine aktualisieren
-        clearAppointments();
-        for (Termin termin : terminListe.getTermine()) {
-            LocalDate terminDate = termin.getStart().toLocalDate();
-            if (terminDate.isAfter(startDate.minusDays(1)) && terminDate.isBefore(startDate.plusDays(7))) {
-                addAppointment(termin);
-            }
-        }
-
-        revalidate();
-        repaint();
     }
 
     /**

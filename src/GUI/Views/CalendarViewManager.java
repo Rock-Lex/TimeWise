@@ -7,6 +7,7 @@ import GUI.Exceptions.AppointmentOutOfMonthRangeException;
 import IOManager.Database;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -45,6 +46,7 @@ public class CalendarViewManager {
         views.put("month", new MonthView(shownDate, this.terminListe, db));
         // Hier weitere Views hinzufügen
         views.put("week", new WeekView(shownDate, this.terminListe, db));
+        views.put("day", new DayView(shownDate, this.terminListe, db));
         // Monatsansicht als Standard gesetzt
         currentView = views.get("month");
     }
@@ -102,6 +104,18 @@ public class CalendarViewManager {
             }
             System.out.println(weekView.getWeekNumbers());
             weekView.updateView(terminListe);
+        }
+        else if (currentView instanceof DayView) {
+            DayView dayView = (DayView) currentView;
+            dayView.clearAppointments();
+            for (Termin termin : terminListe.getTermine()) {
+                if (termin.getStart().getDayOfMonth() == dayView.getDate().getDayOfMonth() &&
+                    termin.getStart().getMonth() == dayView.getDate().getMonth() &&
+                    termin.getStart().getYear() == dayView.getDate().getYear()) {
+                    dayView.addAppointment(termin);
+                }
+            }
+            dayView.updateView(terminListe);
         }
     }
 
