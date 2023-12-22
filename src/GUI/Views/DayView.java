@@ -27,10 +27,10 @@ import java.util.Locale;
 /**
  * Eine benutzerdefinierte Swing-Komponente zur Darstellung einer Wochenansicht im Kalender.
  *
- * @author Tobias Rehm
+ * @author Ludwig & Philipp
  * @version 1.0.0
- * @since 20.07.2023
- * Letzte Änderung: 27.07.2023
+ * @since 22.12.2023
+ * Letzte Änderung: 22.12.2023
  */
 public class DayView extends CalendarView {
     private TerminListe terminListe;
