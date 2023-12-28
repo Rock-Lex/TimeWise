@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="RnCAbHXZEWv3m2a2wMSm" name="Entwurfsmodell">
-        <mxGraphModel dx="1852" dy="1682" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="1852" dy="1708" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -154,7 +154,7 @@
         </mxGraphModel>
     </diagram>
     <diagram id="q3oKAQA6aT6D6fzqYYia" name="Systemmodell">
-        <mxGraphModel dx="2186" dy="1876" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="3355" dy="2620" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -444,7 +444,7 @@
                         <mxPoint x="180" y="1482" as="sourcePoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="SjMZGxDhl2FSnuq4ba42-1" value="&amp;lt;&amp;lt;implements&amp;gt;&amp;gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="XnL-Dx12lYjCO4FVWggf-15">
+                <mxCell id="SjMZGxDhl2FSnuq4ba42-1" value="&amp;lt;&amp;lt;implements&amp;gt;&amp;gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" connectable="0" vertex="1" parent="XnL-Dx12lYjCO4FVWggf-15">
                     <mxGeometry x="-0.1576" y="1" relative="1" as="geometry">
                         <mxPoint x="18" y="1" as="offset"/>
                     </mxGeometry>
@@ -455,10 +455,10 @@
                 <mxCell id="4x0tKO3UrAHV-6fN6wcw-18" value="+ HolidaysList(year: int)&#10;+ addAllHolidays(year: int): void&#10;+ getHolidays(): List&lt;Holidays&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=13;" parent="4x0tKO3UrAHV-6fN6wcw-17" vertex="1">
                     <mxGeometry y="53" width="200" height="67" as="geometry"/>
                 </mxCell>
-                <mxCell id="4x0tKO3UrAHV-6fN6wcw-21" value="&lt;&lt;interface&gt;&gt;&#10;ErinnerungListeIF" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=53;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fontSize=13;" parent="1" vertex="1">
+                <mxCell id="4x0tKO3UrAHV-6fN6wcw-21" value="&lt;&lt;interface&gt;&gt;&#10;ErinnerungListeIF" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=53;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fontSize=13;" vertex="1" parent="1">
                     <mxGeometry x="-760" y="20" width="350" height="120" as="geometry"/>
                 </mxCell>
-                <mxCell id="4x0tKO3UrAHV-6fN6wcw-22" value="+ ErinnerungsListe(db: Database)&#10;+ addErinnerung(erinnerung: Erinnerung): void&#10;+ removeErinnerung(erinnerung: Erinnerung): void&#10;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=13;" parent="4x0tKO3UrAHV-6fN6wcw-21" vertex="1">
+                <mxCell id="4x0tKO3UrAHV-6fN6wcw-22" value="+ ErinnerungsListe(db: Database)&#10;+ addErinnerung(erinnerung: Erinnerung): void&#10;+ removeErinnerung(erinnerung: Erinnerung): void&#10;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontSize=13;" vertex="1" parent="4x0tKO3UrAHV-6fN6wcw-21">
                     <mxGeometry y="53" width="350" height="67" as="geometry"/>
                 </mxCell>
                 <mxCell id="4x0tKO3UrAHV-6fN6wcw-23" value="&lt;&lt;interface&gt;&gt;&#10;UserListeIF" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=53;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fontSize=13;" vertex="1" parent="1">
@@ -477,13 +477,13 @@
                     <mxGeometry y="66" width="420" height="26" as="geometry"/>
                 </mxCell>
                 <mxCell id="4x0tKO3UrAHV-6fN6wcw-25" value="PanelChange" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fontSize=12;" vertex="1" parent="1">
-                    <mxGeometry x="530" y="-680" width="320" height="146" as="geometry"/>
+                    <mxGeometry x="1010" y="-680" width="320" height="146" as="geometry"/>
                 </mxCell>
                 <mxCell id="4x0tKO3UrAHV-6fN6wcw-26" value="+ getErinnerungListe(): ErinnerungListeIF&#10;+ getUserListe(): UserListeIF&#10;+ getTerminListe(): TerminListeIF&#10;+ getHolidaysListe(): HolidaysListeIF" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="4x0tKO3UrAHV-6fN6wcw-25">
                     <mxGeometry y="40" width="320" height="106" as="geometry"/>
                 </mxCell>
                 <mxCell id="4x0tKO3UrAHV-6fN6wcw-27" value="PanelLogin" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fontSize=12;" vertex="1" parent="1">
-                    <mxGeometry x="900" y="-146" width="320" height="146" as="geometry"/>
+                    <mxGeometry x="1380" y="-146" width="320" height="146" as="geometry"/>
                 </mxCell>
                 <mxCell id="4x0tKO3UrAHV-6fN6wcw-28" value="+ getErinnerungListe(): ErinnerungListeIF&#10;+ getUserListe(): UserListeIF&#10;+ getTerminListe(): TerminListeIF&#10;+ getHolidaysListe(): HolidaysListeIF" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="4x0tKO3UrAHV-6fN6wcw-27">
                     <mxGeometry y="40" width="320" height="106" as="geometry"/>
@@ -491,101 +491,88 @@
                 <mxCell id="SjMZGxDhl2FSnuq4ba42-23" style="edgeStyle=none;html=1;strokeWidth=2;endArrow=diamondThin;endFill=1;endSize=13;rounded=0;" edge="1" parent="1" source="SjMZGxDhl2FSnuq4ba42-30" target="4x0tKO3UrAHV-6fN6wcw-32">
                     <mxGeometry relative="1" as="geometry">
                         <Array as="points">
-                            <mxPoint x="310" y="-380"/>
+                            <mxPoint x="790" y="-380"/>
                         </Array>
-                        <mxPoint x="313.88349514563106" y="-460" as="sourcePoint"/>
+                        <mxPoint x="793.8834951456311" y="-460" as="sourcePoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="SjMZGxDhl2FSnuq4ba42-26" style="edgeStyle=none;rounded=0;html=1;strokeWidth=1;endArrow=block;endFill=0;endSize=13;" edge="1" parent="1" source="SjMZGxDhl2FSnuq4ba42-15" target="SjMZGxDhl2FSnuq4ba42-14">
+                <mxCell id="SjMZGxDhl2FSnuq4ba42-26" style="edgeStyle=none;rounded=0;html=1;strokeWidth=1;endArrow=block;endFill=0;endSize=13;" edge="1" parent="1" source="A-VueDyNy6T1WDfDx7pj-5" target="A-VueDyNy6T1WDfDx7pj-1">
                     <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="-330" y="-400" as="targetPoint"/>
+                        <mxPoint x="-460" y="-524" as="targetPoint"/>
                         <Array as="points">
-                            <mxPoint x="-460" y="-451"/>
+                            <mxPoint x="-445" y="-270"/>
                         </Array>
+                        <mxPoint x="-80" y="-267.9230769230769" as="sourcePoint"/>
                     </mxGeometry>
-                </mxCell>
-                <mxCell id="SjMZGxDhl2FSnuq4ba42-13" value="CalendarView" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fontSize=12;" vertex="1" parent="1">
-                    <mxGeometry x="-620" y="-704" width="320" height="180" as="geometry"/>
-                </mxCell>
-                <mxCell id="SjMZGxDhl2FSnuq4ba42-14" value="+ CalendarView(date: LocalDate, terminListe: TerminListe)&#10;+ setToday(day: int): void&#10;+ addAppointment(appointment: Termin): void&#10;+ updateView(terminListe: TerminListe): void&#10;+ nextPeriod(): void&#10;+ previousPeriod(): void&#10;+ todaysPeriod(): void" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="SjMZGxDhl2FSnuq4ba42-13">
-                    <mxGeometry y="40" width="320" height="140" as="geometry"/>
-                </mxCell>
-                <mxCell id="SjMZGxDhl2FSnuq4ba42-15" value="DayView" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fontSize=12;" vertex="1" parent="1">
-                    <mxGeometry x="-240" y="-524" width="320" height="146" as="geometry"/>
-                </mxCell>
-                <mxCell id="SjMZGxDhl2FSnuq4ba42-16" value="+ getErinnerungListe(): ErinnerungListeIF&#10;+ getUserListe(): UserListeIF&#10;+ getTerminListe(): TerminListeIF&#10;+ getHolidaysListe(): HolidaysListeIF" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="SjMZGxDhl2FSnuq4ba42-15">
-                    <mxGeometry y="40" width="320" height="106" as="geometry"/>
-                </mxCell>
-                <mxCell id="SjMZGxDhl2FSnuq4ba42-17" value="MonthView" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fontSize=12;" vertex="1" parent="1">
-                    <mxGeometry x="-240" y="-890" width="320" height="146" as="geometry"/>
-                </mxCell>
-                <mxCell id="SjMZGxDhl2FSnuq4ba42-18" value="+ getErinnerungListe(): ErinnerungListeIF&#10;+ getUserListe(): UserListeIF&#10;+ getTerminListe(): TerminListeIF&#10;+ getHolidaysListe(): HolidaysListeIF" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="SjMZGxDhl2FSnuq4ba42-17">
-                    <mxGeometry y="40" width="320" height="106" as="geometry"/>
-                </mxCell>
-                <mxCell id="SjMZGxDhl2FSnuq4ba42-19" value="WeekView" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fontSize=12;" vertex="1" parent="1">
-                    <mxGeometry x="-240" y="-690" width="320" height="146" as="geometry"/>
-                </mxCell>
-                <mxCell id="SjMZGxDhl2FSnuq4ba42-20" value="+ WeekView(shownDate: LocalDate, &#10;terminListe: TerminListe, db: Database)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="SjMZGxDhl2FSnuq4ba42-19">
-                    <mxGeometry y="40" width="320" height="106" as="geometry"/>
                 </mxCell>
                 <mxCell id="4x0tKO3UrAHV-6fN6wcw-30" value="ControllerUI" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fontSize=12;" vertex="1" parent="1">
-                    <mxGeometry x="520" y="-160" width="320" height="146" as="geometry"/>
+                    <mxGeometry x="1000" y="-160" width="320" height="146" as="geometry"/>
                 </mxCell>
                 <mxCell id="4x0tKO3UrAHV-6fN6wcw-31" value="+ getErinnerungListe(): ErinnerungListeIF&#10;+ getUserListe(): UserListeIF&#10;+ getTerminListe(): TerminListeIF&#10;+ getHolidaysListe(): HolidaysListeIF" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="4x0tKO3UrAHV-6fN6wcw-30">
                     <mxGeometry y="40" width="320" height="106" as="geometry"/>
                 </mxCell>
                 <mxCell id="SjMZGxDhl2FSnuq4ba42-21" style="edgeStyle=none;html=1;endArrow=diamondThin;endFill=1;strokeWidth=2;endSize=13;" edge="1" parent="1" source="4x0tKO3UrAHV-6fN6wcw-25" target="4x0tKO3UrAHV-6fN6wcw-32">
                     <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="800" y="-490" as="targetPoint"/>
+                        <mxPoint x="1280" y="-490" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="4x0tKO3UrAHV-6fN6wcw-32" value="PanelMain" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fontSize=12;" vertex="1" parent="1">
-                    <mxGeometry x="520" y="-460" width="320" height="146" as="geometry"/>
+                    <mxGeometry x="1000" y="-460" width="320" height="146" as="geometry"/>
                 </mxCell>
                 <mxCell id="4x0tKO3UrAHV-6fN6wcw-33" value="+ getErinnerungListe(): ErinnerungListeIF&#10;+ getUserListe(): UserListeIF&#10;+ getTerminListe(): TerminListeIF&#10;+ getHolidaysListe(): HolidaysListeIF" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="4x0tKO3UrAHV-6fN6wcw-32">
                     <mxGeometry y="40" width="320" height="106" as="geometry"/>
                 </mxCell>
-                <mxCell id="4x0tKO3UrAHV-6fN6wcw-34" value="" style="endArrow=classic;html=1;fontSize=50;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="SjMZGxDhl2FSnuq4ba42-30" target="SjMZGxDhl2FSnuq4ba42-18">
+                <mxCell id="4x0tKO3UrAHV-6fN6wcw-34" value="" style="endArrow=classic;html=1;fontSize=50;" edge="1" parent="1" source="SjMZGxDhl2FSnuq4ba42-30" target="A-VueDyNy6T1WDfDx7pj-13">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
-                        <mxPoint x="160" y="-619" as="sourcePoint"/>
-                        <mxPoint x="180" y="-650" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="4x0tKO3UrAHV-6fN6wcw-36" value="" style="endArrow=classic;html=1;fontSize=50;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="SjMZGxDhl2FSnuq4ba42-30" target="SjMZGxDhl2FSnuq4ba42-20">
-                    <mxGeometry width="50" height="50" relative="1" as="geometry">
-                        <mxPoint x="160" y="-619" as="sourcePoint"/>
-                        <mxPoint x="200" y="-490" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="SjMZGxDhl2FSnuq4ba42-24" style="edgeStyle=none;rounded=0;html=1;strokeWidth=1;endArrow=block;endFill=0;endSize=13;" edge="1" parent="1" source="SjMZGxDhl2FSnuq4ba42-17" target="SjMZGxDhl2FSnuq4ba42-13">
-                    <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="-390" y="-760" as="targetPoint"/>
+                        <mxPoint x="640" y="-619" as="sourcePoint"/>
+                        <mxPoint x="640" y="-907.0000000000002" as="targetPoint"/>
                         <Array as="points">
-                            <mxPoint x="-460" y="-817"/>
+                            <mxPoint x="810" y="-921"/>
                         </Array>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="SjMZGxDhl2FSnuq4ba42-27" value="" style="edgeStyle=none;rounded=0;html=1;strokeWidth=1;endArrow=block;endFill=0;endSize=13;" edge="1" parent="1" source="SjMZGxDhl2FSnuq4ba42-19" target="SjMZGxDhl2FSnuq4ba42-13">
-                    <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="-260" y="-680" as="targetPoint"/>
+                <mxCell id="4x0tKO3UrAHV-6fN6wcw-36" value="" style="endArrow=classic;html=1;fontSize=50;" edge="1" parent="1" source="SjMZGxDhl2FSnuq4ba42-30" target="A-VueDyNy6T1WDfDx7pj-9">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="640" y="-619" as="sourcePoint"/>
+                        <mxPoint x="630" y="-567" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="4x0tKO3UrAHV-6fN6wcw-37" style="html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;fontSize=50;" edge="1" parent="1" source="SjMZGxDhl2FSnuq4ba42-30" target="SjMZGxDhl2FSnuq4ba42-16">
+                <mxCell id="SjMZGxDhl2FSnuq4ba42-24" style="edgeStyle=none;rounded=0;html=1;strokeWidth=1;endArrow=block;endFill=0;endSize=13;" edge="1" parent="1" source="A-VueDyNy6T1WDfDx7pj-13" target="A-VueDyNy6T1WDfDx7pj-1">
                     <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="160" y="-619" as="sourcePoint"/>
+                        <mxPoint x="-460" y="-704" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="-445" y="-920"/>
+                        </Array>
+                        <mxPoint x="-60" y="-924.9449541284403" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="SjMZGxDhl2FSnuq4ba42-27" value="" style="edgeStyle=none;rounded=0;html=1;strokeWidth=1;endArrow=block;endFill=0;endSize=13;" edge="1" parent="1" source="A-VueDyNy6T1WDfDx7pj-9" target="A-VueDyNy6T1WDfDx7pj-1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="-90" y="-579.8" as="targetPoint"/>
+                        <mxPoint x="-70" y="-595.0747663551401" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4x0tKO3UrAHV-6fN6wcw-37" style="html=1;fontSize=50;" edge="1" parent="1" source="SjMZGxDhl2FSnuq4ba42-30" target="A-VueDyNy6T1WDfDx7pj-5">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="260" y="-619" as="sourcePoint"/>
+                        <mxPoint x="240" y="-247" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="450" y="-510"/>
+                            <mxPoint x="450" y="-270"/>
+                        </Array>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="4x0tKO3UrAHV-6fN6wcw-38" value="" style="endArrow=classic;html=1;strokeWidth=2;fontSize=50;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="4x0tKO3UrAHV-6fN6wcw-30" target="4x0tKO3UrAHV-6fN6wcw-33">
                     <mxGeometry width="50" height="50" relative="1" as="geometry">
-                        <mxPoint x="710" y="-210" as="sourcePoint"/>
-                        <mxPoint x="760" y="-260" as="targetPoint"/>
+                        <mxPoint x="1190" y="-210" as="sourcePoint"/>
+                        <mxPoint x="1240" y="-260" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="SjMZGxDhl2FSnuq4ba42-28" style="edgeStyle=none;rounded=0;html=1;strokeWidth=2;endArrow=classic;endFill=1;endSize=6;" edge="1" parent="1" source="4x0tKO3UrAHV-6fN6wcw-31" target="4x0tKO3UrAHV-6fN6wcw-27">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <mxCell id="SjMZGxDhl2FSnuq4ba42-30" value="CalendarViewManager" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
-                    <mxGeometry x="180" y="-749" width="300" height="270" as="geometry"/>
+                    <mxGeometry x="660" y="-749" width="300" height="270" as="geometry"/>
                 </mxCell>
                 <mxCell id="SjMZGxDhl2FSnuq4ba42-31" value="        - Map~String, CalendarView~ views&#10;        - CalendarView currentView&#10;        - YearMonth currentYearMonth&#10;        - TerminListe terminListe&#10;        - Database db&#10;        - LocalDate shownDate" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="SjMZGxDhl2FSnuq4ba42-30">
                     <mxGeometry y="26" width="300" height="104" as="geometry"/>
@@ -595,6 +582,54 @@
                 </mxCell>
                 <mxCell id="SjMZGxDhl2FSnuq4ba42-33" value="        + CalendarViewManager(TerminListe, Database)&#10;        + void nextPeriod(TerminListe)&#10;        + void previousPeriod(TerminListe)&#10;        + void jumpToCurrentDay()&#10;        + void jumpToDate(LocalDate)&#10;        + void changeCurrentView(String)&#10;        - void reloadAppointments(TerminListe)&#10;        + CalendarView getCurrentView()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="SjMZGxDhl2FSnuq4ba42-30">
                     <mxGeometry y="138" width="300" height="132" as="geometry"/>
+                </mxCell>
+                <mxCell id="A-VueDyNy6T1WDfDx7pj-1" value="&lt;&lt;abstract&gt;&gt;&#10;CalendarView" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+                    <mxGeometry x="-690" y="-729" width="490" height="230" as="geometry"/>
+                </mxCell>
+                <mxCell id="A-VueDyNy6T1WDfDx7pj-2" value="- LocalDate shownDate &#10;- TerminListe terminListe&#10;- " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="A-VueDyNy6T1WDfDx7pj-1">
+                    <mxGeometry y="40" width="490" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="A-VueDyNy6T1WDfDx7pj-3" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="A-VueDyNy6T1WDfDx7pj-1">
+                    <mxGeometry y="80" width="490" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="A-VueDyNy6T1WDfDx7pj-4" value="+ CalendarView(LocalDate date, TerminListe terminListe)&#10;+ abstract setToday(int day)&#10;+ abstract addAppointment(Termin appointment) &#10;throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException&#10;+ abstract updateView(TerminListe terminListe) &#10;throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException&#10;+ abstract nextPeriod()&#10;+ abstract previousPeriod()&#10;+ abstract todaysPeriod()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="A-VueDyNy6T1WDfDx7pj-1">
+                    <mxGeometry y="88" width="490" height="142" as="geometry"/>
+                </mxCell>
+                <mxCell id="A-VueDyNy6T1WDfDx7pj-5" value="DayView" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+                    <mxGeometry x="-90" y="-410" width="480" height="280" as="geometry"/>
+                </mxCell>
+                <mxCell id="A-VueDyNy6T1WDfDx7pj-6" value="- TerminListe terminListe&#10;- CalendarCell calendarCell&#10;- JLabel dayLabel&#10;- Database db&#10;- YearMonth yearMonth" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="A-VueDyNy6T1WDfDx7pj-5">
+                    <mxGeometry y="26" width="480" height="84" as="geometry"/>
+                </mxCell>
+                <mxCell id="A-VueDyNy6T1WDfDx7pj-7" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="A-VueDyNy6T1WDfDx7pj-5">
+                    <mxGeometry y="110" width="480" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="A-VueDyNy6T1WDfDx7pj-8" value="+ DayView(LocalDate shownDate, TerminListe terminListe, Database db) &#10;throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException&#10;+ void setToday(int day)&#10;+ void addAppointment(Termin appointment)&#10;+ void clearAppointments()&#10;+ void getHolidays()&#10;+ void updateView(TerminListe terminListe)&#10;+ void nextPeriod()&#10;+ void previousPeriod()&#10;+ void todaysPeriod()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="A-VueDyNy6T1WDfDx7pj-5">
+                    <mxGeometry y="118" width="480" height="162" as="geometry"/>
+                </mxCell>
+                <mxCell id="A-VueDyNy6T1WDfDx7pj-9" value="WeekView" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+                    <mxGeometry x="-90" y="-757" width="480" height="278" as="geometry"/>
+                </mxCell>
+                <mxCell id="A-VueDyNy6T1WDfDx7pj-10" value="- TerminListe terminListe&#10;- CalendarCell[] calendarCells&#10;- JLabel[] daysLabels&#10;- Database db&#10;- YearMonth yearMonth&#10;- ArrayList&lt;Integer&gt; weekNumbers" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="A-VueDyNy6T1WDfDx7pj-9">
+                    <mxGeometry y="26" width="480" height="94" as="geometry"/>
+                </mxCell>
+                <mxCell id="A-VueDyNy6T1WDfDx7pj-11" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="A-VueDyNy6T1WDfDx7pj-9">
+                    <mxGeometry y="120" width="480" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="A-VueDyNy6T1WDfDx7pj-12" value="+ WeekView(LocalDate shownDate, TerminListe terminListe, Database db) &#10;throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException&#10;+ void setToday(int day)&#10;+ void addAppointment(Termin appointment)&#10;+ void clearAppointments()&#10;+ void getHolidays()&#10;+ void updateView(TerminListe terminListe)&#10;+ void nextPeriod()&#10;+ void previousPeriod()&#10;+ void todaysPeriod()&#10;+ ArrayList&lt;Integer&gt; getWeekNumbers()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="A-VueDyNy6T1WDfDx7pj-9">
+                    <mxGeometry y="128" width="480" height="150" as="geometry"/>
+                </mxCell>
+                <mxCell id="A-VueDyNy6T1WDfDx7pj-13" value="Classname" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+                    <mxGeometry x="-90" y="-1060" width="480" height="278" as="geometry"/>
+                </mxCell>
+                <mxCell id="A-VueDyNy6T1WDfDx7pj-14" value="+ TerminListe terminListe&#10;+ CalendarCell[] calendarCells&#10;+ JLabel[] daysLabels&#10;+ Database db&#10;+ YearMonth yearMonth" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="A-VueDyNy6T1WDfDx7pj-13">
+                    <mxGeometry y="26" width="480" height="94" as="geometry"/>
+                </mxCell>
+                <mxCell id="A-VueDyNy6T1WDfDx7pj-15" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="A-VueDyNy6T1WDfDx7pj-13">
+                    <mxGeometry y="120" width="480" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="A-VueDyNy6T1WDfDx7pj-16" value="+ MonthView(LocalDate shownDate, TerminListe terminListe, Database db) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException&#10;+ void setToday(int day)&#10;+ void addAppointment(Termin appointment)&#10;+ void clearAppointments()&#10;+ void getHolidays()&#10;+ void updateView(TerminListe terminListe)&#10;+ void nextPeriod()&#10;+ void previousPeriod()&#10;+ void todaysPeriod()&#10;+ YearMonth getYearMonth()" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="A-VueDyNy6T1WDfDx7pj-13">
+                    <mxGeometry y="128" width="480" height="150" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
