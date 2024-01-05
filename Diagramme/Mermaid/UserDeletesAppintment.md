@@ -5,14 +5,18 @@ sequenceDiagram
     participant TerminListe
     participant Termin
 
-    Benutzer->>BenutzerVerwaltung: Abmelden()
+    Benutzer->>BenutzerVerwaltung: Anmelden()
     activate BenutzerVerwaltung
-    BenutzerVerwaltung-->>Benutzer: Abmeldung erfolgreich
+    BenutzerVerwaltung-->>Benutzer: Anmeldung erfolgreich
     deactivate BenutzerVerwaltung
 
     Benutzer->>TerminListe: getTermin(id)
     activate TerminListe
-    TerminListe-->>Termin: Termin gefunden
+    TerminListe->>Termin: Suche nach Termin
+    activate Termin
+    Termin-->>TerminListe: Termin gefunden
+    deactivate Termin
+    TerminListe-->>Benutzer: Termin gefunden
     deactivate TerminListe
 
     Benutzer->>TerminListe: removeTermin(Termin)
