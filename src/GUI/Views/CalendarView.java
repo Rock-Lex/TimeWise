@@ -7,113 +7,57 @@ import GUI.Exceptions.AppointmentOutOfMonthRangeException;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDate;
+import java.time.Period;
 import java.time.YearMonth;
 
-/**
- * Abstrakte Basisklasse für eine Kalenderansicht.
- *
- * @author Philipp Voß
- * @version 1.2
- * @since 16.07.2023
- * Letzte Änderung: 19.07.2023
- */
 public abstract class CalendarView extends JPanel {
-    protected YearMonth yearMonth;
-    private int year;
-    private int month;
+    protected LocalDate shownDate;
     private TerminListe terminListe;
-    /**
-     * Erstellt eine neue Kalenderansicht mit dem angegebenen Jahr, Monat und Terminliste.
-     *
-     * @param year       Das Jahr der Kalenderansicht.
-     * @param month      Der Monat der Kalenderansicht.
-     * @param terminListe Die Terminliste für die Kalenderansicht.
-     */
-    public CalendarView(int year, int month, TerminListe terminListe) {
-        yearMonth = YearMonth.of(year, month);
+
+    public CalendarView(LocalDate date, TerminListe terminListe) {
+        this.shownDate = date;
         setLayout(new GridLayout(0, 7));
-        this.year = year;
-        this.month = month;
     }
-    /**
-     * Setzt den aktuellen Tag in der Kalenderansicht.
-     *
-     * @param day Der aktuelle Tag als int.
-     */
+
     public abstract void setToday(int day);
 
-    /**
-     * Fügt einen Termin zur Kalenderansicht hinzu.
-     *
-     * @param appointment Der Termin, der hinzugefügt werden soll.
-     */
     public abstract void addAppointment(Termin appointment) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException;
 
-    /**
-     * Gibt das Jahr und den Monat der Kalenderansicht zurück.
-     *
-     * @return Das YearMonth-Objekt der Kalenderansicht.
-     */
-    public YearMonth getYearMonth() {
-        return yearMonth;
+    public LocalDate getDate() {
+        return shownDate;
     }
-    /**
-     * Setzt das Jahr und den Monat der Kalenderansicht.
-     *
-     * @param yearMonth Das YearMonth-Objekt mit dem neuen Jahr und Monat.
-     */
-    public void setYearMonth(YearMonth yearMonth) {
-        this.yearMonth = yearMonth;
+
+    public void setDate(LocalDate date) {
+        this.shownDate = date;
     }
-    /**
-     * Aktualisiert die Kalenderansicht mit der angegebenen Terminliste.
-     *
-     * @param terminListe Die aktualisierte Terminliste.
-     */
+
     public abstract void updateView(TerminListe terminListe) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException;
-    /**
-     * Wechselt zur nächsten Zeitspanne in der Kalenderansicht.
-     */
+
     public abstract void nextPeriod();
-    /**
-     * Wechselt zur vorherigen Zeitspanne in der Kalenderansicht.
-     */
+
     public abstract void previousPeriod();
-    /**
-     * Gibt das Jahr der Kalenderansicht zurück.
-     *
-     * @return Das Jahr der Kalenderansicht.
-     */
+
     public int getYear() {
-        return this.year;
+        return this.shownDate.getYear();
     }
-    /**
-     * Gibt den Monat der Kalenderansicht zurück.
-     *
-     * @return Der Monat der Kalenderansicht.
-     */
+
     public int getMonth() {
-        return this.month;
+        return this.shownDate.getMonthValue();
     }
-    /**
-     * Setzt das Jahr der Kalenderansicht.
-     *
-     * @param year Das Jahr, das gesetzt werden soll.
-     */
+
     public void setYear(int year) {
-        this.year = year;
+        this.shownDate = this.shownDate.withYear(year);
     }
-    /**
-     * Setzt den Monat der Kalenderansicht.
-     *
-     * @param month Der Monat, der gesetzt werden soll.
-     */
+
     public void setMonth(int month) {
-        this.month = month;
+        this.shownDate = this.shownDate.withMonth(month);
     }
-    /**
-     * Markiert den heutigen Tag in der Kalenderansicht.
-     */
+
+    public YearMonth getYearMonth() {
+        return YearMonth.from(this.shownDate);
+    }
+
     public void todaysPeriod() {
     }
 }

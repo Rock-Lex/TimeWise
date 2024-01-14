@@ -12,11 +12,16 @@ import IOManager.Exceptions.WrongPathException;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Date;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Locale;
 
 /**
@@ -29,10 +34,11 @@ import java.util.Locale;
  */
 public class WeekView extends CalendarView {
     private TerminListe terminListe;
-    private YearMonth yearMonth;
     private CalendarCell[] calendarCells;
     private JLabel[] daysLabels;
     private Database db;
+    private YearMonth yearMonth;
+    private ArrayList<Integer> weekNumbers = new ArrayList<>();
     /**
      * Erstellt eine neue Wochenansicht mit dem angegebenen Jahr, Monat und Terminliste.
      *
@@ -40,10 +46,12 @@ public class WeekView extends CalendarView {
      * @param month Der aktuelle Monat als int.
      * @param terminListe Eine Liste von Terminen
      */
-    public WeekView(int year, int month, TerminListe terminListe, Database db) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
-        super(year, month, terminListe);
+    public WeekView(LocalDate shownDate, TerminListe terminListe, Database db) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
+        super(shownDate, terminListe);
+        this.db = db;
         this.terminListe = terminListe;
-        yearMonth = YearMonth.of(year, month);
+
+        this.shownDate = shownDate;
         int numberOfDays = 7; // Woche hat immer 7 Tage
         calendarCells = new CalendarCell[numberOfDays];
         daysLabels = new JLabel[7];
@@ -58,49 +66,26 @@ public class WeekView extends CalendarView {
             add(dayLabel);
         }
 
-
-        for (int i = 1; i <= numberOfDays; i++) {
-            CalendarCell cell = new CalendarCell(Integer.toString(i), terminListe, this, db);
-            calendarCells[i - 1] = cell;
+        LocalDate today = LocalDate.now();
+        int currentDayOfMonth = today.getDayOfMonth();
+        int offset = (currentDayOfMonth + 6 - today.getDayOfWeek().getValue()) % 7;
+        LocalDate startDate = today.minusDays(offset);
+        for (int i = 0; i < 7; i++) {
+            LocalDate date = startDate.plusDays(i);
+            System.out.println(date.getDayOfMonth());
+            weekNumbers.add(date.getDayOfMonth());
+            CalendarCell cell = new CalendarCell(Integer.toString(date.getDayOfMonth()), terminListe, this, db);
+            calendarCells[i] = cell;
             add(cell);
         }
 
         // Add appointments from the list
         for (Termin termin : terminListe.getTermine()) {
             LocalDate terminDate = termin.getStart().toLocalDate();
-            if(terminDate.getMonth() == yearMonth.getMonth() && terminDate.getYear() == yearMonth.getYear()){
+            if (terminDate.getMonth() == shownDate.getMonth() && terminDate.getYear() == shownDate.getYear()) {
                 addAppointment(termin);
             }
         }
-    }
-
-    public void currentWeek() {
-        this.yearMonth = YearMonth.now();
-        updateView();
-    }
-
-    public void updateView() {
-        LocalDate startDate = LocalDate.of(yearMonth.getYear(), yearMonth.getMonthValue(), 1);
-        int currentDayOfMonth = startDate.getDayOfMonth();
-        int offset = (currentDayOfMonth + 6 - startDate.getDayOfWeek().getValue()) % 7;
-        startDate = startDate.minusDays(offset);
-
-//        for (int i = 0; i < 7; i++) {
-//            calendarCells[i].setText(Integer.toString(startDate.getDayOfMonth()));
-//            startDate = startDate.plusDays(1);
-//        }
-
-        // Termine aktualisieren
-        clearAppointments();
-        for (Termin termin : terminListe.getTermine()) {
-            LocalDate terminDate = termin.getStart().toLocalDate();
-            if (terminDate.isAfter(startDate.minusDays(1)) && terminDate.isBefore(startDate.plusDays(7))) {
-                addAppointment(termin);
-            }
-        }
-
-        revalidate();
-        repaint();
     }
 
     /**
@@ -122,10 +107,29 @@ public class WeekView extends CalendarView {
      */
 
     public void addAppointment(Termin appointment) {
-        LocalDate terminDate = appointment.getStart().toLocalDate();
-        int dayOfWeek = terminDate.getDayOfWeek().getValue();
-        int index = (dayOfWeek + 5) % 7;
-//        calendarCells[index].addAppointment(appointment.getTitle());
+        try {
+        if (!appointment.getStart().getMonth().equals(shownDate.getMonth())) {
+                throw new AppointmentMismatchMonthException("Fehler: Der Termin (" + appointment.getTitle() + ", " + appointment.getStart().toString() + ") gehört nicht zum aktuellen Monat (" + shownDate.getMonth() + ").");
+        }
+        String formattedAppointment = appointment.getStart().format(DateTimeFormatter.ofPattern("HH:mm")) +
+                " - " +
+                appointment.getEnd().format(DateTimeFormatter.ofPattern("HH:mm")) +
+                " " +
+                appointment.getTitle();
+
+                int day = appointment.getStart().getDayOfMonth();
+                if (!weekNumbers.contains(day)) {
+                    throw new AppointmentOutOfMonthRangeException("Fehler: Der Tag des Termins ("+ appointment.getTitle() + ", " + appointment.getStart().toString() + ") liegt außerhalb des aktuellen Monats (" + shownDate.getMonth() + ").");
+                }
+                CalendarCell cell = calendarCells[weekNumbers.indexOf(day)];
+                cell.addAppointment(formattedAppointment, appointment);
+            } catch (AppointmentOutOfMonthRangeException e) {
+                // Hier können Sie definieren, was passieren soll, wenn eine AppointmentOutOfMonthRangeException auftritt.
+                System.err.println(e.getMessage());
+            } catch (AppointmentMismatchMonthException e) {
+                // Hier können Sie definieren, was passieren soll, wenn eine AppointmentMismatchMonthException auftritt.
+                System.err.println(e.getMessage());
+            }
     }
 
     /**
@@ -145,18 +149,20 @@ public class WeekView extends CalendarView {
     public static void main(String[] args) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         JFrame frame = new JFrame("Week View Example");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        Termin termin1 = new Termin("Terminname 1", "Typ 1", false, "2023-12-02", "2023-12-02", "10:00", "11:30");
-        Termin termin2 = new Termin("Terminname 2", "Typ 2", false, "2023-12-01", "2023-12-01", "13:00", "14:30");
+        LocalDate shownDate = LocalDate.of(2023, 12, 1);
+        Termin termin1 = new Termin("Terminname 1", "Typ 1", false, "2023-12-13", "2023-12-13", "10:00", "11:30");
+        Termin termin2 = new Termin("Terminname 2", "Typ 2", false, "2023-12-14", "2023-12-14", "13:00", "14:30");
+        Termin termin3 = new Termin("Terminname 2", "Typ 2", false, "2023-12-24", "2023-12-24", "13:00", "14:30");
         TerminListe terminListe = new TerminListe();
         terminListe.addTermin(termin1);
         terminListe.addTermin(termin2);
+        terminListe.addTermin(termin3);
 
         Database db;
         
         db = null;
 
-        WeekView weekView = new WeekView(2023, 12, terminListe, db);
+        WeekView weekView = new WeekView(shownDate, terminListe, db);
         weekView.addAppointment(termin1);
         weekView.addAppointment(termin2);
 
@@ -170,19 +176,61 @@ public class WeekView extends CalendarView {
     @Override
     public void updateView(TerminListe terminListe)
             throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateView'");
+        System.out.println("Update");
+
+        weekNumbers.clear();
+        this.removeAll();
+
+        for (int i = 0; i < 7; i++) {
+            DayOfWeek dayOfWeek = DayOfWeek.of(i + 1); // Start mit Montag
+            String dayName = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.GERMAN);
+            JLabel dayLabel = new JLabel(dayName, SwingConstants.LEFT);
+            daysLabels[i] = dayLabel;
+            add(dayLabel);
+        }
+
+        int currentDayOfMonth = shownDate.getDayOfMonth();
+        int offset = (currentDayOfMonth + 6 - shownDate.getDayOfWeek().getValue()) % 7;
+        LocalDate startDate = shownDate.minusDays(offset);
+        for (int i = 0; i < 7; i++) {
+            LocalDate date = startDate.plusDays(i);
+            System.out.println(date.getDayOfMonth());
+            weekNumbers.add(date.getDayOfMonth());
+            CalendarCell cell = new CalendarCell(Integer.toString(date.getDayOfMonth()), terminListe, this, db);
+            calendarCells[i] = cell;
+            add(cell);
+        }
+
+        // Add appointments from the list
+        for (Termin termin : terminListe.getTermine()) {
+            LocalDate terminDate = termin.getStart().toLocalDate();
+            if (terminDate.getMonth() == shownDate.getMonth() && terminDate.getYear() == shownDate.getYear()) {
+                addAppointment(termin);
+            }
+        }
+
+        revalidate();
+        repaint();
     }
 
     @Override
     public void nextPeriod() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'nextPeriod'");
+        System.out.println(shownDate);
+        this.shownDate = this.shownDate.plusDays(7);
+        System.out.println(shownDate);
     }
 
     @Override
     public void previousPeriod() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'previousPeriod'");
+        this.shownDate = this.shownDate.minusDays(7);
+    }
+
+    @Override
+    public void todaysPeriod() {
+        this.shownDate= LocalDate.now();
+    }
+
+    public ArrayList<Integer> getWeekNumbers() {
+        return weekNumbers;
     }
 }

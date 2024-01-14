@@ -7,7 +7,9 @@ import GUI.Exceptions.AppointmentOutOfMonthRangeException;
 import IOManager.Database;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +27,7 @@ public class CalendarViewManager {
     private YearMonth currentYearMonth;
     private TerminListe terminListe;
     private Database db;
+    private LocalDate shownDate;
 
     // --------------------------- Konstruktor -------------------------------------------
     /**
@@ -34,15 +37,16 @@ public class CalendarViewManager {
      */
     public CalendarViewManager(TerminListe terminListe, Database db) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
         views = new HashMap<>();
-        this.currentYearMonth = YearMonth.now();
+        this.shownDate = LocalDate.now();
         this.terminListe = terminListe;
         this.db = db;
         // Initialisiere die verschiedenen Views
         int currentYear = YearMonth.now().getYear();
         int currentMonth = YearMonth.now().getMonthValue();
-        views.put("month", new MonthView(currentYear, currentMonth, this.terminListe, db));
+        views.put("month", new MonthView(shownDate, this.terminListe, db));
         // Hier weitere Views hinzufügen
-
+        views.put("week", new WeekView(shownDate, this.terminListe, db));
+        views.put("day", new DayView(shownDate, this.terminListe, db));
         // Monatsansicht als Standard gesetzt
         currentView = views.get("month");
     }
@@ -81,12 +85,37 @@ public class CalendarViewManager {
             MonthView monthView = (MonthView) currentView;
             monthView.clearAppointments();
             for (Termin termin : terminListe.getTermine()) {
-                if (termin.getStart().getMonth() == monthView.getYearMonth().getMonth()
-                        && termin.getStart().getYear() == monthView.getYearMonth().getYear()) {
+                if (termin.getStart().getMonth() == monthView.getDate().getMonth()
+                        && termin.getStart().getYear() == monthView.getDate().getYear()) {
                     monthView.addAppointment(termin);
                 }
             }
             monthView.updateView(terminListe);
+        }
+        else if (currentView instanceof WeekView) {
+            WeekView weekView = (WeekView) currentView;
+            weekView.clearAppointments();
+            for (Termin termin : terminListe.getTermine()) {
+                
+                if (weekView.getWeekNumbers().contains(termin.getStart().getDayOfYear())
+                        && termin.getStart().getYear() == weekView.getDate().getYear()) {
+                    weekView.addAppointment(termin);
+                }
+            }
+            System.out.println(weekView.getWeekNumbers());
+            weekView.updateView(terminListe);
+        }
+        else if (currentView instanceof DayView) {
+            DayView dayView = (DayView) currentView;
+            dayView.clearAppointments();
+            for (Termin termin : terminListe.getTermine()) {
+                if (termin.getStart().getDayOfMonth() == dayView.getDate().getDayOfMonth() &&
+                    termin.getStart().getMonth() == dayView.getDate().getMonth() &&
+                    termin.getStart().getYear() == dayView.getDate().getYear()) {
+                    dayView.addAppointment(termin);
+                }
+            }
+            dayView.updateView(terminListe);
         }
     }
 
@@ -122,7 +151,7 @@ public class CalendarViewManager {
         this.currentYearMonth = YearMonth.of(date.getYear(), date.getMonth());
 
         // Aktualisiert die Ansicht
-        this.currentView.setYearMonth(currentYearMonth);
+        this.currentView.setDate(date);
 
         // Wenn die aktuelle Ansicht eine MonthView ist, aktualisieren Sie die Termine
         if (this.currentView instanceof MonthView) {
@@ -134,6 +163,35 @@ public class CalendarViewManager {
                 }
             }
             ((MonthView) this.currentView).updateView(this.terminListe);
+        }
+        else if (currentView instanceof WeekView) {
+            WeekView weekView = (WeekView) currentView;
+            weekView.clearAppointments();
+            for (Termin termin : terminListe.getTermine()) {
+                
+                if (weekView.getWeekNumbers().contains(termin.getStart().getDayOfYear())
+                        && termin.getStart().getYear() == weekView.getDate().getYear()) {
+                    weekView.addAppointment(termin);
+                }
+            }
+            System.out.println(weekView.getWeekNumbers());
+            weekView.updateView(terminListe);
+        }        else if (currentView instanceof DayView) {
+            DayView dayView = (DayView) currentView;
+            dayView.clearAppointments();
+            for (Termin termin : terminListe.getTermine()) {
+                if (termin.getStart().getDayOfMonth() == dayView.getDate().getDayOfMonth() &&
+                    termin.getStart().getMonth() == dayView.getDate().getMonth() &&
+                    termin.getStart().getYear() == dayView.getDate().getYear()) {
+                    dayView.addAppointment(termin);
+                }
+            }
+            dayView.updateView(terminListe);
+        }
+    }
+    public void changeCurrentView(String category) {
+        if (Arrays.asList("month", "week", "day").contains(category)) {
+            currentView = views.get(category);
         }
     }
 }

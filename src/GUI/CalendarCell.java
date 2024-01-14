@@ -156,4 +156,18 @@ public class CalendarCell extends JPanel {
         appointmentMap.clear();
         textArea.setText("");
     }
+
+    public static void main(String[] args) {
+        // Erzeuge eine JFrame
+        JFrame frame = new JFrame("Kalenderzelle");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(300, 200); // Setze die Größe des Fensters
+
+        // Erzeuge eine CalendarCell-Instanz und füge sie zum Frame hinzu
+        CalendarCell calendarCell = new CalendarCell("1", null, null, null); // Hier "1" repräsentiert den Tag im Monat
+        frame.add(calendarCell);
+
+        frame.setVisible(true); // Zeige das JFrame an
+    }
+
 }

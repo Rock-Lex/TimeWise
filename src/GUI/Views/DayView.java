@@ -1,226 +1,203 @@
-
 package GUI.Views;
+
+import Calendar.HolidaysList;
+import Calendar.Termin;
+import Calendar.TerminListe;
+import GUI.CalendarCell;
+import GUI.Exceptions.AppointmentMismatchMonthException;
+import GUI.Exceptions.AppointmentOutOfMonthRangeException;
+import IOManager.Database;
+import IOManager.Exceptions.SQLPackageException;
+import IOManager.Exceptions.WrongPathException;
+
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.Date;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.YearMonth;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
+import java.util.Locale;
 
 /**
- * Die Klasse DayView stellt eine JFrame-Ansicht für einen einzelnen Tag im Kalender dar.
- * Sie zeigt Termine für den Tag an und ermöglicht das Hinzufügen und Entfernen von Terminen.
+ * Eine benutzerdefinierte Swing-Komponente zur Darstellung einer Wochenansicht im Kalender.
  *
- * @author Leif Maluck
- * @version 1.0
- * @since 2023-07-01
- * Letzte Bearbeitung: 2023-07-30
+ * @author Ludwig & Philipp
+ * @version 1.0.0
+ * @since 22.12.2023
+ * Letzte Änderung: 22.12.2023
  */
-public class DayView extends JFrame {
-    private Kalender kalender;
-    private DefaultTableModel tableModel;
-    private JTable table;
-
-    public DayView() {
-        kalender = new Kalender();
-
-        setTitle("Tagesansicht Kalender");
-        setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLayout(new BorderLayout());
-
-        // Tabelle für die Darstellung der Termine
-        tableModel = new DefaultTableModel(new Object[]{"ID", "Start", "Ende", "Erinnerungen"}, 0);
-        table = new JTable(tableModel);
-        table.setRowHeight(30);
-
-        // Scrollbar zur Tabelle hinzufügen
-        JScrollPane scrollPane = new JScrollPane(table);
-
-        add(scrollPane, BorderLayout.CENTER);
-
-        // Buttons zum Hinzufügen und Entfernen von Terminen
-        JPanel buttonPanel = new JPanel(new FlowLayout());
-        JButton addTerminButton = new JButton("Termin hinzufügen");
-        JButton removeTerminButton = new JButton("Termin entfernen");
-
-        addTerminButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                TerminDialog dialog = new TerminDialog(DayView.this);
-                dialog.setVisible(true);
-            }
-        });
-
-        removeTerminButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int selectedRow = table.getSelectedRow();
-                if (selectedRow != -1) {
-                    int terminId = (int) tableModel.getValueAt(selectedRow, 0);
-                    kalender.removeTermin(terminId);
-                    tableModel.removeRow(selectedRow);
-                }
-            }
-        });
-
-        buttonPanel.add(addTerminButton);
-        buttonPanel.add(removeTerminButton);
-        add(buttonPanel, BorderLayout.SOUTH);
-
-        setVisible(true);
-    }
+public class DayView extends CalendarView {
+    private TerminListe terminListe;
+    private CalendarCell calendarCell;
+    
+    private JLabel dayLabel;
+    private Database db;
+    private YearMonth yearMonth;
     /**
-     * Fügt einen Termin zur Ansicht hinzu und aktualisiert die Tabelle.
+     * Erstellt eine neue Wochenansicht mit dem angegebenen Jahr, Monat und Terminliste.
      *
-     * @param termin Der Termin, der hinzugefügt werden soll.
+     * @param year Das aktuelle Jahr als int.
+     * @param month Der aktuelle Monat als int.
+     * @param terminListe Eine Liste von Terminen
      */
-    public void addTermin(Termin termin) {
-        kalender.addTermin(termin);
-        tableModel.addRow(new Object[]{termin.getId(), termin.getStart(), termin.getEnde(), termin.getErinnerungen()});
+    public DayView(LocalDate shownDate, TerminListe terminListe, Database db) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
+        super(shownDate, terminListe);
+        this.db = db;
+        this.terminListe = terminListe;
+
+        this.shownDate = shownDate;
+        dayLabel = new JLabel();
+
+        setLayout(new GridLayout(0, 1));
+
+        DayOfWeek dayOfWeek = shownDate.getDayOfWeek();
+        String dayName = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.GERMAN);
+        dayLabel = new JLabel(dayName, SwingConstants.LEFT);
+        add(dayLabel);
+
+        LocalDate today = LocalDate.now();
+        int currentDayOfMonth = today.getDayOfMonth();
+        calendarCell = new CalendarCell(Integer.toString(shownDate.getDayOfMonth()), terminListe, this, db);
+        add(calendarCell);
+
+        // Add appointments from the list
+        for (Termin termin : terminListe.getTermine()) {
+            LocalDate terminDate = termin.getStart().toLocalDate();
+            if (terminDate.getDayOfMonth()  == shownDate.getDayOfMonth() &&
+                terminDate.getMonth()       == shownDate.getMonth() &&
+                terminDate.getYear()        == shownDate.getYear()) {
+                addAppointment(termin);
+            }
+        }
     }
+
     /**
-     * Die main-Methode startet die Anwendung, indem sie die GUI im Event Dispatch Thread erstellt.
+     * Setzt den aktuellen Tag in der Wochenansicht.
      *
-     * @param args Die Befehlszeilenargumente (werden hier nicht verwendet).
+     * @param day Der aktuelle Tag als int.
      */
-    public static void main(String[] args) {
-        // GUI im Event Dispatch Thread erstellen
-        javax.swing.SwingUtilities.invokeLater(() -> {
-            new DayView();
-        });
+    public void setToday(int day) {
+        calendarCell.setToday(false);
     }
-}
-/**
- * Die Klasse TerminDialog stellt einen Dialog zum Hinzufügen von Terminen dar.
- * Der Dialog wird von der DayView verwendet, um neue Termine einzugeben.
- *
- * @author Leif Maluck
- * @version 1.0
- * Erstellt am 09.07.2023
- * Zuletzt bearbeitet am 30.07.2023
- */
-class TerminDialog extends JDialog {
-    private JTextField idField, startField, endeField, erinnerungenField;
 
-    public TerminDialog(JFrame parent) {
-        super(parent, "Termin hinzufügen", true);
-        setSize(300, 200);
-        setLayout(new BorderLayout());
-        setLocationRelativeTo(parent);
-
-        JPanel inputPanel = new JPanel(new GridLayout(4, 2, 10, 10));
-        inputPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
-
-        idField = new JTextField();
-        startField = new JTextField();
-        endeField = new JTextField();
-        erinnerungenField = new JTextField();
-
-        inputPanel.add(new JLabel("ID:"));
-        inputPanel.add(idField);
-        inputPanel.add(new JLabel("Startdatum (yyyy-MM-dd):"));
-        inputPanel.add(startField);
-        inputPanel.add(new JLabel("Enddatum (yyyy-MM-dd):"));
-        inputPanel.add(endeField);
-        inputPanel.add(new JLabel("Erinnerungen (durch Komma getrennt):"));
-        inputPanel.add(erinnerungenField);
-
-        add(inputPanel, BorderLayout.CENTER);
-
-        JPanel buttonPanel = new JPanel(new FlowLayout());
-        JButton okButton = new JButton("OK");
-        JButton cancelButton = new JButton("Abbrechen");
-
-        okButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int id = Integer.parseInt(idField.getText());
-                LocalDate start = LocalDate.parse(startField.getText());
-                LocalDate ende = LocalDate.parse(endeField.getText());
-                String[] erinnerungenArr = erinnerungenField.getText().split(",");
-                List<Erinnerung> erinnerungen = new ArrayList<>();
-                for (String erinnerungName : erinnerungenArr) {
-                    erinnerungen.add(new Erinnerung(erinnerungName.trim()));
-                }
-                Termin termin = new Termin(id, start, ende, erinnerungen);
-                ((DayView) parent).addTermin(termin);
-                dispose();
+    /**
+     * Fügt einen Termin zu einem bestimmten Tag in der Wochenansicht hinzu.
+     *
+     * @param appointment Der Termin als String.
+     */
+        // !appointment.getStart().getMonth().equals(shownDate.getMonth())
+    public void addAppointment(Termin appointment) {
+        try {
+            LocalDateTime terminDate = appointment.getStart();
+            if (!(terminDate.getDayOfMonth()  == shownDate.getDayOfMonth() &&
+                terminDate.getMonth()       == shownDate.getMonth() &&
+                terminDate.getYear()        == shownDate.getYear())) {
+                throw new AppointmentMismatchMonthException("Fehler: Der Termin (" + appointment.getTitle() + ", " + appointment.getStart().toString() + ") gehört nicht zum aktuellen Monat (" + shownDate.getMonth() + ").");
             }
-        });
+            String formattedAppointment = appointment.getStart().format(DateTimeFormatter.ofPattern("HH:mm")) +
+                " - " +
+                appointment.getEnd().format(DateTimeFormatter.ofPattern("HH:mm")) +
+                " " +
+                appointment.getTitle();
 
-        cancelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
+                int day = appointment.getStart().getDayOfMonth();
+                calendarCell.addAppointment(formattedAppointment, appointment);
+        } catch (AppointmentMismatchMonthException e) {
+            // Hier können Sie definieren, was passieren soll, wenn eine AppointmentMismatchMonthException auftritt.
+            System.err.println(e.getMessage());
+        }
+    }
+
+    /**
+     * Löscht alle Termine aus den Kalenderzellen.
+     */
+    public void clearAppointments() {
+        calendarCell.clearAppointments();
+    }
+
+    public void getHolidays() {
+        HolidaysList holidaysList = new HolidaysList(yearMonth.getYear());
+    }
+
+    // Beispielanwendung zum Testen der Klasse.
+    public static void main(String[] args) throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
+        JFrame frame = new JFrame("Week View Example");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        LocalDate shownDate = LocalDate.of(2023, 12, 1);
+        Termin termin1 = new Termin("Terminname 1", "Typ 1", false, "2023-12-22", "2023-12-22", "10:00", "11:30");
+        Termin termin2 = new Termin("Terminname 2", "Typ 2", false, "2023-12-22", "2023-12-22", "13:00", "14:30");
+        Termin termin3 = new Termin("Terminname 2", "Typ 2", false, "2023-12-22", "2023-12-22", "13:00", "14:30");
+        TerminListe terminListe = new TerminListe();
+        terminListe.addTermin(termin1);
+        terminListe.addTermin(termin2);
+        terminListe.addTermin(termin3);
+
+        Database db;
+        
+        db = null;
+
+        DayView weekView = new DayView(shownDate, terminListe, db);
+        weekView.addAppointment(termin1);
+        weekView.addAppointment(termin2);
+
+        weekView.setToday(2);
+
+        frame.getContentPane().add(weekView);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    @Override
+    public void updateView(TerminListe terminListe)
+            throws AppointmentOutOfMonthRangeException, AppointmentMismatchMonthException {
+        System.out.println("Update");
+
+        this.removeAll();
+
+        DayOfWeek dayOfWeek = shownDate.getDayOfWeek();
+        String dayName = dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.GERMAN);
+        dayLabel = new JLabel(dayName, SwingConstants.LEFT);
+        add(dayLabel);
+
+        LocalDate today = LocalDate.now();
+        int currentDayOfMonth = today.getDayOfMonth();
+        calendarCell = new CalendarCell(Integer.toString(shownDate.getDayOfMonth()), terminListe, this, db);
+        add(calendarCell);
+
+        // Add appointments from the list
+        for (Termin termin : terminListe.getTermine()) {
+            LocalDate terminDate = termin.getStart().toLocalDate();
+            if (terminDate.getDayOfMonth()  == shownDate.getDayOfMonth() &&
+                terminDate.getMonth()       == shownDate.getMonth() &&
+                terminDate.getYear()        == shownDate.getYear()) {
+                addAppointment(termin);
             }
-        });
+        }
 
-        buttonPanel.add(okButton);
-        buttonPanel.add(cancelButton);
-        add(buttonPanel, BorderLayout.SOUTH);
-
-        pack();
-    }
-}
-
-class Kalender {
-    private ArrayList<Termin> termine;
-
-    public Kalender() {
-        termine = new ArrayList<>();
+        revalidate();
+        repaint();
     }
 
-    public void addTermin(Termin termin) {
-        termine.add(termin);
+    @Override
+    public void nextPeriod() {
+        System.out.println(shownDate);
+        this.shownDate = this.shownDate.plusDays(1);
+        System.out.println(shownDate);
     }
 
-    public void removeTermin(int id) {
-        termine.removeIf(termin -> termin.getId() == id);
-    }
-}
-
-class Termin {
-    private int id;
-    private LocalDate start;
-    private LocalDate ende;
-    private List<Erinnerung> erinnerungen;
-
-    public Termin(int id, LocalDate start, LocalDate ende, List<Erinnerung> erinnerungen) {
-        this.id = id;
-        this.start = start;
-        this.ende = ende;
-        this.erinnerungen = erinnerungen;
+    @Override
+    public void previousPeriod() {
+        this.shownDate = this.shownDate.minusDays(1);
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public LocalDate getStart() {
-        return start;
-    }
-
-    public LocalDate getEnde() {
-        return ende;
-    }
-
-    public List<Erinnerung> getErinnerungen() {
-        return erinnerungen;
-    }
-}
-
-class Erinnerung {
-    private String name;
-
-    public Erinnerung(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
+    @Override
+    public void todaysPeriod() {
+        this.shownDate= LocalDate.now();
     }
 }

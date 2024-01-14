@@ -31,7 +31,6 @@ import org.jdatepicker.impl.UtilDateModel;
  */
 public class PanelChange extends JPanel {
     // Deklaration der UI-Elemente und Variablen
-    private JPanel panelChange;
     private JPanel bottomPanel;
     private JButton btn_week;
     private JButton btn_month;
@@ -43,12 +42,8 @@ public class PanelChange extends JPanel {
     private JButton nextButton;
     private JButton prevButton;
     private CalendarViewManager viewManager;
-    private CalendarView calendarView;
     private PanelMain mainPanel;
     private TerminListe terminListe;
-    private UtilDateModel model;
-    private JDatePickerImpl datePicker;
-    private JDialog datePickerDialog;
 
 
     /**
@@ -224,5 +219,28 @@ public class PanelChange extends JPanel {
             }
         });
 
+        btn_month.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                viewManager.changeCurrentView("month");
+                CalendarView view = viewManager.getCurrentView();
+                mainPanel.switchView(view);
+            }
+        });
+        
+        btn_week.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                viewManager.changeCurrentView("week");
+                CalendarView view = viewManager.getCurrentView();
+                mainPanel.switchView(view);
+            }
+        });
+
+        btn_day.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                viewManager.changeCurrentView("day");
+                CalendarView view = viewManager.getCurrentView();
+                mainPanel.switchView(view);
+            }
+        });
     }
 }
