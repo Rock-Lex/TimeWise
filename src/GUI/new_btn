@@ -1,0 +1,158 @@
+private JButton btn_login;
+private JButton btn_signUp;
+
+
+btn_login = new JButton("LOGIN");
+btn_signUp = new JButton("SIGN UP");
+
+JPanel buttonsPanel = new JPanel(new FlowLayout());
+buttonsPanel.add(btn_login);
+buttonsPanel.add(btn_signUp);
+
+
+
+upperPanel = new JPanel(new BorderLayout());
+
+
+upperPanel.add(buttonsPanel, BorderLayout.EAST);
+
+
+
+btn_login.addActionListener(new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        showLoginDialog();
+		    }
+});
+
+btn_signUp.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+				    showSignUpDialog();
+				}
+});
+
+private void showLoginDialog() {
+
+        JTextField usernameField = new JTextField();
+        JPasswordField passwordField = new JPasswordField();
+
+        Object[] message = {
+                "Username:", usernameField,
+                "Password:", passwordField
+        };
+
+        int option = JOptionPane.showConfirmDialog(mainFrame, message, "Login", JOptionPane.OK_CANCEL_OPTION);
+
+        if (option == JOptionPane.OK_OPTION) {
+            String username = usernameField.getText();
+            char[] password = passwordField.getPassword();
+
+
+            if (isValidLogin(username, password)) {
+                JOptionPane.showMessageDialog(mainFrame, "Login successful!");
+            } else {
+                JOptionPane.showMessageDialog(mainFrame, "Invalid username or password. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+            Arrays.fill(password, ' ');
+        }
+    }
+
+  private void showSignUpDialog() {
+      JTextField usernameField = new JTextField();
+      JPasswordField passwordField1 = new JPasswordField();
+      JPasswordField passwordField2 = new JPasswordField();
+
+      Object[] message = {
+              "Username:", usernameField,
+              "Password:", passwordField1,
+              "Repeat password:", passwordField2
+      };
+
+      int option = JOptionPane.showConfirmDialog(mainFrame, message, "Sign up", JOptionPane.OK_CANCEL_OPTION);
+
+      if (option == JOptionPane.OK_OPTION) {
+          String username = usernameField.getText();
+          char[] password = passwordField1.getPassword();
+          char[] password2 = passwordField2.getPassword();
+
+          if (isValidPasswords(password, password2)) {
+							database.saveNewUser(username, password1);
+              JOptionPane.showMessageDialog(mainFrame, "Sign up successful!");
+          } else {
+              JOptionPane.showMessageDialog(mainFrame, "Password are not the same. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+          }
+
+          Arrays.fill(password, ' ');
+      }
+    }
+
+    private boolean isValidLogin(String username, char[] password) {
+				try {
+						databasePassword = database.getHashedUserPassword(username);
+				}
+				catch(Exception e) {
+						return false;
+				}
+
+        return password.hashCode() == databasePassword;
+    }
+
+    private boolean isValidPasswords(char[] password, char[] password2) {
+				String regex = "^(?=.*[0-9])"
+                       + "(?=.*[a-z])(?=.*[A-Z])"
+                       + "(?=.*[@#$%^&+=])"
+                       + "(?=\\S+$).{8,20}$";
+
+        Pattern p = Pattern.compile(regex);
+
+        if (password == null) {
+            return false;
+        }
+
+        Matcher m = p.matcher(password);
+
+        return m.matches();
+				if(m.matches()) {
+						return password == password2;
+				}
+        return false;
+    }
+
+
+
+				/*
+					Weitere code
+				*/
+
+
+
+public class Database {
+
+	private static Database instance;
+
+		/*
+     * Singleton Realisation
+     * Gibt instance zuruck wenn eine bereits exestiert, sonst erstellt neu
+     *
+     * @throws WrongPathException wenn der Pfad zur Datenbank nicht korrekt ist
+     * @throws SQLPackageException wenn das SQL-Paket nicht gefunden wird
+     */
+
+			/*
+				Weitere code
+			*/
+
+    public static Database getInstance() throws SQLPackageException, WrongPathException {
+        if (instance == null) {
+            instance = new Database();
+        }
+        return instance;
+    }
+
+}
+
+
+
+Database database = Database.getInstance();
